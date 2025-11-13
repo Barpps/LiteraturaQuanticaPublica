@@ -15,7 +15,7 @@ body {
   background-size: 140% 140%; /* cobre alem das bordas para evitar banding nas extremidades */
   background-position: center center;
   background-repeat: no-repeat;
-  opacity: 0.96; /* fora do FS */
+  opacity: 1; /* manter identico ao canvas para evitar marca das bordas */
   transition: opacity 0.5s ease;
 }
 body.is-fullscreen #bg { opacity: 1; }
