@@ -44,9 +44,16 @@
       const vw = window.innerWidth;
       const vh = window.innerHeight;
       const margin = document.fullscreenElement ? 1.00 : 0.96; // em tela cheia usa 100%
-      const size = Math.min(vw, vh) * margin;
-      this.canvas.width = size;
-      this.canvas.height = size;
+      const cssSize = Math.min(vw, vh) * margin;
+      const dpr = Math.max(1, Math.min(3, window.devicePixelRatio || 1));
+      // Tamanho visual em CSS px
+      this.canvas.style.width = cssSize + 'px';
+      this.canvas.style.height = cssSize + 'px';
+      // Backing store em px reais (para nitidez)
+      this.canvas.width = Math.round(cssSize * dpr);
+      this.canvas.height = Math.round(cssSize * dpr);
+      // Ajusta a matriz para desenhar em coordenadas de CSS px
+      this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     window.addEventListener('resize', resize);
     document.addEventListener('fullscreenchange', resize);
