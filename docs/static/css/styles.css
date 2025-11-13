@@ -122,19 +122,19 @@ button {
 
 /* Botão padrão RingLight: Violeta Dourado Invertido */
 .btn-ringlight {
-  background: linear-gradient(145deg, #3B006A 0%, #FFE773 90%);
-  color: #FFFFFF;
-  border: 1px solid #FFD700;
-  box-shadow: 0 0 14px #B26EFF;
+  background: linear-gradient(180deg, #240046 0%, #3B0A6E 100%);
+  color: #E9DAFF;
+  border: 1px solid #6F38C5;
+  box-shadow: 0 0 14px rgba(124,76,255,0.45);
   border-radius: 999px;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.55), 0 0 6px #FFD700;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.45);
   transition: all 0.25s ease;
   letter-spacing: 0.3px;
   font-weight: 700;
 }
-.btn-ringlight:hover { 
-  background: linear-gradient(145deg, #5A00A1 10%, #FFD700 95%);
-  box-shadow: 0 0 24px #FFD700, 0 0 34px rgba(180,124,255,0.8);
+.btn-ringlight:hover {
+  background: linear-gradient(180deg, #2E005D 0%, #5200A8 100%);
+  box-shadow: 0 0 22px rgba(138,84,255,0.65);
   transform: translateY(-1px);
 }
 .btn-ringlight:active {
@@ -147,7 +147,7 @@ button {
   box-shadow: none;
 }
 .btn-ringlight:focus-visible {
-  outline: 2px solid rgba(249,212,35,.8);
+  outline: 2px solid rgba(178,124,255,.9);
   outline-offset: 3px;
 }
 
