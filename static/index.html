@@ -8,9 +8,27 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/css/styles.css" />
+  <style>
+    /* Debug overlay */
+    #debugPanel { position: fixed; top: 10px; left: 10px; z-index: 2000; background: rgba(0,0,0,0.6); color: #EBD36E; border: 1px solid rgba(255,215,0,0.5); border-radius: 8px; padding: 10px; font: 12px/1.4 Consolas, ui-monospace, monospace; max-width: 420px; display: none; }
+    #debugPanel pre { margin: 6px 0; white-space: pre-wrap; color: #fff; }
+    #debugPanel .row { display:flex; gap:6px; align-items:center; }
+    #debugPanel button { padding: 6px 10px; font-size: 12px; }
+  </style>
 </head>
 <body>
   <div id="bg" aria-hidden="true"></div>
+  <div id="debugPanel" aria-hidden="true">
+    <div class="row">
+      <strong>Debug</strong>
+      <button class="btn-ringlight" id="exportDebug">Exportar JSON</button>
+      <button class="btn-ringlight" id="runSelfTest">Self‑Test</button>
+    </div>
+    <div class="row"><span id="dbgModule"></span> · <span id="dbgMode"></span> · <span id="dbgBeat"></span></div>
+    <pre id="dbgAudio"></pre>
+    <pre id="dbgVisual"></pre>
+    <pre id="dbgTest"></pre>
+  </div>
   <div id="container">
     <canvas id="viz" aria-label="Visual de Geometria Sagrada" role="img"></canvas>
     <div id="controls" role="group" aria-label="Controles">
@@ -88,12 +106,23 @@
     const sealText = document.getElementById('seal-text');
     const canvas = document.getElementById('viz');
     const bwStatus = document.getElementById('bwStatus');
+    const debugPanel = document.getElementById('debugPanel');
+    const dbgModule = document.getElementById('dbgModule');
+    const dbgMode = document.getElementById('dbgMode');
+    const dbgBeat = document.getElementById('dbgBeat');
+    const dbgAudio = document.getElementById('dbgAudio');
+    const dbgVisual = document.getElementById('dbgVisual');
+    const dbgTest = document.getElementById('dbgTest');
+    const exportBtn = document.getElementById('exportDebug');
+    const selfTestBtn = document.getElementById('runSelfTest');
     
     let configUrl = '/static/config/modules/frequencias_diarias.json';
     let audio = new SessionAudio(configUrl);
     const visuals = new Visuals(canvas);
 
     let timerInterval = null;
+    const params = new URLSearchParams(location.search);
+    const isDebug = params.get('debug') === '1' || params.get('debug') === 'true';
 
     function formatTime(sec) {
       const m = Math.floor(sec / 60);
@@ -132,6 +161,7 @@
       }
       visuals.setAudioTimeProvider(() => audio.currentTime());
       visuals.animate();
+      if (isDebug) debugPanel.style.display = 'block';
     }
 
     let intentionShown = false;
@@ -168,6 +198,13 @@
         if (audio.activeBeatType) {
           const mode = audio.activeBeatType();
           bwStatus.textContent = mode === 'binaural' ? 'Binaural ativo' : 'Isocrônico ativo';
+        }
+        if (isDebug) {
+          dbgModule.textContent = `Módulo: ${audio?.cfg?.name || '-'}`;
+          dbgMode.textContent = `Modo: ${audio.beatMode ? audio.beatMode() : '-'}`;
+          dbgBeat.textContent = `Ativo: ${audio.activeBeatType ? audio.activeBeatType() : '-'}`;
+          try { dbgAudio.textContent = JSON.stringify(audio.snapshot(), null, 2); } catch { }
+          try { dbgVisual.textContent = JSON.stringify(visuals.snapshot(), null, 2); } catch { }
         }
       }, 500);
     });
@@ -317,6 +354,44 @@
         audio.setBeatMode(modeSel.value);
       }
     });
+
+    // Export debug
+    exportBtn?.addEventListener('click', () => {
+      const blob = new Blob([ JSON.stringify({ audio: audio.snapshot?.(), visual: visuals.snapshot?.(), cfg: audio?.cfg }, null, 2) ], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'ringlight_debug.json'; a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    });
+
+    // Self-Test (heurístico)
+    function runSelfTest() {
+      const s = { ok: true, notes: [] };
+      const a = audio.snapshot?.() || {};
+      const v = visuals.snapshot?.() || {};
+      // JSON carregado
+      if (!audio?.cfg?.name) { s.ok = false; s.notes.push('Config não carregado'); }
+      // Carrier 432 esperado
+      if (audio?.cfg?.brainwave?.carrierHz && audio.cfg.brainwave.carrierHz !== 432) { s.notes.push('Carrier != 432 configurado'); }
+      // Beat ativo coerente
+      if (audio.beatMode && audio.activeBeatType) {
+        const m = audio.beatMode(); const b = audio.activeBeatType();
+        if (m === 'binaural' && b !== 'binaural') { s.ok = false; s.notes.push('Beat set binaural mas ativo não é binaural'); }
+        if (m === 'iso' && b !== 'iso') { s.ok = false; s.notes.push('Beat set iso mas ativo não é iso'); }
+      }
+      // Pan depth por modo
+      if (a.pan?.depth != null && audio.activeBeatType) {
+        const depth = a.pan.depth;
+        const b = audio.activeBeatType();
+        if (b === 'iso' && depth > 0.35) s.notes.push('Pan depth alto em modo Ambiente');
+      }
+      // Visual geometry dial
+      if (v.geometry?.type === 'ring' && (v.ringLineWidth == null)) { s.notes.push('ringLineWidth ausente'); }
+      // Micropulsos limit prop
+      if (v.geometry && v.maxMicropulsesPerCycle && v.maxMicropulsesPerCycle > 3) s.notes.push('Micropulsos > 3');
+      dbgTest.textContent = (s.ok ? 'Self‑Test: OK' : 'Self‑Test: Atenção') + '\n' + s.notes.join('\n');
+    }
+    selfTestBtn?.addEventListener('click', runSelfTest);
 
     init();
   </script>

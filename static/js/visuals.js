@@ -13,6 +13,7 @@ export class Visuals {
     this.targetFps = 60;
     this.visible = true;
     this._phaseBlend = { from: 0, to: 0, start: 0, dur: 0 };
+    this._fpsAcc = [];
   }
 
   init({ breathingBpm = 3.6, rotationRadPerSec = 0.08, brightnessMax = 0.78, petals = 12, flowerOpacity = 1.0, palette = null, centralSphere = false, geometry = null, maxMicropulsesPerCycle = null } = {}) {
@@ -76,8 +77,33 @@ export class Visuals {
     if (!this.lastFrameTs || (now - this.lastFrameTs) >= minDelta) {
       this._drawFrame();
       this.lastFrameTs = now;
+      // FPS rolling window
+      this._fpsAcc.push(now);
+      while (this._fpsAcc.length > 120) this._fpsAcc.shift();
     }
     requestAnimationFrame((t) => this.animate(t));
+  }
+
+  fps() {
+    const arr = this._fpsAcc;
+    if (arr.length < 2) return 0;
+    const dt = (arr[arr.length - 1] - arr[0]) / (arr.length - 1);
+    return dt > 0 ? 1000 / dt : 0;
+  }
+
+  snapshot() {
+    return {
+      breathHz: this.breathHz,
+      rotationRadPerSec: this.rotSpeed,
+      brightnessMax: this.brightnessMax,
+      geometry: this.geometry,
+      ringLineWidth: this.ringLineWidth,
+      secondaryPulseAlpha: this.secondaryPulseAlpha,
+      petals: this.petals,
+      flowerOpacity: this.flowerOpacity,
+      palette: this.palette,
+      fps: Math.round(this.fps())
+    };
   }
 
   _drawFrame() {
