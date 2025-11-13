@@ -19,19 +19,9 @@ const sealTitle = document.getElementById('seal-title');
 const sealText = document.getElementById('seal-text');
 const canvas = document.getElementById('viz');
 const bwStatus = document.getElementById('bwStatus');
-const moduleSel = document.getElementById('moduleSel');
-// Garantir que todos os módulos apareçam no seletor (corrige HTML antigo/publicado)
-if (moduleSel) {
-  moduleSel.innerHTML = [
-    { v: 'static/config/modules/paz_por_do_sol.json', t: 'PAZ — Pôr do Sol da Integração' },
-    { v: 'static/config/modules/frequencias_diarias.json', t: 'Prosperidade Consciente + Serenidade' },
-    { v: 'static/config/modules/silencio_entre_os_raios.json', t: 'O Silêncio entre os Raios' },
-    { v: 'static/config/modules/presenca_divina_acao.json', t: 'Presença Divina na Ação' },
-  ].map((o, i) => `<option value="${o.v}" ${i===0?'selected':''}>${o.t}</option>`).join('');
-}
 
-// Inicializa a partir do valor do seletor (permite mudar a ordem/seleção no HTML)
-let configUrl = moduleSel && moduleSel.value ? moduleSel.value : 'static/config/modules/paz_por_do_sol.json';
+// Use relative path so it works both locally and on GitHub Pages subpaths
+let configUrl = 'static/config/modules/frequencias_diarias.json';
 let audio = new SessionAudio(configUrl);
 const visuals = new Visuals(canvas);
 // Expose for quick console checks
@@ -221,21 +211,8 @@ document.addEventListener('visibilitychange', function(){
 const fsBtn = document.getElementById('fsBtn');
 fsBtn.addEventListener('click', function(){ enterFullscreenIfPossible(); });
 
-// Keep fullscreen button above the control bar on mobile
-function updateFsPosition(){
-  try {
-    var controls = document.getElementById('controls');
-    var btn = document.getElementById('fsBtn');
-    if (!controls || !btn) return;
-    var h = controls.getBoundingClientRect().height || 56;
-    btn.style.bottom = (h + 14) + 'px';
-  } catch(e) {}
-}
-window.addEventListener('resize', updateFsPosition);
-window.addEventListener('orientationchange', updateFsPosition);
-setTimeout(updateFsPosition, 100);
-
 // Module selector
+const moduleSel = document.getElementById('moduleSel');
 moduleSel.addEventListener('change', async function(){
   const wasPlaying = audio && audio._started;
   if (audio) await audio.fadeOutAndStop(0.8);
