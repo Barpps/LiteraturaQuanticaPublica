@@ -65,6 +65,26 @@ export class SessionAudio {
     return buffer;
   }
 
+  _pinkNoiseBuffer(seconds = 3) {
+    // Pink noise using Paul Kellet's filter approximation
+    const sr = this.ctx.sampleRate;
+    const buffer = this.ctx.createBuffer(1, seconds * sr, sr);
+    const data = buffer.getChannelData(0);
+    let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
+    for (let i=0;i<data.length;i++){
+      const white = Math.random()*2-1;
+      b0 = 0.99886*b0 + white*0.0555179;
+      b1 = 0.99332*b1 + white*0.0750759;
+      b2 = 0.96900*b2 + white*0.1538520;
+      b3 = 0.86650*b3 + white*0.3104856;
+      b4 = 0.55000*b4 + white*0.5329522;
+      b5 = -0.7616*b5 - white*0.0168980;
+      data[i] = (b0+b1+b2+b3+b4+b5+b6*0.5362)*0.11;
+      b6 = white*0.115926;
+    }
+    return buffer;
+  }
+
   _makeReverbImpulse(seconds = 1.8, decay = 2.5) {
     const sr = this.ctx.sampleRate;
     const length = seconds * sr;
@@ -112,7 +132,15 @@ export class SessionAudio {
     const panner = this.ctx.createStereoPanner();
     dryBus.connect(panner);
     panner.connect(duck).connect(master);
-    master.connect(shelf);
+    // Optional archetypal mask (peaking around given Hz)
+    const maskPeak = this.ctx.createBiquadFilter();
+    maskPeak.type = 'peaking';
+    maskPeak.frequency.setValueAtTime((this.cfg.mask && this.cfg.mask.hz) || 600, ctx.currentTime);
+    maskPeak.Q.setValueAtTime(1.0, ctx.currentTime);
+    maskPeak.gain.setValueAtTime((this.cfg.mask && this.cfg.mask.gainDb) || 0, ctx.currentTime);
+
+    master.connect(maskPeak);
+    maskPeak.connect(shelf);
     shelf.connect(ctx.destination);
 
     dryBus.connect(convolver);
@@ -185,15 +213,33 @@ export class SessionAudio {
       binR.connect(gBinR).connect(panR).connect(dryBus);
     }
 
-    // Brown noise bed
-    const noise = ctx.createBufferSource();
-    noise.buffer = this._brownNoiseBuffer(4);
-    noise.loop = true;
-    const noiseLP = ctx.createBiquadFilter();
-    noiseLP.type = 'lowpass';
-    noiseLP.frequency.setValueAtTime(1200, ctx.currentTime);
+    // Noise bed
     const noiseGain = this._gain(0);
-    noise.connect(noiseLP).connect(noiseGain).connect(dryBus);
+    const noiseType = (cfg.noiseType || 'brown').toLowerCase();
+    if (noiseType === 'pink+brownblend') {
+      const pink = ctx.createBufferSource();
+      pink.buffer = this._pinkNoiseBuffer(4);
+      pink.loop = true;
+      const brown = ctx.createBufferSource();
+      brown.buffer = this._brownNoiseBuffer(4);
+      brown.loop = true;
+      const pinkG = this._gain(0.6);
+      const brownG = this._gain(0.4);
+      pink.connect(pinkG).connect(noiseGain);
+      brown.connect(brownG).connect(noiseGain);
+      pink.start(now);
+      brown.start(now);
+    } else {
+      const noise = ctx.createBufferSource();
+      noise.buffer = this._brownNoiseBuffer(4);
+      noise.loop = true;
+      const noiseLP = ctx.createBiquadFilter();
+      noiseLP.type = 'lowpass';
+      noiseLP.frequency.setValueAtTime(1200, ctx.currentTime);
+      noise.connect(noiseLP).connect(noiseGain);
+      noise.start(now);
+    }
+    noiseGain.connect(dryBus);
 
     // Start oscillators/sources (pre-buffer configurable)
     const prebuffer = cfg.prebufferSec || 2.0;
@@ -215,6 +261,12 @@ export class SessionAudio {
     if (cfg.moduleId === 'silencio_entre_os_raios') {
       g432.gain.linearRampToValueAtTime(0.10, now + 180);
       g528.gain.linearRampToValueAtTime(0.0, now + 180);
+    } else if (cfg.moduleId === 'presenca_divina_acao') {
+      g432.gain.linearRampToValueAtTime(0.12, now + 240);
+      g528.gain.linearRampToValueAtTime(0.06, now + 300);
+    } else if (cfg.moduleId === 'paz_por_do_sol') {
+      g432.gain.linearRampToValueAtTime(0.12, now + 240);
+      g528.gain.linearRampToValueAtTime(0.06, now + 300);
     } else {
       g432.gain.linearRampToValueAtTime(0.12, now + 300);
       g528.gain.linearRampToValueAtTime(0.12, now + 300);

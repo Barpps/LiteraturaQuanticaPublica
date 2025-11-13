@@ -12,6 +12,7 @@
   "shelf": { "highStartHz": 1800, "phase3BoostDb": 1.5, "phase4CutDb": -6 },
   "pan": { "lfoHz": 0.03, "depth": 0.6 },
   "noiseLevelDb": -31,
+  "noiseType": "brown",
   "prebufferSec": 2.5,
   "brainwave": { "carrierHz": 432, "binauralHz": 7.5, "preferBinaural": true, "fallbackIsochronicOnMono": true },
   "visual": {

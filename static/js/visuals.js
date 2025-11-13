@@ -155,9 +155,17 @@ export class Visuals {
       this._flowerOfLife(ctx, radius, gold, dom);
     }
 
-    // Metatron’s Cube overlay at 30% transparency
-    const metaAlpha = (this.geometry && this.geometry.metatronOpacity != null) ? this.geometry.metatronOpacity : secAlphaPulse;
-    this._metatronsCube(ctx, radius * 0.9, this._withAlpha(violet, metaAlpha));
+    // Geometria de apoio: flowerOfLife (apoio) ou metatron
+    const support = (this.geometry && this.geometry.support) || 'metatron';
+    const supportOpacity = (this.geometry && this.geometry.supportOpacity != null) ? this.geometry.supportOpacity : secAlphaPulse;
+    if (support === 'flower') {
+      const prevOpacity = this.flowerOpacity;
+      this.flowerOpacity = supportOpacity;
+      this._flowerOfLife(ctx, radius * 0.95, this._withAlpha(gold, supportOpacity), this._withAlpha(dom, supportOpacity));
+      this.flowerOpacity = prevOpacity;
+    } else {
+      this._metatronsCube(ctx, radius * 0.9, this._withAlpha(violet, supportOpacity));
+    }
 
     // Central golden sphere if enabled
     if (this.centralSphere) {
