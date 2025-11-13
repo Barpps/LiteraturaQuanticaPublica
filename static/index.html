@@ -226,11 +226,11 @@
           bwStatus.textContent = mode === 'binaural' ? 'Binaural ativo' : 'Isocrônico ativo';
         }
         if (isDebug) {
-          try { dbgModule.textContent = `Módulo: ${audio?.cfg?.name || '-'}`; } catch (e) {}
-          try { dbgMode.textContent = `Modo: ${audio.beatMode ? audio.beatMode() : '-'}`; } catch (e) {}
-          try { dbgBeat.textContent = `Ativo: ${audio.activeBeatType ? audio.activeBeatType() : '-'}`; } catch (e) {}
-          try { dbgAudio.textContent = JSON.stringify(audio.snapshot?.(), null, 2); } catch (e) {}
-          try { dbgVisual.textContent = JSON.stringify(visuals.snapshot?.(), null, 2); } catch (e) {}
+          try { dbgModule.textContent = `Módulo: ${(audio && audio.cfg && audio.cfg.name) || '-'}`; } catch (e) {}
+          try { dbgMode.textContent = `Modo: ${(audio && audio.beatMode ? audio.beatMode() : '-')}`; } catch (e) {}
+          try { dbgBeat.textContent = `Ativo: ${(audio && audio.activeBeatType ? audio.activeBeatType() : '-')}`; } catch (e) {}
+          try { dbgAudio.textContent = JSON.stringify((audio.snapshot ? audio.snapshot() : null), null, 2); } catch (e) {}
+          try { dbgVisual.textContent = JSON.stringify((visuals.snapshot ? visuals.snapshot() : null), null, 2); } catch (e) {}
         }
       }, 500);
     });
@@ -255,20 +255,20 @@
     modeSel.addEventListener('change', ()=>{ if(audio && audio.setBeatMode) audio.setBeatMode(modeSel.value); });
 
     // Export debug
-    exportBtn?.addEventListener('click', () => { const blob = new Blob([ JSON.stringify({ audio: audio.snapshot?.(), visual: visuals.snapshot?.(), cfg: audio?.cfg }, null, 2) ], { type: 'application/json' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'ringlight_debug.json'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1000); });
+    if(exportBtn) exportBtn.addEventListener('click', () => { const blob = new Blob([ JSON.stringify({ audio: (audio.snapshot ? audio.snapshot() : null), visual: (visuals.snapshot ? visuals.snapshot() : null), cfg: audio?.cfg }, null, 2) ], { type: 'application/json' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'ringlight_debug.json'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1000); });
 
     // Self-Test (heurístico)
-    function runSelfTest(){ const s={ok:true,notes:[]}; const a=audio.snapshot?.()||{}; const v=visuals.snapshot?.()||{}; if(!audio?.cfg?.name){ s.ok=false; s.notes.push('Config não carregado'); } if(audio?.cfg?.brainwave?.carrierHz && audio.cfg.brainwave.carrierHz!==432){ s.notes.push('Carrier != 432'); } if(audio.beatMode && audio.activeBeatType){ const m=audio.beatMode(); const b=audio.activeBeatType(); if(m==='binaural'&&b!=='binaural'){ s.ok=false; s.notes.push('Beat set binaural mas ativo não é binaural'); } if(m==='iso'&&b!=='iso'){ s.ok=false; s.notes.push('Beat set iso mas ativo não é iso'); } } if(a.pan?.depth!=null && audio.activeBeatType){ const depth=a.pan.depth; const b=audio.activeBeatType(); if(b==='iso' && depth>0.35) s.notes.push('Pan depth alto em Ambiente'); } if(v.geometry?.type==='ring' && (v.ringLineWidth==null)) { s.notes.push('ringLineWidth ausente'); } if(v.geometry && v.maxMicropulsesPerCycle && v.maxMicropulsesPerCycle>3) s.notes.push('Micropulsos > 3'); dbgTest.textContent=(s.ok?'Self‑Test: OK':'Self‑Test: Atenção')+'\n'+s.notes.join('\n'); }
-    selfTestBtn?.addEventListener('click', runSelfTest);
+    function runSelfTest(){ const s={ok:true,notes:[]}; const a=(audio.snapshot ? audio.snapshot() : null)||{}; const v=(visuals.snapshot ? visuals.snapshot() : null)||{}; if(!(audio && audio.cfg && audio.cfg.name)){ s.ok=false; s.notes.push('Config não carregado'); } if(audio?.cfg?.brainwave?.carrierHz && audio.cfg.brainwave.carrierHz!==432){ s.notes.push('Carrier != 432'); } if(audio.beatMode && audio.activeBeatType){ const m=audio.beatMode(); const b=audio.activeBeatType(); if(m==='binaural'&&b!=='binaural'){ s.ok=false; s.notes.push('Beat set binaural mas ativo não é binaural'); } if(m==='iso'&&b!=='iso'){ s.ok=false; s.notes.push('Beat set iso mas ativo não é iso'); } } if(a.pan?.depth!=null && audio.activeBeatType){ const depth=a.pan.depth; const b=audio.activeBeatType(); if(b==='iso' && depth>0.35) s.notes.push('Pan depth alto em Ambiente'); } if(v.geometry?.type==='ring' && (v.ringLineWidth==null)) { s.notes.push('ringLineWidth ausente'); } if(v.geometry && v.maxMicropulsesPerCycle && v.maxMicropulsesPerCycle>3) s.notes.push('Micropulsos > 3'); dbgTest.textContent=(s.ok?'Self‑Test: OK':'Self‑Test: Atenção')+'\n'+s.notes.join('\n'); }
+    if(selfTestBtn) selfTestBtn.addEventListener('click', runSelfTest);
 
     // Helpers
     async function sleep(ms){ return new Promise(r=>setTimeout(r, ms)); }
 
     // Full E2E Runner
-    async function runFullE2E(){ const report={ when:new Date().toISOString(), results:[] }; const moduleSelEl=document.getElementById('moduleSel'); const opts=Array.from(moduleSelEl.options).map(o=>({url:o.value,name:o.text})); for(const mod of opts){ try{ await audio.fadeOutAndStop?.(0.4); }catch (e) {} audio=new SessionAudio(mod.url); const cfg=await audio.init(); visuals.init({ breathingBpm:cfg.breathingBpm, rotationRadPerSec:cfg.rotationRadPerSec, brightnessMax:cfg.brightnessMax, petals:cfg.visual?.flowerPetals, flowerOpacity:cfg.visual?.flowerOpacity, palette:cfg.visual?.palette, centralSphere:cfg.visual?.centralSphere, geometry:cfg.visual?.geometry, maxMicropulsesPerCycle:cfg.visual?.maxMicropulsesPerCycle }); visuals.setAudioTimeProvider(()=>audio.currentTime()); const pre=(cfg.prebufferSec||2.0)*1000; await audio.start(); await sleep(pre+600); const modes=['binaural','iso','auto']; for(const m of modes){ audio.setBeatMode?.(m); if(m==='auto'){ audio.fallbackToIso?.(); } await sleep(600); const phaseSamples=[]; for(const p of [0,1,2]){ audio.setPhaseIndex?.(p,0.4); await sleep(500); phaseSamples.push({ p, audio:audio.snapshot?.(), visual:visuals.snapshot?.() }); } report.results.push({ module:mod.name, moduleUrl:mod.url, mode:m, sample:audio.snapshot?.(), visual:visuals.snapshot?.(), phases:phaseSamples }); } await audio.pause?.(); } catch(e){ report.results.push({ module:mod.name, error:String(e) }); } } dbgTest.textContent='E2E concluído. Use Exportar E2E.'; window._ringlightE2E=report; }
+    async function runFullE2E(){ const report={ when:new Date().toISOString(), results:[] }; const moduleSelEl=document.getElementById('moduleSel'); const opts=Array.from(moduleSelEl.options).map(o=>({url:o.value,name:o.text})); for(const mod of opts){ try{ if (audio.fadeOutAndStop) { await audio.fadeOutAndStop(0.4); } }catch (e) {} audio=new SessionAudio(mod.url); const cfg=await audio.init(); visuals.init({ breathingBpm:cfg.breathingBpm, rotationRadPerSec:cfg.rotationRadPerSec, brightnessMax:cfg.brightnessMax, petals:cfg.visual?.flowerPetals, flowerOpacity:cfg.visual?.flowerOpacity, palette:cfg.visual?.palette, centralSphere:cfg.visual?.centralSphere, geometry:cfg.visual?.geometry, maxMicropulsesPerCycle:cfg.visual?.maxMicropulsesPerCycle }); visuals.setAudioTimeProvider(()=>audio.currentTime()); const pre=(cfg.prebufferSec||2.0)*1000; await audio.start(); await sleep(pre+600); const modes=['binaural','iso','auto']; for(const m of modes){ if (audio.setBeatMode) audio.setBeatMode(m); if(m==='auto'){ audio.fallbackToIso?.(); } await sleep(600); const phaseSamples=[]; for(const p of [0,1,2]){ if (audio.setPhaseIndex) audio.setPhaseIndex(p,0.4); await sleep(500); phaseSamples.push({ p, audio:(audio.snapshot ? audio.snapshot() : null), visual:(visuals.snapshot ? visuals.snapshot() : null) }); } report.results.push({ module:mod.name, moduleUrl:mod.url, mode:m, sample:(audio.snapshot ? audio.snapshot() : null), visual:(visuals.snapshot ? visuals.snapshot() : null), phases:phaseSamples }); } if (audio.pause) await audio.pause(); } catch(e){ report.results.push({ module:mod.name, error:String(e) }); } } dbgTest.textContent='E2E concluído. Use Exportar E2E.'; window._ringlightE2E=report; }
 
-    runE2EBtn?.addEventListener('click', ()=>{ runFullE2E().catch(e=>{ dbgTest.textContent='E2E erro: '+e; }); });
-    exportE2EBtn?.addEventListener('click', ()=>{ const data=window._ringlightE2E||{note:'E2E ainda não executado'}; const blob=new Blob([ JSON.stringify(data,null,2) ], {type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='ringlight_e2e_report.json'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1000); });
+    if(runE2EBtn) runE2EBtn.addEventListener('click', ()=>{ runFullE2E().catch(e=>{ dbgTest.textContent='E2E erro: '+e; }); });
+    if(exportE2EBtn) exportE2EBtn.addEventListener('click', ()=>{ const data=window._ringlightE2E||{note:'E2E ainda não executado'}; const blob=new Blob([ JSON.stringify(data,null,2) ], {type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='ringlight_e2e_report.json'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1000); });
     window.runFullE2E = ()=>{ dbgTest.textContent='Iniciando E2E...'; runFullE2E().catch(e=>{ dbgTest.textContent='E2E erro: '+e; }); };
     window.exportE2E = ()=>{ const data=window._ringlightE2E||{note:'E2E ainda não executado'}; const blob=new Blob([ JSON.stringify(data,null,2) ], {type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='ringlight_e2e_report.json'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1000); };
 
@@ -276,4 +276,5 @@
   </script>
 </body>
 </html>
+
 
