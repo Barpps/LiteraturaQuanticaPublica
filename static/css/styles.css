@@ -197,7 +197,7 @@ button {
 #fsBtn {
   position: fixed;
   right: 16px;
-  bottom: 72px;
+  bottom: calc(72px + env(safe-area-inset-bottom));
   opacity: 0.5;
   padding: 8px 12px;
   border-radius: 10px;
@@ -214,7 +214,7 @@ body:not(.is-fullscreen) #fsBtn { display: inline-block; }
   #controls { bottom: 10px; gap: 8px 10px; padding: 8px 12px; font-size: 11px; width: 96vw; }
   button, .btn-ringlight { padding: 8px 12px; }
   select#moduleSel, select#modeSel { padding: 8px 32px 8px 12px; }
-  #fsBtn { bottom: 66px; right: 12px; }
+  #fsBtn { bottom: calc(66px + env(safe-area-inset-bottom)); right: 12px; }
 }
 @media (max-width: 380px) {
   #controls { font-size: 10px; gap: 6px 8px; }
