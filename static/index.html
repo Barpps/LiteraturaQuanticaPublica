@@ -116,15 +116,15 @@
         breathingBpm: cfg.breathingBpm,
         rotationRadPerSec: cfg.rotationRadPerSec,
         brightnessMax: cfg.brightnessMax,
-        petals: cfg.visual?.flowerPetals,
-        flowerOpacity: cfg.visual?.flowerOpacity,
-        palette: cfg.visual?.palette,
-        centralSphere: cfg.visual?.centralSphere,
-        geometry: cfg.visual?.geometry,
-        maxMicropulsesPerCycle: cfg.visual?.maxMicropulsesPerCycle
+        petals: (cfg.visual ? cfg.visual.flowerPetals : undefined),
+        flowerOpacity: (cfg.visual ? cfg.visual.flowerOpacity : undefined),
+        palette: (cfg.visual ? cfg.visual.palette : undefined),
+        centralSphere: (cfg.visual ? cfg.visual.centralSphere : undefined),
+        geometry: (cfg.visual ? cfg.visual.geometry : undefined),
+        maxMicropulsesPerCycle: (cfg.visual ? cfg.visual.maxMicropulsesPerCycle : undefined)
       });
       // Atualiza fundo radial via CSS vars se fornecido
-      if (cfg.visual?.palette?.bg1) {
+      if (cfg.visual && cfg.visual.palette && cfg.visual.palette.bg1) {
         const p = cfg.visual.palette;
         document.body.style.setProperty('--bg1', p.bg1);
         document.body.style.setProperty('--bg2', p.bg2 || p.bg1);
@@ -139,7 +139,7 @@
     async function enterFullscreenIfPossible() {
       const docEl = document.documentElement;
       if (docEl.requestFullscreen) {
-        try { await docEl.requestFullscreen(); } catch {}
+        try { await docEl.requestFullscreen(); } catch (e) {}
       }
     }
 
@@ -178,7 +178,7 @@
         if (screen.orientation && screen.orientation.lock && window.innerHeight > window.innerWidth) {
           await screen.orientation.lock('landscape');
         }
-      } catch {}
+      } catch (e) {}
       playBtn.click();
     });
 
@@ -213,7 +213,7 @@
       await audio.fadeOutAndStop(1.5);
       visuals.setActive(false);
       if (document.fullscreenElement) {
-        try { await document.exitFullscreen(); } catch {}
+        try { await document.exitFullscreen(); } catch (e) {}
       }
       hideModal(modalSeal);
       if (timerInterval) clearInterval(timerInterval);
@@ -287,15 +287,15 @@
         breathingBpm: cfg.breathingBpm,
         rotationRadPerSec: cfg.rotationRadPerSec,
         brightnessMax: cfg.brightnessMax,
-        petals: cfg.visual?.flowerPetals,
-        flowerOpacity: cfg.visual?.flowerOpacity,
-        palette: cfg.visual?.palette,
-        centralSphere: cfg.visual?.centralSphere,
-        geometry: cfg.visual?.geometry,
-        maxMicropulsesPerCycle: cfg.visual?.maxMicropulsesPerCycle
+        petals: (cfg.visual ? cfg.visual.flowerPetals : undefined),
+        flowerOpacity: (cfg.visual ? cfg.visual.flowerOpacity : undefined),
+        palette: (cfg.visual ? cfg.visual.palette : undefined),
+        centralSphere: (cfg.visual ? cfg.visual.centralSphere : undefined),
+        geometry: (cfg.visual ? cfg.visual.geometry : undefined),
+        maxMicropulsesPerCycle: (cfg.visual ? cfg.visual.maxMicropulsesPerCycle : undefined)
       });
       visuals.setAudioTimeProvider(() => audio.currentTime());
-      if (cfg.visual?.palette?.bg1) {
+      if (cfg.visual && cfg.visual.palette && cfg.visual.palette.bg1) {
         const p = cfg.visual.palette;
         document.body.style.setProperty('--bg1', p.bg1);
         document.body.style.setProperty('--bg2', p.bg2 || p.bg1);
