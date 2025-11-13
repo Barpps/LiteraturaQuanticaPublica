@@ -27,11 +27,11 @@
         <option value="binaural">Fones (Binaural)</option>
         <option value="iso">Ambiente (Isocr├┤nico)</option>
       </select>
-      <button class="btn-ringlight" id="play" aria-label="Play">PLAY</button>
-      <button class="btn-ringlight" id="stop" aria-label="Stop">STOP</button>
-      <button class="btn-ringlight" id="prevPhase" aria-label="Retroceder Fase">Retroceder Fase</button>
+      <button class="btn-ringlight" id="play" aria-label="Play" onclick="window.__ringPlay && window.__ringPlay()">PLAY</button>
+      <button class="btn-ringlight" id="stop" aria-label="Stop" onclick="window.__ringStop && window.__ringStop()">STOP</button>
+      <button class="btn-ringlight" id="prevPhase" aria-label="Retroceder Fase" onclick="window.__ringPrev && window.__ringPrev()">Retroceder Fase</button>
       <button class="btn-ringlight" id="nextPhase" aria-label="Avan├ºar Fase">Avan├ºar Fase</button>
-      <button class="btn-ringlight" id="exitBtn" aria-label="Sair">Sair</button>
+      <button class="btn-ringlight" id="exitBtn" aria-label="Sair" onclick="window.__ringExit && window.__ringExit()">Sair</button>
       <span id="timer" aria-live="polite">00:00 / 90:00</span>
       <span id="bwStatus" aria-live="polite" style="color:#FFE773;">Isocr├┤nico ativo</span>
       <span id="phase" aria-live="polite">Pronto</span>
@@ -146,9 +146,7 @@
     function showModal(el) { el.classList.remove('hidden'); }
     function hideModal(el) { el.classList.add('hidden'); }
 
-    playBtn.addEventListener('click', async () => {
-      if (audio && audio._started && audio.isPaused && audio.isPaused()) {
-        await audio.resume();
+    window.__ringPlay = async function(){ if (audio && audio._started && audio.isPaused && audio.isPaused()){ try{ await audio.resume(); }catch(e){} visuals.setActive(true); return; } if (!intentionShown){ showModal(modalIntent); intentOk.focus(); return; } try { await audio.start(); } catch(e){} visuals.setActive(true); if (window.timerInterval) clearInterval(window.timerInterval); window.timerInterval = setInterval(() => { try{ const t = audio.currentTime(); timerEl.textContent = ${formatTime(t)} / 90:00; phaseEl.textContent = audio.currentPhaseName(); visuals.setPhase(audio.currentPhaseIndex()); if (audio.activeBeatType) { const mode = audio.activeBeatType(); bwStatus.textContent = mode === 'binaural' ? 'Binaural ativo' : 'Isocrônico ativo'; } }catch(e){} }, 500); }; playBtn.addEventListener('click', window.__ringPlay);
         visuals.setActive(true);
         return;
       }
@@ -189,29 +187,25 @@
       if (e.key === 'Enter') { intentOk.click(); }
     });
 
-    stopBtn.addEventListener('click', async () => {
-      if (audio && audio.pause) await audio.pause();
+    window.__ringStop = async function(){ if (audio && audio.pause) await audio.pause(); visuals.setActive(false); }; stopBtn.addEventListener('click', window.__ringStop);
       visuals.setActive(false);
     });
 
     // Fase navigation
-    prevPhaseBtn.addEventListener('click', () => {
-      const idx = Math.max(0, audio.currentPhaseIndex() - 1);
+    window.__ringPrev = function(){ const idx = Math.max(0, audio.currentPhaseIndex() - 1); audio.setPhaseIndex(idx, 1.0); visuals.setPhase(idx); phaseEl.textContent = audio.currentPhaseName(); }; prevPhaseBtn.addEventListener('click', window.__ringPrev);
       audio.setPhaseIndex(idx, 1.0);
       visuals.setPhase(idx);
       phaseEl.textContent = audio.currentPhaseName();
     });
 
-    nextPhaseBtn.addEventListener('click', () => {
-      const idx = Math.min(3, audio.currentPhaseIndex() + 1);
+    window.__ringNext = function(){ const idx = Math.min(3, audio.currentPhaseIndex() + 1); audio.setPhaseIndex(idx, 1.0); visuals.setPhase(idx); phaseEl.textContent = audio.currentPhaseName(); }; nextPhaseBtn.addEventListener('click', window.__ringNext);
       audio.setPhaseIndex(idx, 1.0);
       visuals.setPhase(idx);
       phaseEl.textContent = audio.currentPhaseName();
     });
 
     // Exit button -> Seal modal
-    exitBtn.addEventListener('click', () => {
-      showModal(modalSeal);
+    window.__ringExit = function(){ showModal(modalSeal); sealOk.focus(); }; exitBtn.addEventListener('click', window.__ringExit);
       sealOk.focus();
     });
 
@@ -322,3 +316,5 @@
   </script>
 </body>
 </html>
+
+
