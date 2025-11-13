@@ -17,6 +17,7 @@
     "flowerPetals": 24,
     "flowerOpacity": 0.4,
     "centralSphere": true,
+    "geometry": { "type": "flower", "ringLineWidth": 3.5, "secondaryPulseAlpha": null },
     "palette": {
       "dominant": "#1A1F4E",
       "gold": "#E8C66A",

@@ -29,10 +29,13 @@ export class Visuals {
     };
     this.centralSphere = centralSphere;
     this.geometry = geometry || { type: 'flower', metatronOpacity: 0.3 };
-    // JSON overrides — ring thickness and secondary pulse alpha (8%–20%)
+    // JSON overrides — ring thickness and secondary pulse alpha (8%–20%).
+    // Important: if secondaryPulseAlpha is not provided, preserve previous behavior
+    // (dynamic alpha based on brightness), i.e., don't force a constant.
     this.ringLineWidth = (this.geometry && this.geometry.ringLineWidth != null) ? this.geometry.ringLineWidth : 3.5;
-    const spa = (this.geometry && this.geometry.secondaryPulseAlpha != null) ? this.geometry.secondaryPulseAlpha : 0.14;
-    this.secondaryPulseAlpha = Math.min(0.20, Math.max(0.08, spa));
+    this.secondaryPulseAlpha = (this.geometry && this.geometry.secondaryPulseAlpha != null)
+      ? Math.min(0.20, Math.max(0.08, this.geometry.secondaryPulseAlpha))
+      : null; // null => use dynamic alpha later
     this.maxMicropulsesPerCycle = maxMicropulsesPerCycle || null;
     this._cycleIndex = 0;
     this._micropulsesSoFar = 0;
@@ -142,7 +145,7 @@ export class Visuals {
     const dom = this._rgba(this.palette.dominant, brightness);
     const gold = this._rgba(this.palette.gold || '#ffd700', brightness);
     const roseGold = this._rgba(this.palette.rose || 'rgba(255, 182, 193, 0.6)', Math.max(0.05, brightness * 0.6));
-    const secAlphaPulse = this.secondaryPulseAlpha; // 0.08–0.20
+    const secAlphaPulse = (this.secondaryPulseAlpha != null) ? this.secondaryPulseAlpha : (0.3 * (0.65 + 0.35 * breath));
     const violet = this._rgba(this.palette.violet || '#CAC2FF', secAlphaPulse);
 
     if (this.geometry && this.geometry.type === 'ring') {
@@ -157,7 +160,9 @@ export class Visuals {
 
     // Geometria de apoio: flowerOfLife (apoio) ou metatron
     const support = (this.geometry && this.geometry.support) || 'metatron';
-    const supportOpacity = (this.geometry && this.geometry.supportOpacity != null) ? this.geometry.supportOpacity : secAlphaPulse;
+    const supportOpacity = (this.geometry && this.geometry.supportOpacity != null)
+      ? this.geometry.supportOpacity
+      : secAlphaPulse;
     if (support === 'flower') {
       const prevOpacity = this.flowerOpacity;
       this.flowerOpacity = supportOpacity;
