@@ -167,10 +167,10 @@ async function runModule(modName, cfgUrl){
 async function runE2E(){
   var report = { ts: new Date().toISOString(), results: [], ok: true, ua: navigator.userAgent };
   var modules = [
-    { n:'Prosperidade Consciente + Serenidade', u:'/static/config/modules/frequencias_diarias.json' },
-    { n:'O Silêncio entre os Raios', u:'/static/config/modules/silencio_entre_os_raios.json' },
-    { n:'Presença Divina na Ação', u:'/static/config/modules/presenca_divina_acao.json' },
-    { n:'PAZ — Pôr do Sol da Integração', u:'/static/config/modules/paz_por_do_sol.json' }
+    { n:'Prosperidade Consciente + Serenidade', u:'static/config/modules/frequencias_diarias.json' },
+    { n:'O Silêncio entre os Raios', u:'static/config/modules/silencio_entre_os_raios.json' },
+    { n:'Presença Divina na Ação', u:'static/config/modules/presenca_divina_acao.json' },
+    { n:'PAZ — Pôr do Sol da Integração', u:'static/config/modules/paz_por_do_sol.json' }
   ];
 
   log('Iniciando Full E2E...', 'mono');

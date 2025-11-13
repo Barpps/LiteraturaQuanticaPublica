@@ -1,5 +1,5 @@
-import { SessionAudio } from '/static/js/audioEngine.js';
-import { Visuals } from '/static/js/visuals.js';
+import { SessionAudio } from './audioEngine.js';
+import { Visuals } from './visuals.js';
 
 const playBtn = document.getElementById('play');
 const stopBtn = document.getElementById('stop');

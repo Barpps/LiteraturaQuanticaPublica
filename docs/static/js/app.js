@@ -1,5 +1,5 @@
-import { SessionAudio } from '/static/js/audioEngine.js';
-import { Visuals } from '/static/js/visuals.js';
+import { SessionAudio } from './audioEngine.js';
+import { Visuals } from './visuals.js';
 
 const playBtn = document.getElementById('play');
 const stopBtn = document.getElementById('stop');
@@ -20,7 +20,8 @@ const sealText = document.getElementById('seal-text');
 const canvas = document.getElementById('viz');
 const bwStatus = document.getElementById('bwStatus');
 
-let configUrl = '/static/config/modules/frequencias_diarias.json';
+// Use relative path so it works both locally and on GitHub Pages subpaths
+let configUrl = 'static/config/modules/frequencias_diarias.json';
 let audio = new SessionAudio(configUrl);
 const visuals = new Visuals(canvas);
 // Expose for quick console checks
