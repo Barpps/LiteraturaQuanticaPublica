@@ -1,7 +1,7 @@
 ﻿// SessionAudio: WebAudio engine matching the 4-phase spec
 // - Phase 1 (0-5m): 174 + fade-in 432/528, master fade-in 2m
 // - Phase 2 (5-60m): add isochronic 7.5 Hz, brown noise, + harmonics 639/852
-// - Phase 3 (60-80m): add 963; +2–3 dB highs and reverb
+// - Phase 3 (60-80m): add 963; +2ÔÇô3 dB highs and reverb
 // - Phase 4 (80-90m): remove highs + isochronic; keep 174 until final fade-out
 
 export class SessionAudio {
@@ -10,17 +10,16 @@ export class SessionAudio {
     this.ctx = null;
     this.nodes = {};
     this.phases = [
-      { name: 'Fase 1 — Ativação', start: 0, end: 300 },
-      { name: 'Fase 2 — Harmonia', start: 300, end: 3600 },
-      { name: 'Fase 3 — Expansão', start: 3600, end: 4800 },
-      { name: 'Fase 4 — Dissolução', start: 4800, end: 5400 }
+      { name: 'Fase 1 ÔÇö Ativa├º├úo', start: 0, end: 300 },
+      { name: 'Fase 2 ÔÇö Harmonia', start: 300, end: 3600 },
+      { name: 'Fase 3 ÔÇö Expans├úo', start: 3600, end: 4800 },
+      { name: 'Fase 4 ÔÇö Dissolu├º├úo', start: 4800, end: 5400 }
     ];
     this._startEpoch = 0;
     this._started = false;
     this._forcedPhase = null;
     this._beatMode = 'auto'; // auto | binaural | iso
     this._activeBeatType = 'iso';
-    this._canStereo = true;
   }
 
   async init() {
@@ -62,25 +61,6 @@ export class SessionAudio {
       // Brown-ish noise via leaky integration
       lastOut = (lastOut + (0.02 * white)) / 1.02;
       data[i] = lastOut * 3.5; // normalize-ish
-    }
-    return buffer;
-  }
-
-  _pinkNoiseBuffer(seconds = 3) {
-    const sr = this.ctx.sampleRate;
-    const buffer = this.ctx.createBuffer(1, seconds * sr, sr);
-    const data = buffer.getChannelData(0);
-    let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
-    for (let i=0;i<data.length;i++){
-      const white = Math.random()*2-1;
-      b0 = 0.99886*b0 + white*0.0555179;
-      b1 = 0.99332*b1 + white*0.0750759;
-      b2 = 0.96900*b2 + white*0.1538520;
-      b3 = 0.86650*b3 + white*0.3104856;
-      b4 = 0.55000*b4 + white*0.5329522;
-      b5 = -0.7616*b5 - white*0.0168980;
-      data[i] = (b0+b1+b2+b3+b4+b5+b6*0.5362)*0.11;
-      b6 = white*0.115926;
     }
     return buffer;
   }
@@ -148,7 +128,7 @@ export class SessionAudio {
     const reverbWet = this._gain(cfg.reverb.wetGain);
 
     // Connect graph
-    const duck = this._gain(1); // para janelas de silêncio (módulos opcionais)
+    const duck = this._gain(1); // para janelas de sil├¬ncio (m├│dulos opcionais)
     const panner = this.ctx.createStereoPanner();
     dryBus.connect(panner);
     panner.connect(duck).connect(master);
@@ -205,7 +185,6 @@ export class SessionAudio {
     const carrierHz = (cfg.brainwave && cfg.brainwave.carrierHz) || 432;
     const bwHz = (cfg.brainwave && cfg.brainwave.binauralHz) || cfg.isochronicHz || 7.5;
     const canStereo = (ctx.destination.maxChannelCount || 2) >= 2;
-    this._canStereo = canStereo;
     let useBinaural = preferBinaural && canStereo;
 
     // Isochronic path (default off; enabled if !useBinaural)
@@ -328,7 +307,7 @@ export class SessionAudio {
     noiseGain.gain.setValueAtTime(0.0, now + 300);
     noiseGain.gain.linearRampToValueAtTime(noiseTarget, now + 360);
 
-    // Phase 3 (start @3600s): add 963; boost highs + reverb 2–3 dB over ~2m
+    // Phase 3 (start @3600s): add 963; boost highs + reverb 2ÔÇô3 dB over ~2m
     g963.gain.setValueAtTime(0.0, now + 3600);
     g963.gain.linearRampToValueAtTime(0.07, now + 3660);
     if (cfg && cfg.moduleId === 'silencio_entre_os_raios') {
@@ -372,7 +351,7 @@ export class SessionAudio {
     // Pan LFO (optional)
     if (cfg.pan && (cfg.pan.lfoHz || cfg.pan.depth)) {
       const lfoPan = this._tone(cfg.pan.lfoHz || 0.03);
-      const panScale = this._gain((cfg.pan.depth != null ? cfg.pan.depth : 0.8));
+      const panScale = this._gain(cfg.pan.depth ?? 0.8);
       lfoPan.connect(panScale).connect(panner.pan);
       lfoPan.start(now);
       this.nodes.lfoPan = lfoPan;
@@ -390,7 +369,7 @@ export class SessionAudio {
       toneFund, gFund,
       isoCarrier, isoGain, lfo, lfoScale, lfoOffset,
       binL, gBinL, binR, gBinR,
-      noiseGain,`r`n      maskPeak,`r`n      noiseType
+      noise, noiseGain
     };
     this._started = true;
 
@@ -494,19 +473,19 @@ export class SessionAudio {
     let lfoDepth = 0.0, lfoBase = 0.0, noise = 0.0, shelfDb = 0.0, wetDb = 0.0;
 
     if (index === 0) {
-      // Fase 1 — Ativação
+      // Fase 1 ÔÇö Ativa├º├úo
       g639 = 0.0; g852 = 0.0; g963 = 0.0;
       lfoDepth = 0.0; lfoBase = 0.0; noise = 0.0; shelfDb = 0.0; wetDb = 0.0;
     } else if (index === 1) {
-      // Fase 2 — Harmonia
+      // Fase 2 ÔÇö Harmonia
       g639 = 0.08; g852 = 0.08; g963 = 0.0;
       lfoDepth = 0.04; lfoBase = 0.06; noise = 0.06; shelfDb = 0.0; wetDb = 0.0;
     } else if (index === 2) {
-      // Fase 3 — Expansão
+      // Fase 3 ÔÇö Expans├úo
       g639 = 0.08; g852 = 0.08; g963 = 0.07;
       lfoDepth = 0.04; lfoBase = 0.06; noise = 0.06; shelfDb = this.cfg.shelf.phase3BoostDb; wetDb = this.cfg.reverb.boostDbPhase3;
     } else if (index === 3) {
-      // Fase 4 — Dissolução
+      // Fase 4 ÔÇö Dissolu├º├úo
       g432 = 0.0; g528 = 0.0; g639 = 0.0; g852 = 0.0; g963 = 0.0;
       lfoDepth = 0.0; lfoBase = 0.0; noise = 0.0; shelfDb = this.cfg.shelf.phase4CutDb; wetDb = 0.0;
     }
@@ -533,34 +512,6 @@ export class SessionAudio {
   }
 
   activeBeatType() { return this._activeBeatType; }
-  beatMode() { return this._beatMode; }
-  canStereo() { return this._canStereo; }
-
-  snapshot() {
-    const n = this.nodes || {};
-    const ctx = this.ctx;
-    const read = (p, d=undefined) => { try { return ((p && typeof p.value !== "undefined") ? p.value : p); } catch (e) { return d; } };
-    return {
-      moduleId: (this.cfg && this.cfg.moduleId) || null,
-      sampleRate: (ctx ? ctx.sampleRate : null),
-      state: (ctx ? ctx.state : null),
-      beatMode: this._beatMode,
-      activeBeat: this._activeBeatType,
-      canStereo: this._canStereo,
-      prebufferSec: (this.cfg && (this.cfg.prebufferSec!=null) ? this.cfg.prebufferSec : null),
-      brainwave: (this.cfg ? this.cfg.brainwave : null),
-      noise: { type: (n.noiseType || (this.cfg ? this.cfg.noiseType : null) || 'brown'), gain: read(n.noiseGain && n.noiseGain.gain, null) },
-      mask: { hz: read(n.maskPeak && n.maskPeak.frequency, null), gainDb: read(n.maskPeak && n.maskPeak.gain, null) },
-      pan: { lfoHz: read(n.lfoPan && n.lfoPan.frequency, null), depth: read(n.panScale && n.panScale.gain, null) },
-      tonesGain: {
-        g174: read(n.g174 && n.g174.gain, null), g432: read(n.g432 && n.g432.gain, null), g528: read(n.g528 && n.g528.gain, null),
-        g639: read(n.g639 && n.g639.gain, null), g852: read(n.g852 && n.g852.gain, null), g963: read(n.g963 && n.g963.gain, null),
-        binaural: { L: read(n.gBinL && n.gBinL.gain, null), R: read(n.gBinR && n.gBinR.gain, null) },
-        isoDepth: { scale: read(n.lfoScale && n.lfoScale.gain, null), offset: read(n.lfoOffset && n.lfoOffset.offset, null) }
-      },
-      reverbWet: read(n.reverbWet && n.reverbWet.gain, null)
-    };
-  }
 
   _applyMode(mode) {
     if (!this._started || !this.nodes.master) return;
@@ -593,7 +544,7 @@ export class SessionAudio {
         }
         n.lfoScale.gain.linearRampToValueAtTime(0.04, now + 0.6);
         n.lfoOffset.offset.linearRampToValueAtTime(0.06, now + 0.6);
-        if (n.panScale) n.panScale.gain.linearRampToValueAtTime(0.25, now + 0.6); // ambiente: 0.2–0.3
+        if (n.panScale) n.panScale.gain.linearRampToValueAtTime(0.25, now + 0.6); // ambiente: 0.2ÔÇô0.3
       } catch {}
       this._activeBeatType = 'iso';
     }
@@ -605,7 +556,7 @@ export class SessionAudio {
     const sw = cfg.silenceWindows;
     const every = Math.max(5, sw.everySec || 30);
     const dur = Math.max(0.5, sw.durationSec || 2.0);
-    const depthDb = sw.depthDb || -18; // redução de volume
+    const depthDb = sw.depthDb || -18; // redu├º├úo de volume
     const fade = Math.max(20, sw.fadeMs || 100) / 1000;
     const minGain = Math.max(0.0001, this._dbToGain(depthDb));
     const total = 5400; // 90 min
@@ -623,4 +574,3 @@ export class SessionAudio {
     }
   }
 }
-

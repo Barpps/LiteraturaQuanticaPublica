@@ -1,4 +1,4 @@
-export class Visuals {
+﻿export class Visuals {
   constructor(canvas) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
@@ -13,7 +13,6 @@ export class Visuals {
     this.targetFps = 60;
     this.visible = true;
     this._phaseBlend = { from: 0, to: 0, start: 0, dur: 0 };
-    this._fpsAcc = [];
   }
 
   init({ breathingBpm = 3.6, rotationRadPerSec = 0.08, brightnessMax = 0.78, petals = 12, flowerOpacity = 1.0, palette = null, centralSphere = false, geometry = null, maxMicropulsesPerCycle = null } = {}) {
@@ -30,7 +29,7 @@ export class Visuals {
     };
     this.centralSphere = centralSphere;
     this.geometry = geometry || { type: 'flower', metatronOpacity: 0.3 };
-    // JSON overrides — ring thickness and secondary pulse alpha (8%–20%).
+    // JSON overrides ÔÇö ring thickness and secondary pulse alpha (8%ÔÇô20%).
     // Important: if secondaryPulseAlpha is not provided, preserve previous behavior
     // (dynamic alpha based on brightness), i.e., don't force a constant.
     this.ringLineWidth = (this.geometry && this.geometry.ringLineWidth != null) ? this.geometry.ringLineWidth : 3.5;
@@ -63,7 +62,7 @@ export class Visuals {
   setActive(on) { this.active = on; }
 
   setPhase(i) {
-    // inicia transição suave de brilho entre fases (300–500ms)
+    // inicia transi├º├úo suave de brilho entre fases (300ÔÇô500ms)
     const now = performance.now();
     this._phaseBlend = { from: this.phaseIndex, to: i, start: now, dur: 400 };
     this.phaseIndex = i;
@@ -77,40 +76,15 @@ export class Visuals {
     if (!this.lastFrameTs || (now - this.lastFrameTs) >= minDelta) {
       this._drawFrame();
       this.lastFrameTs = now;
-      // FPS rolling window
-      this._fpsAcc.push(now);
-      while (this._fpsAcc.length > 120) this._fpsAcc.shift();
     }
     requestAnimationFrame((t) => this.animate(t));
-  }
-
-  fps() {
-    const arr = this._fpsAcc;
-    if (arr.length < 2) return 0;
-    const dt = (arr[arr.length - 1] - arr[0]) / (arr.length - 1);
-    return dt > 0 ? 1000 / dt : 0;
-  }
-
-  snapshot() {
-    return {
-      breathHz: this.breathHz,
-      rotationRadPerSec: this.rotSpeed,
-      brightnessMax: this.brightnessMax,
-      geometry: this.geometry,
-      ringLineWidth: this.ringLineWidth,
-      secondaryPulseAlpha: this.secondaryPulseAlpha,
-      petals: this.petals,
-      flowerOpacity: this.flowerOpacity,
-      palette: this.palette,
-      fps: Math.round(this.fps())
-    };
   }
 
   _drawFrame() {
     const ctx = this.ctx;
     const { width, height } = this.canvas;
 
-    // Limpa canvas mantendo transparência para o fundo em tela cheia
+    // Limpa canvas mantendo transpar├¬ncia para o fundo em tela cheia
     ctx.clearRect(0, 0, width, height);
 
     // Time base
@@ -136,7 +110,7 @@ export class Visuals {
       if (beat !== this.sparkLastBeat) {
         // Trigger spark on every 4th beat
         if ((beat % 4) === 0) {
-          // controla micropulsos por ciclo de respiração
+          // controla micropulsos por ciclo de respira├º├úo
           const ci = Math.floor(t * this.breathHz);
           if (ci !== this._cycleIndex) {
             this._cycleIndex = ci;
@@ -161,8 +135,8 @@ export class Visuals {
     ctx.translate(width / 2, height / 2);
     ctx.rotate(this.rotation);
 
-    // Para manter toda a Flor da Vida (12 círculos de raio r, centros a r),
-    // o diâmetro total é 4r. Garantimos 4r <= 0.94*minDim (margem segura maior aproveitamento).
+    // Para manter toda a Flor da Vida (12 c├¡rculos de raio r, centros a r),
+    // o di├ómetro total ├® 4r. Garantimos 4r <= 0.94*minDim (margem segura maior aproveitamento).
     const minDim = Math.min(width, height);
     const baseR = (minDim * 0.94) / 4; // cabe integralmente com margem
     const radius = baseR * pulseScale;
