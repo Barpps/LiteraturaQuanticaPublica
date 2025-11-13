@@ -203,9 +203,7 @@
     function hideModal(el) { el.classList.add('hidden'); }
 
     // PLAY
-    playBtn.addEventListener('click', async () => {
-      if (audio && audio._started && audio.isPaused && audio.isPaused()) {
-        await audio.resume(); visuals.setActive(true); return;
+    playBtn.addEventListener('click', async () => { if (audio && audio._started && audio.isPaused && audio.isPaused()) { try{ await audio.resume(); }catch(e){} visuals.setActive(true); return; } if ((new URLSearchParams(location.search)).get('debug')) { try{ await audio.start(); }catch(e){} visuals.setActive(true); if (window.timerInterval) clearInterval(window.timerInterval); window.timerInterval = setInterval(() => { try{ const t = audio.currentTime(); timerEl.textContent = ${formatTime(t)} / 90:00; phaseEl.textContent = audio.currentPhaseName(); visuals.setPhase(audio.currentPhaseIndex()); if (audio.activeBeatType) { const mode = audio.activeBeatType(); bwStatus.textContent = mode === 'binaural' ? 'Binaural ativo' : 'Isocrônico ativo'; } }catch(e){} }, 500); } else { showModal(modalIntent); intentOk.focus(); } }); visuals.setActive(true); return;
       }
       showModal(modalIntent); intentOk.focus();
     });
@@ -276,6 +274,7 @@
   </script>
 </body>
 </html>
+
 
 
 
