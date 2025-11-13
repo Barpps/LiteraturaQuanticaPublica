@@ -38,6 +38,11 @@ body.is-fullscreen #bg { opacity: 1; }
   background-size: 140% 140%;
   background-position: center center;
 }
+body.is-fullscreen #viz {
+  width: min(100vw, 100vh);
+  height: min(100vw, 100vh);
+  background-size: 180% 180%;
+}
 
 #controls {
   position: fixed;

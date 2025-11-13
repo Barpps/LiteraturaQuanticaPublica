@@ -43,11 +43,13 @@
     const resize = () => {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
-      const size = Math.min(vw, vh) * 0.96; // usa 96% do menor lado para margens
+      const margin = document.fullscreenElement ? 1.00 : 0.96; // em tela cheia usa 100%
+      const size = Math.min(vw, vh) * margin;
       this.canvas.width = size;
       this.canvas.height = size;
     };
     window.addEventListener('resize', resize);
+    document.addEventListener('fullscreenchange', resize);
     resize();
 
     // Frame throttling inteligente
