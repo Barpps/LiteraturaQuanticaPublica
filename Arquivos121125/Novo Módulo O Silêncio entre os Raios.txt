@@ -1,0 +1,86 @@
+🔹 Novo Módulo — O Silêncio entre os Raios
+1️⃣ Visão Geral
+
+Este módulo deve herdar toda a estrutura e usabilidade do módulo “Prosperidade Consciente + Serenidade”, mantendo o mesmo layout, comportamento de interface e parâmetros de tela cheia (auto-hide, zoom seguro 94%, centralização).
+
+A proposta vibracional deste novo módulo é restaurar a conexão sutil com o Divino através do estado neutro — integrar silêncio, estabilidade e amor-sabedoria.
+O foco é reorganizar o campo interno após dias de expansão intensa, ancorando discernimento e paz lúcida.
+
+2️⃣ Pop-ups
+🌅 Pop-up de Abertura (Portal de Intenção)
+
+“Ao entrar neste espaço, eu acolho o silêncio como voz divina.
+Cada som e cada luz me lembram que o neutro é sagrado.
+Eu permito que a sabedoria me reencontre na calma.”
+
+Ação: botão único “OK” → inicia sessão, ativa modo tela cheia.
+
+🌙 Pop-up de Selamento (Encerramento do Campo)
+
+“Eu selo o silêncio em luz consciente.
+Que a serenidade continue vibrando em mim e em tudo o que toco.”
+
+Ação: botões “OK” (encerra com fade-out) e “Cancelar” (retorna).
+
+3️⃣ Frequência sonora base — Faixa ambiente (sem fones)
+Elemento	Configuração	Finalidade
+Frequência fundamental	396 Hz	libera medo e tensão, base de estabilidade emocional
+Camada tônica	432 Hz (−3 dB)	equilíbrio, reconexão natural com o campo
+Drone de ancoragem	174 Hz	sensação de chão e presença
+Harmônico superior	639 Hz (leve)	afeto e reconciliação interior
+Batimento isocrônico	7.5 Hz fixo	induz foco relaxado e introspecção tranquila
+Ruído base	Marrom (−30 a −32 dB)	estabilidade energética e sensação de segurança
+Panorama estéreo	movimento lento 0.03 Hz L⇄R	respiração sonora do espaço
+Duração padrão	60–90 min (loop contínuo)	uso durante atividades ou repouso leve
+Dinâmica geral	média-baixa (−22 LUFS), picos −3 dBFS	confortável para longa escuta
+
+Comportamento:
+– O áudio deve permanecer estável mesmo com a aba em segundo plano.
+– Pré-carregar 2–3 s antes de iniciar a reprodução.
+– Nenhuma pausa abrupta; transições suaves entre loops.
+
+4️⃣ Paleta de luz e geometria sagrada — Modo imersivo
+Campo	Especificação	Significado
+Cor dominante	Azul-índigo profundo (#1A1F4E)	mente silenciosa, introspecção e fé tranquila
+Cor secundária pulsante	Dourado-branco (#E8C66A → #F9F4D2)	luz da consciência divina que emerge do silêncio
+Aura complementar	Lilás translúcido (5–8 %)	conexão espiritual e suavização emocional
+Forma central	Cubo de Metatron com esfera central dourada**	estrutura da mente divina e foco no centro do Ser
+Geometria de apoio	Flor da Vida (24 pétalas suaves, opacidade 40 %)	coerência e memória harmônica
+Pulso luminoso	3 ciclos/min	respiração visual estável
+Rotação	sentido horário lento (0.05 rad/s)	fluxo ordenado do tempo e consciência
+Brilho máximo	65 – 70 % da tela	luminosidade meditativa, não invasiva
+Fundo	gradiente radial #0B0522 → #12072F	campo infinito, silêncio cósmico acolhedor
+
+Recursos visuais de coerência
+
+Pico de brilho sincronizado a cada 4ª batida isocrônica (7.5 Hz).
+
+Bloom suave, sem flashes.
+
+Nenhum estrobo ou variação brusca.
+
+Continuidade de fundo total (sem bordas).
+
+5️⃣ Intenção Vibracional do Módulo
+
+“O silêncio é a respiração do Espírito.
+Hoje, eu descanso na sabedoria que nasce quando nada precisa ser forçado.”
+
+Quando o Dev receber, ele deve apenas:
+
+Duplicar o módulo “Prosperidade Consciente + Serenidade”.
+
+Renomear para “O Silêncio entre os Raios”.
+
+Aplicar as configurações acima (som, cor, geometria e textos dos pop-ups).
+
+
+🔧 Atualização da nota técnica ao Dev
+
+A interface visual e comportamental pode ser herdada integralmente do módulo “Prosperidade Consciente + Serenidade” (fullscreen, auto-hide, zoom seguro, etc.).
+
+Entretanto, este módulo inclui novos parâmetros vibracionais nas categorias Elemento (som) e Campo (paleta de luz e geometria sagrada).
+Esses parâmetros devem ser adicionados ao schema de configuração e mapeados no painel interno do app, mantendo a mesma estrutura de controle.
+
+Portanto, não é apenas substituição de conteúdo, mas incremento de parâmetros configuráveis, que ampliam a paleta sonora e visual disponível para futuras ativações.
+

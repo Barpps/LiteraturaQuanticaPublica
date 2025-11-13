@@ -1,0 +1,124 @@
+
+═══════════════════════════════════════════════════════════════════════
+                    INSTRUÇÕES DE USO COMPLETO
+═══════════════════════════════════════════════════════════════════════
+
+📋 PASSO A PASSO:
+
+1. GERAR O ÁUDIO (Execute uma vez):
+
+   Salve o código abaixo como: audio_generator.py
+   Execute no terminal: python audio_generator.py
+
+   Isso criará o arquivo: meditacao_quantica.wav (~450MB, 90 minutos)
+   ⏱️ Tempo de geração: 3-5 minutos (dependendo do processador)
+
+2. CONFIGURAR O HTML:
+
+   - O arquivo meditacao_quantica.html já foi criado
+   - Coloque-o na MESMA PASTA que o arquivo .wav gerado
+
+3. EXECUTAR LOCALMENTE:
+
+   Opção A - Navegador direto:
+   - Clique duplo no arquivo meditacao_quantica.html
+   - NOTA: Alguns navegadores bloqueiam áudio local por segurança
+
+   Opção B - Servidor local (RECOMENDADO):
+   - No terminal, na pasta dos arquivos, execute:
+     python -m http.server 8000
+   - Abra o navegador em: http://localhost:8000
+   - Clique em meditacao_quantica.html
+
+4. USAR A APLICAÇÃO:
+
+   - Clique no botão "▶ PLAY" para iniciar
+   - A geometria sagrada animará sincronizada com o áudio
+   - As 4 fases serão indicadas automaticamente
+   - Timer mostrará o progresso de 0 a 90 minutos
+
+═══════════════════════════════════════════════════════════════════════
+                    CARACTERÍSTICAS TÉCNICAS
+═══════════════════════════════════════════════════════════════════════
+
+🎵 ÁUDIO (4 Fases):
+
+Fase 1 (0-5 min) - Ativação:
+├─ 174 Hz (base fundamental)
+├─ 432 Hz (harmônico natural)
+├─ 528 Hz (frequência de cura)
+└─ Fade in: 2 minutos
+
+Fase 2 (5-60 min) - Harmonia:
+├─ Mantém: 174, 432, 528 Hz
+├─ Adiciona: 639 Hz (conexões)
+├─ Adiciona: 852 Hz (intuição)
+├─ Batimento isocrônico: 7.5 Hz (ondas theta)
+└─ Ruído marrom (base estável)
+
+Fase 3 (60-80 min) - Expansão:
+├─ Mantém: todas frequências anteriores
+├─ Adiciona: 963 Hz (coroa/conexão divina)
+├─ Aumento gradual de brilho (+2-3 dB)
+└─ Fade in suave em 963 Hz (60 segundos)
+
+Fase 4 (80-90 min) - Dissolução:
+├─ Apenas: 174 Hz (drone base)
+└─ Fade out: 3 minutos finais
+
+🌀 GEOMETRIA SAGRADA:
+
+Elementos Visuais:
+├─ Flor da Vida: 12 círculos interconectados
+├─ Cubo de Metatron: sobreposição em 30% opacidade
+├─ Cores: dourado-esmeralda (dominante) + rosa-dourado (pulsos)
+└─ Fundo: gradiente azul-violeta profundo
+
+Animações:
+├─ Respiração: 3-4 pulsos/minuto (coerência cardíaca 0.1 Hz)
+├─ Rotação: 0.075 rad/s sentido horário
+├─ Brilho: 70-80% do canvas
+└─ Glow central: pulsante com gradiente radial
+
+═══════════════════════════════════════════════════════════════════════
+                    REQUISITOS DO SISTEMA
+═══════════════════════════════════════════════════════════════════════
+
+Software necessário:
+✓ Python 3.7+ (com numpy)
+✓ Navegador moderno (Chrome, Firefox, Edge, Safari)
+✓ ~1GB espaço em disco (para arquivo WAV)
+
+Instalação do NumPy (se necessário):
+pip install numpy
+
+Navegadores testados:
+✓ Chrome 90+
+✓ Firefox 88+
+✓ Safari 14+
+✓ Edge 90+
+
+═══════════════════════════════════════════════════════════════════════
+                    SOLUÇÃO DE PROBLEMAS
+═══════════════════════════════════════════════════════════════════════
+
+❌ "Áudio não toca no navegador":
+   → Use servidor local (python -m http.server)
+   → Verifique se o arquivo .wav está na mesma pasta
+   → Verifique permissões de áudio no navegador
+
+❌ "Geração de áudio muito lenta":
+   → Normal! Arquivo grande (90 min = ~450MB)
+   → Aguarde 3-5 minutos
+   → Use SSD se possível
+
+❌ "Geometria não aparece":
+   → Verifique se navegador suporta Canvas API
+   → Atualize navegador para versão recente
+   → Tente em modo janela anônima
+
+❌ "Erro 'numpy não encontrado'":
+   → Execute: pip install numpy
+   → ou: pip3 install numpy
+
+═══════════════════════════════════════════════════════════════════════

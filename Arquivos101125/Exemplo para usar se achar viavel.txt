@@ -1,0 +1,148 @@
+"""
+Gerador de Áudio - Sistema de Meditação Quântica
+Gera arquivo WAV de 90 minutos com 4 fases distintas
+"""
+
+import numpy as np
+import wave
+
+class AudioGenerator:
+    def __init__(self, sample_rate=44100):
+        self.sample_rate = sample_rate
+        self.duration_total = 90 * 60
+        
+    def generate_sine_wave(self, frequency, duration, amplitude=0.3):
+        t = np.linspace(0, duration, int(self.sample_rate * duration), False)
+        wave = amplitude * np.sin(2 * np.pi * frequency * t)
+        return wave
+    
+    def generate_isochronic_beat(self, frequency, duration, amplitude=0.2):
+        t = np.linspace(0, duration, int(self.sample_rate * duration), False)
+        carrier = np.sin(2 * np.pi * 200 * t)
+        modulator = (1 + np.sin(2 * np.pi * frequency * t)) / 2
+        return amplitude * carrier * modulator
+    
+    def generate_brown_noise(self, duration, amplitude=0.15):
+        num_samples = int(self.sample_rate * duration)
+        white = np.random.randn(num_samples)
+        brown = np.cumsum(white)
+        brown = brown / np.max(np.abs(brown))
+        return amplitude * brown
+    
+    def apply_fade(self, audio, fade_in_duration=0, fade_out_duration=0):
+        fade_in_samples = int(self.sample_rate * fade_in_duration)
+        fade_out_samples = int(self.sample_rate * fade_out_duration)
+        
+        if fade_in_samples > 0:
+            fade_in_curve = np.linspace(0, 1, fade_in_samples)
+            audio[:fade_in_samples] *= fade_in_curve
+        
+        if fade_out_samples > 0:
+            fade_out_curve = np.linspace(1, 0, fade_out_samples)
+            audio[-fade_out_samples:] *= fade_out_curve
+        
+        return audio
+    
+    def mix_layers(self, *layers):
+        max_length = max(len(layer) for layer in layers)
+        mixed = np.zeros(max_length)
+        
+        for layer in layers:
+            if len(layer) < max_length:
+                layer = np.pad(layer, (0, max_length - len(layer)))
+            mixed += layer
+        
+        mixed = mixed / np.max(np.abs(mixed)) * 0.9
+        return mixed
+    
+    def generate_phase_1(self):
+        """Fase 1 - Ativação (0-5 min)"""
+        duration = 5 * 60
+        
+        base_174 = self.generate_sine_wave(174, duration, amplitude=0.25)
+        harm_432 = self.generate_sine_wave(432, duration, amplitude=0.15)
+        harm_528 = self.generate_sine_wave(528, duration, amplitude=0.15)
+        
+        base_174 = self.apply_fade(base_174, fade_in_duration=120)
+        harm_432 = self.apply_fade(harm_432, fade_in_duration=120)
+        harm_528 = self.apply_fade(harm_528, fade_in_duration=120)
+        
+        return self.mix_layers(base_174, harm_432, harm_528)
+    
+    def generate_phase_2(self):
+        """Fase 2 - Harmonia (5-60 min)"""
+        duration = 55 * 60
+        
+        base_174 = self.generate_sine_wave(174, duration, amplitude=0.25)
+        harm_432 = self.generate_sine_wave(432, duration, amplitude=0.15)
+        harm_528 = self.generate_sine_wave(528, duration, amplitude=0.15)
+        harm_639 = self.generate_sine_wave(639, duration, amplitude=0.12)
+        harm_852 = self.generate_sine_wave(852, duration, amplitude=0.12)
+        
+        isochronic = self.generate_isochronic_beat(7.5, duration, amplitude=0.18)
+        brown_noise = self.generate_brown_noise(duration, amplitude=0.12)
+        
+        return self.mix_layers(base_174, harm_432, harm_528, harm_639, 
+                              harm_852, isochronic, brown_noise)
+    
+    def generate_phase_3(self):
+        """Fase 3 - Expansão (60-80 min)"""
+        duration = 20 * 60
+        
+        base_174 = self.generate_sine_wave(174, duration, amplitude=0.25)
+        harm_432 = self.generate_sine_wave(432, duration, amplitude=0.15)
+        harm_528 = self.generate_sine_wave(528, duration, amplitude=0.15)
+        harm_639 = self.generate_sine_wave(639, duration, amplitude=0.12)
+        harm_852 = self.generate_sine_wave(852, duration, amplitude=0.12)
+        harm_963 = self.generate_sine_wave(963, duration, amplitude=0.14)
+        
+        isochronic = self.generate_isochronic_beat(7.5, duration, amplitude=0.18)
+        brown_noise = self.generate_brown_noise(duration, amplitude=0.12)
+        
+        harm_963 = self.apply_fade(harm_963, fade_in_duration=60)
+        
+        return self.mix_layers(base_174, harm_432, harm_528, harm_639, 
+                              harm_852, harm_963, isochronic, brown_noise)
+    
+    def generate_phase_4(self):
+        """Fase 4 - Dissolução (80-90 min)"""
+        duration = 10 * 60
+        
+        base_174 = self.generate_sine_wave(174, duration, amplitude=0.25)
+        base_174 = self.apply_fade(base_174, fade_out_duration=180)
+        
+        return base_174
+    
+    def generate_complete_audio(self, output_filename="meditacao_quantica.wav"):
+        print("Gerando Fase 1 - Ativação (0-5 min)...")
+        phase1 = self.generate_phase_1()
+        
+        print("Gerando Fase 2 - Harmonia (5-60 min)...")
+        phase2 = self.generate_phase_2()
+        
+        print("Gerando Fase 3 - Expansão (60-80 min)...")
+        phase3 = self.generate_phase_3()
+        
+        print("Gerando Fase 4 - Dissolução (80-90 min)...")
+        phase4 = self.generate_phase_4()
+        
+        complete_audio = np.concatenate([phase1, phase2, phase3, phase4])
+        
+        print(f"Salvando arquivo {output_filename}...")
+        self.save_wav(complete_audio, output_filename)
+        print("✅ Áudio gerado com sucesso!")
+        
+        return complete_audio
+    
+    def save_wav(self, audio, filename):
+        audio_int16 = np.int16(audio * 32767)
+        
+        with wave.open(filename, 'w') as wav_file:
+            wav_file.setnchannels(1)
+            wav_file.setsampwidth(2)
+            wav_file.setframerate(self.sample_rate)
+            wav_file.writeframes(audio_int16.tobytes())
+
+if __name__ == "__main__":
+    generator = AudioGenerator()
+    generator.generate_complete_audio()

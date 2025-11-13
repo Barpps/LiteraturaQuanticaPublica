@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Frequências Diárias — Sessão 90 min</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/styles.css" />
+</head>
+<body>
+  <div id="bg" aria-hidden="true"></div>
+  <div id="container">
+    <canvas id="viz" aria-label="Visual de Geometria Sagrada" role="img"></canvas>
+    <div id="controls" role="group" aria-label="Controles">
+      <label for="moduleSel" class="sr-only">Módulo</label>
+      <select id="moduleSel" title="Selecionar módulo" aria-label="Selecionar módulo">
+        <option value="/static/config/modules/frequencias_diarias.json" selected>Prosperidade Consciente + Serenidade</option>
+        <option value="/static/config/modules/silencio_entre_os_raios.json">O Silêncio entre os Raios</option>
+      </select>
+      <label for="modeSel" class="sr-only">Modo de Batimento</label>
+      <select id="modeSel" title="Modo de Batimento" aria-label="Modo de Batimento">
+        <option value="auto" selected>Auto</option>
+        <option value="binaural">Fones (Binaural)</option>
+        <option value="iso">Ambiente (Isocrônico)</option>
+      </select>
+      <button class="btn-ringlight" id="play" aria-label="Play">PLAY</button>
+      <button class="btn-ringlight" id="stop" aria-label="Stop">STOP</button>
+      <button class="btn-ringlight" id="prevPhase" aria-label="Retroceder Fase">Retroceder Fase</button>
+      <button class="btn-ringlight" id="nextPhase" aria-label="Avançar Fase">Avançar Fase</button>
+      <button class="btn-ringlight" id="exitBtn" aria-label="Sair">Sair</button>
+      <span id="timer" aria-live="polite">00:00 / 90:00</span>
+      <span id="bwStatus" aria-live="polite" style="color:#FFE773;">Isocrônico ativo</span>
+      <span id="phase" aria-live="polite">Pronto</span>
+    </div>
+    <button class="btn-ringlight" id="fsBtn" aria-label="Tela Cheia" title="Tela Cheia">Tela Cheia</button>
+  </div>
+
+  <!-- Modal: Intencao -->
+  <div id="modal-intent" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="intent-title">
+    <div class="modal-content">
+      <h2 id="intent-title">Intenção Vibracional Declarada</h2>
+      <p id="intent-text" class="modal-text">“Este espaço visual-sonoro é um campo de coerência.<br>
+      A luz pulsa no ritmo do coração.<br>
+      O som guia o tempo.<br>
+      Eu Sou o centro sereno de abundância consciente.”</p>
+      <div class="modal-actions">
+        <button class="btn-ringlight" id="intent-ok" autofocus>OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Selamento -->
+  <div id="modal-seal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="seal-title">
+    <div class="modal-content">
+      <h2 id="seal-title">Selamento do Campo</h2>
+      <p id="seal-text" class="modal-text">“Antes de encerrar, eu selo o trabalho de hoje com gratidão e ordem divina.<br>
+      Levo comigo a calma, a clareza e a prosperidade consciente.”</p>
+      <div class="modal-actions">
+        <button class="btn-ringlight" id="seal-ok" autofocus>OK</button>
+        <button class="btn-ringlight" id="seal-cancel">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { SessionAudio } from '/static/js/audioEngine.js';
+    import { Visuals } from '/static/js/visuals.js';
+
+    const playBtn = document.getElementById('play');
+    const stopBtn = document.getElementById('stop');
+    const timerEl = document.getElementById('timer');
+    const phaseEl = document.getElementById('phase');
+    const prevPhaseBtn = document.getElementById('prevPhase');
+    const nextPhaseBtn = document.getElementById('nextPhase');
+    const exitBtn = document.getElementById('exitBtn');
+    const modalIntent = document.getElementById('modal-intent');
+    const modalSeal = document.getElementById('modal-seal');
+    const intentOk = document.getElementById('intent-ok');
+    const sealOk = document.getElementById('seal-ok');
+    const sealCancel = document.getElementById('seal-cancel');
+    const intentTitle = document.getElementById('intent-title');
+    const intentText = document.getElementById('intent-text');
+    const sealTitle = document.getElementById('seal-title');
+    const sealText = document.getElementById('seal-text');
+    const canvas = document.getElementById('viz');
+    const bwStatus = document.getElementById('bwStatus');
+    
+    let configUrl = '/static/config/modules/frequencias_diarias.json';
+    let audio = new SessionAudio(configUrl);
+    const visuals = new Visuals(canvas);
+
+    let timerInterval = null;
+
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    }
+
+    async function init() {
+      const cfg = await audio.init();
+      // Atualiza textos de popups por módulo (se disponível)
+      if (cfg.popups && cfg.popups.intent) {
+        intentTitle.textContent = cfg.popups.intent.title || intentTitle.textContent;
+        intentText.innerHTML = cfg.popups.intent.message || intentText.innerHTML;
+      }
+      if (cfg.popups && cfg.popups.seal) {
+        sealTitle.textContent = cfg.popups.seal.title || sealTitle.textContent;
+        sealText.innerHTML = cfg.popups.seal.message || sealText.innerHTML;
+      }
+      visuals.init({
+        breathingBpm: cfg.breathingBpm,
+        rotationRadPerSec: cfg.rotationRadPerSec,
+        brightnessMax: cfg.brightnessMax,
+        petals: cfg.visual?.flowerPetals,
+        flowerOpacity: cfg.visual?.flowerOpacity,
+        palette: cfg.visual?.palette,
+        centralSphere: cfg.visual?.centralSphere
+      });
+      visuals.setAudioTimeProvider(() => audio.currentTime());
+      visuals.animate();
+    }
+
+    let intentionShown = false;
+
+    async function enterFullscreenIfPossible() {
+      const docEl = document.documentElement;
+      if (docEl.requestFullscreen) {
+        try { await docEl.requestFullscreen(); } catch {}
+      }
+    }
+
+    function showModal(el) { el.classList.remove('hidden'); }
+    function hideModal(el) { el.classList.add('hidden'); }
+
+    playBtn.addEventListener('click', async () => {
+      if (audio && audio._started && audio.isPaused && audio.isPaused()) {
+        await audio.resume();
+        visuals.setActive(true);
+        return;
+      }
+      if (!intentionShown) {
+        showModal(modalIntent);
+        intentOk.focus();
+        return;
+      }
+      await audio.start();
+      visuals.setActive(true);
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        const t = audio.currentTime();
+        timerEl.textContent = `${formatTime(t)} / 90:00`;
+        phaseEl.textContent = audio.currentPhaseName();
+        visuals.setPhase(audio.currentPhaseIndex());
+        if (audio.activeBeatType) {
+          const mode = audio.activeBeatType();
+          bwStatus.textContent = mode === 'binaural' ? 'Binaural ativo' : 'Isocrônico ativo';
+        }
+      }, 500);
+    });
+
+    intentOk.addEventListener('click', async () => {
+      hideModal(modalIntent);
+      intentionShown = true;
+      await enterFullscreenIfPossible();
+      try {
+        if (screen.orientation && screen.orientation.lock && window.innerHeight > window.innerWidth) {
+          await screen.orientation.lock('landscape');
+        }
+      } catch {}
+      playBtn.click();
+    });
+
+    // Enter key closes Intencao modal
+    modalIntent.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { intentOk.click(); }
+    });
+
+    stopBtn.addEventListener('click', async () => {
+      if (audio && audio.pause) await audio.pause();
+      visuals.setActive(false);
+    });
+
+    // Fase navigation
+    prevPhaseBtn.addEventListener('click', () => {
+      const idx = Math.max(0, audio.currentPhaseIndex() - 1);
+      audio.setPhaseIndex(idx, 1.0);
+      visuals.setPhase(idx);
+      phaseEl.textContent = audio.currentPhaseName();
+    });
+
+    nextPhaseBtn.addEventListener('click', () => {
+      const idx = Math.min(3, audio.currentPhaseIndex() + 1);
+      audio.setPhaseIndex(idx, 1.0);
+      visuals.setPhase(idx);
+      phaseEl.textContent = audio.currentPhaseName();
+    });
+
+    // Exit button -> Seal modal
+    exitBtn.addEventListener('click', () => {
+      showModal(modalSeal);
+      sealOk.focus();
+    });
+
+    sealOk.addEventListener('click', async () => {
+      await audio.fadeOutAndStop(1.5);
+      visuals.setActive(false);
+      if (document.fullscreenElement) {
+        try { await document.exitFullscreen(); } catch {}
+      }
+      hideModal(modalSeal);
+      if (timerInterval) clearInterval(timerInterval);
+      timerEl.textContent = '00:00 / 90:00';
+      phaseEl.textContent = 'Pronto';
+    });
+
+    sealCancel.addEventListener('click', () => {
+      hideModal(modalSeal);
+    });
+
+    modalSeal.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') { sealCancel.click(); }
+      if (e.key === 'Enter') { sealOk.click(); }
+    });
+
+    // Fullscreen state handlers
+    const controls = document.getElementById('controls');
+    let hideTimer = null;
+    function scheduleHideControls() {
+      if (!document.fullscreenElement) return;
+      controls.classList.remove('hidden');
+      if (hideTimer) clearTimeout(hideTimer);
+      hideTimer = setTimeout(() => controls.classList.add('hidden'), 3000);
+    }
+
+    function onFsChange() {
+      const fs = !!document.fullscreenElement;
+      document.body.classList.toggle('is-fullscreen', fs);
+      if (fs) {
+        controls.classList.remove('hidden');
+        scheduleHideControls();
+      } else {
+        controls.classList.remove('hidden');
+      }
+    }
+    document.addEventListener('fullscreenchange', onFsChange);
+
+    document.addEventListener('mousemove', () => scheduleHideControls());
+    document.addEventListener('touchstart', () => scheduleHideControls());
+
+    // Fallback de binaural -> isocrônico quando a aba perde foco
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden' && audio && audio.fallbackToIso) {
+        audio.fallbackToIso();
+      }
+    });
+
+    // Re-entry fullscreen button
+    const fsBtn = document.getElementById('fsBtn');
+    fsBtn.addEventListener('click', () => enterFullscreenIfPossible());
+
+    // Troca de módulo
+    const moduleSel = document.getElementById('moduleSel');
+    moduleSel.addEventListener('change', async () => {
+      const wasPlaying = audio && audio._started;
+      if (audio) await audio.fadeOutAndStop(0.8);
+      configUrl = moduleSel.value;
+      audio = new SessionAudio(configUrl);
+      const cfg = await audio.init();
+      if (cfg.popups && cfg.popups.intent) {
+        intentTitle.textContent = cfg.popups.intent.title || intentTitle.textContent;
+        intentText.innerHTML = cfg.popups.intent.message || intentText.innerHTML;
+      }
+      if (cfg.popups && cfg.popups.seal) {
+        sealTitle.textContent = cfg.popups.seal.title || sealTitle.textContent;
+        sealText.innerHTML = cfg.popups.seal.message || sealText.innerHTML;
+      }
+      // Atualiza parâmetros de visuals mantendo animação
+      visuals.init({
+        breathingBpm: cfg.breathingBpm,
+        rotationRadPerSec: cfg.rotationRadPerSec,
+        brightnessMax: cfg.brightnessMax,
+        petals: cfg.visual?.flowerPetals,
+        flowerOpacity: cfg.visual?.flowerOpacity,
+        palette: cfg.visual?.palette,
+        centralSphere: cfg.visual?.centralSphere
+      });
+      visuals.setAudioTimeProvider(() => audio.currentTime());
+      if (wasPlaying) playBtn.click();
+    });
+
+    // Troca de modo (Auto / Binaural / Isocrônico)
+    const modeSel = document.getElementById('modeSel');
+    modeSel.addEventListener('change', async () => {
+      if (audio && audio.setBeatMode) {
+        audio.setBeatMode(modeSel.value);
+      }
+    });
+
+    init();
+  </script>
+</body>
+</html>

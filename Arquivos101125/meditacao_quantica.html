@@ -1,0 +1,290 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meditação Quântica - Geometria Sagrada</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a0033 0%, #0d001a 50%, #000033 100%);
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+        }
+
+        #container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #canvas {
+            display: block;
+            max-width: 90%;
+            max-height: 80vh;
+        }
+
+        #controls {
+            position: fixed;
+            bottom: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px 30px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+        }
+
+        button {
+            background: linear-gradient(135deg, #ffd700 0%, #32cd32 100%);
+            color: #000;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6);
+        }
+
+        #phase-info {
+            color: #ffd700;
+            font-size: 14px;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        }
+
+        #timer {
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <canvas id="canvas"></canvas>
+        <div id="controls">
+            <button id="playBtn">▶ PLAY</button>
+            <button id="pauseBtn" style="display:none;">⏸ PAUSE</button>
+            <span id="timer">00:00 / 90:00</span>
+            <span id="phase-info">Aguardando início...</span>
+        </div>
+    </div>
+
+    <audio id="audio" preload="auto">
+        <source src="meditacao_quantica.wav" type="audio/wav">
+        Seu navegador não suporta o elemento de áudio.
+    </audio>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const audio = document.getElementById('audio');
+        const playBtn = document.getElementById('playBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const timerDisplay = document.getElementById('timer');
+        const phaseInfo = document.getElementById('phase-info');
+
+        // Configurações de dimensões
+        canvas.width = 800;
+        canvas.height = 800;
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+
+        // Estado da aplicação
+        let isPlaying = false;
+        let animationFrame = null;
+        let startTime = 0;
+        let elapsedTime = 0;
+        let currentPhase = 0;
+
+        // Definição das fases (em segundos)
+        const phases = [
+            { name: 'Fase 1: Ativação', start: 0, end: 300 },
+            { name: 'Fase 2: Harmonia', start: 300, end: 3600 },
+            { name: 'Fase 3: Expansão', start: 3600, end: 4800 },
+            { name: 'Fase 4: Dissolução', start: 4800, end: 5400 }
+        ];
+
+        // Parâmetros de animação
+        let rotation = 0;
+        let breathPhase = 0;
+        const breathFrequency = 3.5; // 3-4 pulsos por minuto = ~0.06 Hz
+        const rotationSpeed = 0.075; // 0.05-0.1 rad/s
+
+        // Flor da Vida - 12 círculos principais
+        function drawFlowerOfLife(brightness, pulseScale) {
+            const radius = 120;
+            const positions = [
+                { x: 0, y: 0 }, // Centro
+                { x: radius, y: 0 },
+                { x: radius * Math.cos(Math.PI/3), y: radius * Math.sin(Math.PI/3) },
+                { x: radius * Math.cos(2*Math.PI/3), y: radius * Math.sin(2*Math.PI/3) },
+                { x: -radius, y: 0 },
+                { x: radius * Math.cos(4*Math.PI/3), y: radius * Math.sin(4*Math.PI/3) },
+                { x: radius * Math.cos(5*Math.PI/3), y: radius * Math.sin(5*Math.PI/3) },
+                { x: 2*radius, y: 0 },
+                { x: -2*radius, y: 0 },
+                { x: radius/2, y: radius * Math.sqrt(3)/2 },
+                { x: -radius/2, y: radius * Math.sqrt(3)/2 },
+                { x: 0, y: radius * Math.sqrt(3) }
+            ];
+
+            ctx.save();
+            ctx.translate(centerX, centerY);
+            ctx.rotate(rotation);
+
+            // Gradiente dourado-esmeralda
+            const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, radius * 2);
+            gradient.addColorStop(0, `rgba(255, 215, 0, ${brightness * pulseScale})`);
+            gradient.addColorStop(0.5, `rgba(50, 205, 50, ${brightness * pulseScale * 0.8})`);
+            gradient.addColorStop(1, `rgba(255, 192, 203, ${brightness * pulseScale * 0.5})`);
+
+            ctx.strokeStyle = gradient;
+            ctx.lineWidth = 3 * pulseScale;
+
+            positions.forEach(pos => {
+                ctx.beginPath();
+                ctx.arc(pos.x, pos.y, radius, 0, 2 * Math.PI);
+                ctx.stroke();
+            });
+
+            ctx.restore();
+        }
+
+        // Cubo de Metatron
+        function drawMetatronsCube(brightness) {
+            ctx.save();
+            ctx.translate(centerX, centerY);
+            ctx.rotate(rotation * 0.5);
+
+            const size = 200;
+            const vertices = [
+                [-size, -size], [size, -size], [size, size], [-size, size],
+                [-size/2, -size/2], [size/2, -size/2], [size/2, size/2], [-size/2, size/2],
+                [0, -size * 0.7], [size * 0.7, 0], [0, size * 0.7], [-size * 0.7, 0]
+            ];
+
+            ctx.strokeStyle = `rgba(138, 43, 226, ${brightness * 0.3})`;
+            ctx.lineWidth = 2;
+
+            // Conecta todos os vértices
+            for (let i = 0; i < vertices.length; i++) {
+                for (let j = i + 1; j < vertices.length; j++) {
+                    ctx.beginPath();
+                    ctx.moveTo(vertices[i][0], vertices[i][1]);
+                    ctx.lineTo(vertices[j][0], vertices[j][1]);
+                    ctx.stroke();
+                }
+            }
+
+            ctx.restore();
+        }
+
+        // Função principal de desenho
+        function draw() {
+            // Limpa canvas
+            ctx.fillStyle = 'rgba(13, 0, 26, 0.3)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Calcula respiração luminosa (3-4 pulsos/min)
+            const time = Date.now() / 1000;
+            const breathCycle = Math.sin(time * 2 * Math.PI * breathFrequency / 60);
+            const pulseScale = 0.85 + 0.15 * breathCycle; // Varia entre 0.85 e 1.0
+
+            // Brilho máximo 70-80%
+            const maxBrightness = 0.75;
+
+            // Rotação progressiva
+            rotation += rotationSpeed * 0.016; // ~60fps
+
+            // Desenha geometrias
+            drawMetatronsCube(maxBrightness);
+            drawFlowerOfLife(maxBrightness, pulseScale);
+
+            // Glow effect central
+            const glow = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 300);
+            glow.addColorStop(0, `rgba(255, 215, 0, ${0.2 * pulseScale})`);
+            glow.addColorStop(0.5, `rgba(255, 192, 203, ${0.1 * pulseScale})`);
+            glow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+            ctx.fillStyle = glow;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // Loop de animação
+        function animate() {
+            draw();
+            animationFrame = requestAnimationFrame(animate);
+        }
+
+        // Atualiza timer e fase
+        function updateTimer() {
+            if (!isPlaying) return;
+
+            const currentTime = Math.floor(audio.currentTime);
+            const minutes = Math.floor(currentTime / 60);
+            const seconds = currentTime % 60;
+            timerDisplay.textContent = 
+                `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} / 90:00`;
+
+            // Determina fase atual
+            for (let i = 0; i < phases.length; i++) {
+                if (currentTime >= phases[i].start && currentTime < phases[i].end) {
+                    if (currentPhase !== i) {
+                        currentPhase = i;
+                        phaseInfo.textContent = phases[i].name;
+                    }
+                    break;
+                }
+            }
+        }
+
+        // Event listeners
+        playBtn.addEventListener('click', () => {
+            isPlaying = true;
+            audio.play();
+            playBtn.style.display = 'none';
+            pauseBtn.style.display = 'inline-block';
+            animate();
+            setInterval(updateTimer, 500);
+        });
+
+        pauseBtn.addEventListener('click', () => {
+            isPlaying = false;
+            audio.pause();
+            pauseBtn.style.display = 'none';
+            playBtn.style.display = 'inline-block';
+            cancelAnimationFrame(animationFrame);
+        });
+
+        audio.addEventListener('ended', () => {
+            isPlaying = false;
+            pauseBtn.style.display = 'none';
+            playBtn.style.display = 'inline-block';
+            phaseInfo.textContent = 'Sessão concluída';
+        });
+
+        // Inicia animação estática
+        animate();
+    </script>
+</body>
+</html>
