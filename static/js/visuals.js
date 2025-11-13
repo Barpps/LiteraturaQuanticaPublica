@@ -15,7 +15,7 @@ export class Visuals {
     this._phaseBlend = { from: 0, to: 0, start: 0, dur: 0 };
   }
 
-  init({ breathingBpm = 3.6, rotationRadPerSec = 0.08, brightnessMax = 0.78, petals = 12, flowerOpacity = 1.0, palette = null, centralSphere = false } = {}) {
+  init({ breathingBpm = 3.6, rotationRadPerSec = 0.08, brightnessMax = 0.78, petals = 12, flowerOpacity = 1.0, palette = null, centralSphere = false, geometry = null, maxMicropulsesPerCycle = null } = {}) {
     this.breathHz = breathingBpm / 60;
     this.rotSpeed = rotationRadPerSec;
     this.brightnessMax = brightnessMax;
@@ -28,6 +28,10 @@ export class Visuals {
       violet: 'rgba(138,43,226,0.3)'
     };
     this.centralSphere = centralSphere;
+    this.geometry = geometry || { type: 'flower', metatronOpacity: 0.3 };
+    this.maxMicropulsesPerCycle = maxMicropulsesPerCycle || null;
+    this._cycleIndex = 0;
+    this._micropulsesSoFar = 0;
 
     const resize = () => {
       const vw = window.innerWidth;
@@ -99,7 +103,16 @@ export class Visuals {
       if (beat !== this.sparkLastBeat) {
         // Trigger spark on every 4th beat
         if ((beat % 4) === 0) {
-          this.sparkEnergy = 1.0; // will decay
+          // controla micropulsos por ciclo de respiração
+          const ci = Math.floor(t * this.breathHz);
+          if (ci !== this._cycleIndex) {
+            this._cycleIndex = ci;
+            this._micropulsesSoFar = 0;
+          }
+          if (this.maxMicropulsesPerCycle == null || this._micropulsesSoFar < this.maxMicropulsesPerCycle) {
+            this.sparkEnergy = 1.0; // will decay
+            this._micropulsesSoFar++;
+          }
         }
         this.sparkLastBeat = beat;
       }
@@ -127,11 +140,19 @@ export class Visuals {
     const roseGold = this._rgba(this.palette.rose || 'rgba(255, 182, 193, 0.6)', Math.max(0.05, brightness * 0.6));
     const violet = this._rgba(this.palette.violet || 'rgba(138, 43, 226, 0.3)', brightness * 0.3);
 
-    // Flower of Life (12 circles around 1 center)
-    this._flowerOfLife(ctx, radius, gold, dom);
+    if (this.geometry && this.geometry.type === 'ring') {
+      // Ring central
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = gold;
+      this._circle(ctx, 0, 0, radius);
+    } else {
+      // Flower of Life (12 circles around 1 center)
+      this._flowerOfLife(ctx, radius, gold, dom);
+    }
 
     // Metatron’s Cube overlay at 30% transparency
-    this._metatronsCube(ctx, radius * 0.9, violet);
+    const metaAlpha = (this.geometry && this.geometry.metatronOpacity != null) ? this.geometry.metatronOpacity : 0.3;
+    this._metatronsCube(ctx, radius * 0.9, this._withAlpha(violet, metaAlpha));
 
     // Central golden sphere if enabled
     if (this.centralSphere) {
@@ -147,9 +168,9 @@ export class Visuals {
 
     // Soft glow
     const glow = ctx.createRadialGradient(0, 0, 0, 0, 0, radius * 1.2);
-    glow.addColorStop(0, `rgba(255, 215, 0, ${0.15 * breath})`);
-    // Aura rosada constante 5–8%
-    glow.addColorStop(0.5, `rgba(255, 182, 193, 0.07)`);
+    const aura = this.palette.aura || 'rgba(255, 182, 193, 0.07)';
+    glow.addColorStop(0, this._rgba(this.palette.gold || '#ffd700', 0.15 * breath));
+    glow.addColorStop(0.5, aura);
     glow.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = glow;
     ctx.beginPath();
