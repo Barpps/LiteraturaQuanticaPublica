@@ -1,0 +1,9 @@
+{
+  "name": "RingLight",
+  "short_name": "RingLight",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#0B0522",
+  "theme_color": "#12072F",
+  "icons": []
+}
