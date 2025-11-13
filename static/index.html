@@ -121,8 +121,7 @@
     const visuals = new Visuals(canvas);
 
     let timerInterval = null;
-    const params = new URLSearchParams(location.search);
-    const isDebug = params.get('debug') === '1' || params.get('debug') === 'true';
+    const params = new URLSearchParams(location.search); const isDebug = params.get('debug') === '1' || params.get('debug') === 'true'; const isAutorun = params.get('autorun') === '1' || params.get('autorun') === 'true'; const isAutoexport = params.get('autoexport') === '1' || params.get('autoexport') === 'true';
 
     function formatTime(sec) {
       const m = Math.floor(sec / 60);
@@ -162,6 +161,23 @@
       visuals.setAudioTimeProvider(() => audio.currentTime());
       visuals.animate();
       if (isDebug) debugPanel.style.display = 'block';
+      if (isDebug && isAutorun) {
+        const tryRun = async () => {
+          try {
+            await runFullE2E();
+            if (isAutoexport) {
+              const data = window._ringlightE2E || { note: 'E2E não gerado' };
+              const blob = new Blob([ JSON.stringify(data, null, 2) ], { type: 'application/json' });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a'); a.href = url; a.download = 'ringlight_e2e_report.json'; a.click();
+              setTimeout(()=>URL.revokeObjectURL(url), 1000);
+            }
+          } catch (e) {
+            dbgTest.textContent = 'Autorun E2E falhou (provável política de autoplay). Clique em Full E2E.';
+          }
+        };
+        setTimeout(tryRun, 1000);
+      }
     }
 
     let intentionShown = false;
@@ -452,3 +468,5 @@
   </script>
 </body>
 </html>
+
+
