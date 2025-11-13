@@ -34,8 +34,8 @@
       <strong>Debug</strong>
       <button class="btn-ringlight" id="exportDebug">Exportar JSON</button>
       <button class="btn-ringlight" id="runSelfTest">Self‑Test</button>
-      <button class="btn-ringlight" id="runE2E">Full E2E</button>
-      <button class="btn-ringlight" id="exportE2E">Exportar E2E</button>
+      <button class="btn-ringlight" id="runE2E" onclick="window.runFullE2E && window.runFullE2E()">Full E2E</button>
+      <button class="btn-ringlight" id="exportE2E" onclick="window.exportE2E && window.exportE2E()">Exportar E2E</button>
     </div>
     <div class="row"><span id="dbgModule"></span> · <span id="dbgMode"></span> · <span id="dbgBeat"></span></div>
     <pre id="dbgAudio"></pre>
@@ -269,6 +269,8 @@
 
     runE2EBtn?.addEventListener('click', ()=>{ runFullE2E().catch(e=>{ dbgTest.textContent='E2E erro: '+e; }); });
     exportE2EBtn?.addEventListener('click', ()=>{ const data=window._ringlightE2E||{note:'E2E ainda não executado'}; const blob=new Blob([ JSON.stringify(data,null,2) ], {type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='ringlight_e2e_report.json'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1000); });
+    window.runFullE2E = ()=>{ dbgTest.textContent='Iniciando E2E...'; runFullE2E().catch(e=>{ dbgTest.textContent='E2E erro: '+e; }); };
+    window.exportE2E = ()=>{ const data=window._ringlightE2E||{note:'E2E ainda não executado'}; const blob=new Blob([ JSON.stringify(data,null,2) ], {type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='ringlight_e2e_report.json'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1000); };
 
     init();
   </script>
