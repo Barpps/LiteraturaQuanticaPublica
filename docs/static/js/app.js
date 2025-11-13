@@ -211,6 +211,20 @@ document.addEventListener('visibilitychange', function(){
 const fsBtn = document.getElementById('fsBtn');
 fsBtn.addEventListener('click', function(){ enterFullscreenIfPossible(); });
 
+// Keep fullscreen button above the control bar on mobile
+function updateFsPosition(){
+  try {
+    var controls = document.getElementById('controls');
+    var btn = document.getElementById('fsBtn');
+    if (!controls || !btn) return;
+    var h = controls.getBoundingClientRect().height || 56;
+    btn.style.bottom = (h + 14) + 'px';
+  } catch(e) {}
+}
+window.addEventListener('resize', updateFsPosition);
+window.addEventListener('orientationchange', updateFsPosition);
+setTimeout(updateFsPosition, 100);
+
 // Module selector
 const moduleSel = document.getElementById('moduleSel');
 moduleSel.addEventListener('change', async function(){
