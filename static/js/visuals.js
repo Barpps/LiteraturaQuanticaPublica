@@ -138,7 +138,7 @@
     // Para manter toda a Flor da Vida (12 c├¡rculos de raio r, centros a r),
     // o di├ómetro total ├® 4r. Garantimos 4r <= 0.94*minDim (margem segura maior aproveitamento).
     const minDim = Math.min(width, height);
-    const baseR = (minDim * 0.94) / 4; // cabe integralmente com margem
+    const baseR = (minDim * 0.94) / 4; // cabe integralmente com margem para Flower (4r)
     const radius = baseR * pulseScale;
 
     // Colors: golden-emerald dominant, rose-gold accent
@@ -152,7 +152,9 @@
       // Ring central
       ctx.lineWidth = this.ringLineWidth;
       ctx.strokeStyle = gold;
-      this._circle(ctx, 0, 0, radius);
+      // Para igualar o "envelope" da Flor da Vida (diâmetro total ~4r),
+      // dobramos o raio do anel (2*radius)
+      this._circle(ctx, 0, 0, radius * 2.0);
     } else {
       // Flower of Life (12 circles around 1 center)
       this._flowerOfLife(ctx, radius, gold, dom);
@@ -166,15 +168,15 @@
     if (support === 'flower') {
       const prevOpacity = this.flowerOpacity;
       this.flowerOpacity = supportOpacity;
-      this._flowerOfLife(ctx, radius * 0.95, this._withAlpha(gold, supportOpacity), this._withAlpha(dom, supportOpacity));
+      this._flowerOfLife(ctx, (this.geometry && this.geometry.type==='ring') ? (radius * 2.0 * 0.95) : (radius * 0.95), this._withAlpha(gold, supportOpacity), this._withAlpha(dom, supportOpacity));
       this.flowerOpacity = prevOpacity;
     } else {
-      this._metatronsCube(ctx, radius * 0.9, this._withAlpha(violet, supportOpacity));
+      this._metatronsCube(ctx, (this.geometry && this.geometry.type==='ring') ? (radius * 2.0 * 0.9) : (radius * 0.9), this._withAlpha(violet, supportOpacity));
     }
 
     // Central golden sphere if enabled
     if (this.centralSphere) {
-      const r = radius * 0.22;
+      const r = ((this.geometry && this.geometry.type==='ring') ? (radius*2.0) : radius) * 0.22;
       const g = ctx.createRadialGradient(0, 0, 0, 0, 0, r);
       g.addColorStop(0, this._rgba(this.palette.gold || '#ffd700', 0.9));
       g.addColorStop(1, 'rgba(255, 215, 0, 0)');
@@ -185,14 +187,15 @@
     }
 
     // Soft glow
-    const glow = ctx.createRadialGradient(0, 0, 0, 0, 0, radius * 1.2);
+    const envR = (this.geometry && this.geometry.type==='ring') ? (radius*2.0) : radius;
+    const glow = ctx.createRadialGradient(0, 0, 0, 0, 0, envR * 1.2);
     const aura = this.palette.aura || 'rgba(255, 182, 193, 0.07)';
     glow.addColorStop(0, this._rgba(this.palette.gold || '#ffd700', 0.15 * breath));
     glow.addColorStop(0.5, aura);
     glow.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = glow;
     ctx.beginPath();
-    ctx.arc(0, 0, radius * 1.2, 0, Math.PI * 2);
+    ctx.arc(0, 0, envR * 1.2, 0, Math.PI * 2);
     ctx.fill();
 
     ctx.restore();

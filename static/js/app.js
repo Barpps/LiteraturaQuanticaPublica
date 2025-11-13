@@ -19,9 +19,10 @@ const sealTitle = document.getElementById('seal-title');
 const sealText = document.getElementById('seal-text');
 const canvas = document.getElementById('viz');
 const bwStatus = document.getElementById('bwStatus');
+const moduleSel = document.getElementById('moduleSel');
 
-// Use relative path so it works both locally and on GitHub Pages subpaths
-let configUrl = 'static/config/modules/frequencias_diarias.json';
+// Inicializa a partir do valor do seletor (permite mudar a ordem/seleção no HTML)
+let configUrl = moduleSel && moduleSel.value ? moduleSel.value : 'static/config/modules/paz_por_do_sol.json';
 let audio = new SessionAudio(configUrl);
 const visuals = new Visuals(canvas);
 // Expose for quick console checks
@@ -226,7 +227,6 @@ window.addEventListener('orientationchange', updateFsPosition);
 setTimeout(updateFsPosition, 100);
 
 // Module selector
-const moduleSel = document.getElementById('moduleSel');
 moduleSel.addEventListener('change', async function(){
   const wasPlaying = audio && audio._started;
   if (audio) await audio.fadeOutAndStop(0.8);
