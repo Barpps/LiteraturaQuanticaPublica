@@ -1,4 +1,4 @@
-// SessionAudio: WebAudio engine matching the 4-phase spec
+﻿// SessionAudio: WebAudio engine matching the 4-phase spec
 // - Phase 1 (0-5m): 174 + fade-in 432/528, master fade-in 2m
 // - Phase 2 (5-60m): add isochronic 7.5 Hz, brown noise, + harmonics 639/852
 // - Phase 3 (60-80m): add 963; +2–3 dB highs and reverb
@@ -372,7 +372,7 @@ export class SessionAudio {
     // Pan LFO (optional)
     if (cfg.pan && (cfg.pan.lfoHz || cfg.pan.depth)) {
       const lfoPan = this._tone(cfg.pan.lfoHz || 0.03);
-      const panScale = this._gain(cfg.pan.depth ?? 0.8);
+      const panScale = this._gain((cfg.pan.depth != null ? cfg.pan.depth : 0.8));
       lfoPan.connect(panScale).connect(panner.pan);
       lfoPan.start(now);
       this.nodes.lfoPan = lfoPan;
@@ -390,7 +390,7 @@ export class SessionAudio {
       toneFund, gFund,
       isoCarrier, isoGain, lfo, lfoScale, lfoOffset,
       binL, gBinL, binR, gBinR,
-      noiseGain,\n      maskPeak,\n      noiseType
+      noiseGain,`r`n      maskPeak,`r`n      noiseType
     };
     this._started = true;
 
@@ -539,26 +539,26 @@ export class SessionAudio {
   snapshot() {
     const n = this.nodes || {};
     const ctx = this.ctx;
-    const read = (p, d=undefined) => { try { return (p?.value ?? p); } catch { return d; } };
+    const read = (p, d=undefined) => { try { return ((p && typeof p.value !== "undefined") ? p.value : p); } catch (e) { return d; } };
     return {
-      moduleId: this.cfg?.moduleId || null,
-      sampleRate: ctx?.sampleRate || null,
-      state: ctx?.state || null,
+      moduleId: (this.cfg && this.cfg.moduleId) || null,
+      sampleRate: (ctx ? ctx.sampleRate : null),
+      state: (ctx ? ctx.state : null),
       beatMode: this._beatMode,
       activeBeat: this._activeBeatType,
       canStereo: this._canStereo,
-      prebufferSec: this.cfg?.prebufferSec ?? null,
-      brainwave: this.cfg?.brainwave || null,
-      noise: { type: n.noiseType || this.cfg?.noiseType || 'brown', gain: read(n.noiseGain?.gain, null) },
-      mask: { hz: read(n.maskPeak?.frequency, null), gainDb: read(n.maskPeak?.gain, null) },
-      pan: { lfoHz: n.lfoPan?.frequency?.value ?? null, depth: n.panScale?.gain?.value ?? null },
+      prebufferSec: (this.cfg && (this.cfg.prebufferSec!=null) ? this.cfg.prebufferSec : null),
+      brainwave: (this.cfg ? this.cfg.brainwave : null),
+      noise: { type: (n.noiseType || (this.cfg ? this.cfg.noiseType : null) || 'brown'), gain: read(n.noiseGain && n.noiseGain.gain, null) },
+      mask: { hz: read(n.maskPeak && n.maskPeak.frequency, null), gainDb: read(n.maskPeak && n.maskPeak.gain, null) },
+      pan: { lfoHz: read(n.lfoPan && n.lfoPan.frequency, null), depth: read(n.panScale && n.panScale.gain, null) },
       tonesGain: {
-        g174: read(n.g174?.gain, null), g432: read(n.g432?.gain, null), g528: read(n.g528?.gain, null),
-        g639: read(n.g639?.gain, null), g852: read(n.g852?.gain, null), g963: read(n.g963?.gain, null),
-        binaural: { L: read(n.gBinL?.gain, null), R: read(n.gBinR?.gain, null) },
-        isoDepth: { scale: read(n.lfoScale?.gain, null), offset: read(n.lfoOffset?.offset, null) }
+        g174: read(n.g174 && n.g174.gain, null), g432: read(n.g432 && n.g432.gain, null), g528: read(n.g528 && n.g528.gain, null),
+        g639: read(n.g639 && n.g639.gain, null), g852: read(n.g852 && n.g852.gain, null), g963: read(n.g963 && n.g963.gain, null),
+        binaural: { L: read(n.gBinL && n.gBinL.gain, null), R: read(n.gBinR && n.gBinR.gain, null) },
+        isoDepth: { scale: read(n.lfoScale && n.lfoScale.gain, null), offset: read(n.lfoOffset && n.lfoOffset.offset, null) }
       },
-      reverbWet: read(n.reverbWet?.gain, null)
+      reverbWet: read(n.reverbWet && n.reverbWet.gain, null)
     };
   }
 
@@ -623,3 +623,4 @@ export class SessionAudio {
     }
   }
 }
+
