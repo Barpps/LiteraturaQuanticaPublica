@@ -20,6 +20,15 @@ const sealText = document.getElementById('seal-text');
 const canvas = document.getElementById('viz');
 const bwStatus = document.getElementById('bwStatus');
 const moduleSel = document.getElementById('moduleSel');
+// Garantir que todos os módulos apareçam no seletor (corrige HTML antigo/publicado)
+if (moduleSel) {
+  moduleSel.innerHTML = [
+    { v: 'static/config/modules/paz_por_do_sol.json', t: 'PAZ — Pôr do Sol da Integração' },
+    { v: 'static/config/modules/frequencias_diarias.json', t: 'Prosperidade Consciente + Serenidade' },
+    { v: 'static/config/modules/silencio_entre_os_raios.json', t: 'O Silêncio entre os Raios' },
+    { v: 'static/config/modules/presenca_divina_acao.json', t: 'Presença Divina na Ação' },
+  ].map((o, i) => `<option value="${o.v}" ${i===0?'selected':''}>${o.t}</option>`).join('');
+}
 
 // Inicializa a partir do valor do seletor (permite mudar a ordem/seleção no HTML)
 let configUrl = moduleSel && moduleSel.value ? moduleSel.value : 'static/config/modules/paz_por_do_sol.json';
