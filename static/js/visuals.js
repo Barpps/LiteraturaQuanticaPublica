@@ -29,6 +29,10 @@ export class Visuals {
     };
     this.centralSphere = centralSphere;
     this.geometry = geometry || { type: 'flower', metatronOpacity: 0.3 };
+    // JSON overrides — ring thickness and secondary pulse alpha (8%–20%)
+    this.ringLineWidth = (this.geometry && this.geometry.ringLineWidth != null) ? this.geometry.ringLineWidth : 3.5;
+    const spa = (this.geometry && this.geometry.secondaryPulseAlpha != null) ? this.geometry.secondaryPulseAlpha : 0.14;
+    this.secondaryPulseAlpha = Math.min(0.20, Math.max(0.08, spa));
     this.maxMicropulsesPerCycle = maxMicropulsesPerCycle || null;
     this._cycleIndex = 0;
     this._micropulsesSoFar = 0;
@@ -138,11 +142,12 @@ export class Visuals {
     const dom = this._rgba(this.palette.dominant, brightness);
     const gold = this._rgba(this.palette.gold || '#ffd700', brightness);
     const roseGold = this._rgba(this.palette.rose || 'rgba(255, 182, 193, 0.6)', Math.max(0.05, brightness * 0.6));
-    const violet = this._rgba(this.palette.violet || 'rgba(138, 43, 226, 0.3)', brightness * 0.3);
+    const secAlphaPulse = this.secondaryPulseAlpha; // 0.08–0.20
+    const violet = this._rgba(this.palette.violet || '#CAC2FF', secAlphaPulse);
 
     if (this.geometry && this.geometry.type === 'ring') {
       // Ring central
-      ctx.lineWidth = 3;
+      ctx.lineWidth = this.ringLineWidth;
       ctx.strokeStyle = gold;
       this._circle(ctx, 0, 0, radius);
     } else {
@@ -151,7 +156,7 @@ export class Visuals {
     }
 
     // Metatron’s Cube overlay at 30% transparency
-    const metaAlpha = (this.geometry && this.geometry.metatronOpacity != null) ? this.geometry.metatronOpacity : 0.3;
+    const metaAlpha = (this.geometry && this.geometry.metatronOpacity != null) ? this.geometry.metatronOpacity : secAlphaPulse;
     this._metatronsCube(ctx, radius * 0.9, this._withAlpha(violet, metaAlpha));
 
     // Central golden sphere if enabled
@@ -240,4 +245,5 @@ export class Visuals {
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
   }
   _withAlpha(col, alpha) { return this._rgba(this._rgba(col,1), alpha); }
+  _clamp(v, a, b) { return Math.min(b, Math.max(a, v)); }
 }
