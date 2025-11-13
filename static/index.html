@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
@@ -11,18 +11,78 @@
   <style>
     /* Debug overlay */
     html.debug-on #debugPanel { display:block; }
-    #debugPanel { position: fixed; top: 10px; left: 10px; z-index: 2000; background: rgba(0,0,0,0.6); color: #EBD36E; border: 1px solid rgba(255,215,0,0.5); border-radius: 8px; padding: 10px; font: 12px/1.4 Consolas, ui-monospace, monospace; max-width: 420px; display: none; }
-    #debugPanel pre { margin: 6px 0; white-space: pre-wrap; color: #fff; }
-    #debugPanel .row { display:flex; gap:6px; align-items:center; }
+    #debugPanel { position: fixed; top: 10px; left: 10px; z-index: 2000; background: rgba(0,0,0,0.6); color: #EBD36E; border: 1px solid rgba(255,215,0,0.5); border-radius: 8px; padding: 10px; font: 12px/1.4 Consolas, ui-monospace, monospace; max-width: 520px; display: none; }
+    #debugPanel pre { margin: 6px 0; white-space: pre-wrap; color: #fff; max-height: 180px; overflow:auto; }
+    #debugPanel .row { display:flex; gap:6px; align-items:center; flex-wrap: wrap; }
     #debugPanel button { padding: 6px 10px; font-size: 12px; }
   </style>
-  <script>try{var _p=new URLSearchParams(location.search); if(_p.get("debug")==="1"||_p.get("debug")==="true"){ document.documentElement.classList.add("debug-on"); }}catch(e){}</script>
+  <script>
+    try {
+      var _p = new URLSearchParams(location.search);
+      if (_p.get('debug') === '1' || _p.get('debug') === 'true') {
+        document.documentElement.classList.add('debug-on');
+      }
+    } catch(e){}
+  </script>
 </head>
 <body>
   <div id="bg" aria-hidden="true"></div>
+
+  <!-- Debug Panel -->
   <div id="debugPanel" aria-hidden="true">
     <div class="row">
-      <strong>Debug</strong><button class="btn-ringlight" id="exportDebug">Exportar JSON</button><button class="btn-ringlight" id="runSelfTest">Self-Test</button><button class="btn-ringlight" id="runE2E">Full E2E</button><button class="btn-ringlight" id="exportE2E">Exportar E2E</button></div>
+      <strong>Debug</strong>
+      <button class="btn-ringlight" id="exportDebug">Exportar JSON</button>
+      <button class="btn-ringlight" id="runSelfTest">Self‑Test</button>
+      <button class="btn-ringlight" id="runE2E">Full E2E</button>
+      <button class="btn-ringlight" id="exportE2E">Exportar E2E</button>
+    </div>
+    <div class="row"><span id="dbgModule"></span> · <span id="dbgMode"></span> · <span id="dbgBeat"></span></div>
+    <pre id="dbgAudio"></pre>
+    <pre id="dbgVisual"></pre>
+    <pre id="dbgTest"></pre>
+  </div>
+
+  <!-- App Container -->
+  <div id="container">
+    <canvas id="viz" aria-label="Visual de Geometria Sagrada" role="img"></canvas>
+    <div id="controls" role="group" aria-label="Controles">
+      <label for="moduleSel" class="sr-only">Módulo</label>
+      <select id="moduleSel" title="Selecionar módulo" aria-label="Selecionar módulo">
+        <option value="/static/config/modules/frequencias_diarias.json" selected>Prosperidade Consciente + Serenidade</option>
+        <option value="/static/config/modules/silencio_entre_os_raios.json">O Silêncio entre os Raios</option>
+        <option value="/static/config/modules/presenca_divina_acao.json">Presença Divina na Ação</option>
+        <option value="/static/config/modules/paz_por_do_sol.json">PAZ — Pôr do Sol da Integração</option>
+      </select>
+      <label for="modeSel" class="sr-only">Modo de Batimento</label>
+      <select id="modeSel" title="Modo de Batimento" aria-label="Modo de Batimento">
+        <option value="auto" selected>Auto</option>
+        <option value="binaural">Fones (Binaural)</option>
+        <option value="iso">Ambiente (Isocrônico)</option>
+      </select>
+      <button class="btn-ringlight" id="play" aria-label="Play">PLAY</button>
+      <button class="btn-ringlight" id="stop" aria-label="Stop">STOP</button>
+      <button class="btn-ringlight" id="prevPhase" aria-label="Retroceder Fase">Retroceder Fase</button>
+      <button class="btn-ringlight" id="nextPhase" aria-label="Avançar Fase">Avançar Fase</button>
+      <button class="btn-ringlight" id="exitBtn" aria-label="Sair">Sair</button>
+      <span id="timer" aria-live="polite">00:00 / 90:00</span>
+      <span id="bwStatus" aria-live="polite" style="color:#FFE773;">Isocrônico ativo</span>
+      <span id="phase" aria-live="polite">Pronto</span>
+    </div>
+    <button class="btn-ringlight" id="fsBtn" aria-label="Tela Cheia" title="Tela Cheia">Tela Cheia</button>
+  </div>
+
+  <!-- Modal: Intenção -->
+  <div id="modal-intent" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="intent-title">
+    <div class="modal-content">
+      <h2 id="intent-title">Intenção Vibracional Declarada</h2>
+      <p id="intent-text" class="modal-text">Este espaço visual-sonoro é um campo de coerência.<br>
+      A luz pulsa no ritmo do coração.<br>
+      O som guia o tempo.<br>
+      Eu Sou o centro sereno de abundância consciente.</p>
+      <div class="modal-actions">
+        <button class="btn-ringlight" id="intent-ok" autofocus>OK</button>
+      </div>
     </div>
   </div>
 
@@ -30,8 +90,8 @@
   <div id="modal-seal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="seal-title">
     <div class="modal-content">
       <h2 id="seal-title">Selamento do Campo</h2>
-      <p id="seal-text" class="modal-text">“Antes de encerrar, eu selo o trabalho de hoje com gratidão e ordem divina.<br>
-      Levo comigo a calma, a clareza e a prosperidade consciente.”</p>
+      <p id="seal-text" class="modal-text">Antes de encerrar, eu selo o trabalho de hoje com gratidão e ordem divina.<br>
+      Levo comigo a calma, a clareza e a prosperidade consciente.</p>
       <div class="modal-actions">
         <button class="btn-ringlight" id="seal-ok" autofocus>OK</button>
         <button class="btn-ringlight" id="seal-cancel">Cancelar</button>
@@ -69,14 +129,19 @@
     const dbgVisual = document.getElementById('dbgVisual');
     const dbgTest = document.getElementById('dbgTest');
     const exportBtn = document.getElementById('exportDebug');
-    const selfTestBtn = document.getElementById('runSelfTest');\n    const runE2EBtn = document.getElementById('runE2E');\n    const exportE2EBtn = document.getElementById('exportE2E');
-    
+    const selfTestBtn = document.getElementById('runSelfTest');
+    const runE2EBtn = document.getElementById('runE2E');
+    const exportE2EBtn = document.getElementById('exportE2E');
+
     let configUrl = '/static/config/modules/frequencias_diarias.json';
     let audio = new SessionAudio(configUrl);
     const visuals = new Visuals(canvas);
 
     let timerInterval = null;
-    const params = new URLSearchParams(location.search); const isDebug = params.get('debug') === '1' || params.get('debug') === 'true'; const isAutorun = params.get('autorun') === '1' || params.get('autorun') === 'true'; const isAutoexport = params.get('autoexport') === '1' || params.get('autoexport') === 'true';
+    const params = new URLSearchParams(location.search);
+    const isDebug = params.get('debug') === '1' || params.get('debug') === 'true';
+    const isAutorun = params.get('autorun') === '1' || params.get('autorun') === 'true';
+    const isAutoexport = params.get('autoexport') === '1' || params.get('autoexport') === 'true';
 
     function formatTime(sec) {
       const m = Math.floor(sec / 60);
@@ -86,7 +151,6 @@
 
     async function init() {
       const cfg = await audio.init();
-      // Atualiza textos de popups por módulo (se disponível)
       if (cfg.popups && cfg.popups.intent) {
         intentTitle.textContent = cfg.popups.intent.title || intentTitle.textContent;
         intentText.innerHTML = cfg.popups.intent.message || intentText.innerHTML;
@@ -106,60 +170,51 @@
         geometry: cfg.visual?.geometry,
         maxMicropulsesPerCycle: cfg.visual?.maxMicropulsesPerCycle
       });
-      // Atualiza fundo radial via CSS vars se fornecido
+      visuals.setAudioTimeProvider(() => audio.currentTime());
+      visuals.animate();
+      if (isDebug) debugPanel.style.display = 'block';
       if (cfg.visual?.palette?.bg1) {
         const p = cfg.visual.palette;
         document.body.style.setProperty('--bg1', p.bg1);
         document.body.style.setProperty('--bg2', p.bg2 || p.bg1);
         document.body.style.setProperty('--bg3', p.bg3 || p.bg2 || p.bg1);
       }
-      visuals.setAudioTimeProvider(() => audio.currentTime());
-      visuals.animate();
-      if (isDebug) debugPanel.style.display = 'block';
       if (isDebug && isAutorun) {
         const tryRun = async () => {
           try {
             await runFullE2E();
             if (isAutoexport) {
-              const data = window._ringlightE2E || { note: 'E2E n�o gerado' };
+              const data = window._ringlightE2E || { note: 'E2E não gerado' };
               const blob = new Blob([ JSON.stringify(data, null, 2) ], { type: 'application/json' });
               const url = URL.createObjectURL(blob);
               const a = document.createElement('a'); a.href = url; a.download = 'ringlight_e2e_report.json'; a.click();
               setTimeout(()=>URL.revokeObjectURL(url), 1000);
             }
           } catch (e) {
-            dbgTest.textContent = 'Autorun E2E falhou (prov�vel pol�tica de autoplay). Clique em Full E2E.';
+            dbgTest.textContent = 'Autorun E2E falhou (política de autoplay). Clique em Full E2E.';
           }
         };
         setTimeout(tryRun, 1000);
       }
     }
 
-    let intentionShown = false;
-
-    async function enterFullscreenIfPossible() {
-      const docEl = document.documentElement;
-      if (docEl.requestFullscreen) {
-        try { await docEl.requestFullscreen(); } catch {}
-      }
-    }
-
+    // Show/Hide modal helpers
     function showModal(el) { el.classList.remove('hidden'); }
     function hideModal(el) { el.classList.add('hidden'); }
 
+    // PLAY
     playBtn.addEventListener('click', async () => {
       if (audio && audio._started && audio.isPaused && audio.isPaused()) {
-        await audio.resume();
-        visuals.setActive(true);
-        return;
+        await audio.resume(); visuals.setActive(true); return;
       }
-      if (!intentionShown) {
-        showModal(modalIntent);
-        intentOk.focus();
-        return;
-      }
-      await audio.start();
-      visuals.setActive(true);
+      showModal(modalIntent); intentOk.focus();
+    });
+
+    // Intent OK
+    intentOk.addEventListener('click', async () => {
+      hideModal(modalIntent);
+      try { if (document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen(); } catch {}
+      await audio.start(); visuals.setActive(true);
       if (timerInterval) clearInterval(timerInterval);
       timerInterval = setInterval(() => {
         const t = audio.currentTime();
@@ -171,259 +226,51 @@
           bwStatus.textContent = mode === 'binaural' ? 'Binaural ativo' : 'Isocrônico ativo';
         }
         if (isDebug) {
-          dbgModule.textContent = `Módulo: ${audio?.cfg?.name || '-'}`;
-          dbgMode.textContent = `Modo: ${audio.beatMode ? audio.beatMode() : '-'}`;
-          dbgBeat.textContent = `Ativo: ${audio.activeBeatType ? audio.activeBeatType() : '-'}`;
-          try { dbgAudio.textContent = JSON.stringify(audio.snapshot(), null, 2); } catch { }
-          try { dbgVisual.textContent = JSON.stringify(visuals.snapshot(), null, 2); } catch { }
+          try { dbgModule.textContent = `Módulo: ${audio?.cfg?.name || '-'}`; } catch {}
+          try { dbgMode.textContent = `Modo: ${audio.beatMode ? audio.beatMode() : '-'}`; } catch {}
+          try { dbgBeat.textContent = `Ativo: ${audio.activeBeatType ? audio.activeBeatType() : '-'}`; } catch {}
+          try { dbgAudio.textContent = JSON.stringify(audio.snapshot?.(), null, 2); } catch {}
+          try { dbgVisual.textContent = JSON.stringify(visuals.snapshot?.(), null, 2); } catch {}
         }
       }, 500);
     });
 
-    intentOk.addEventListener('click', async () => {
-      hideModal(modalIntent);
-      intentionShown = true;
-      await enterFullscreenIfPossible();
-      try {
-        if (screen.orientation && screen.orientation.lock && window.innerHeight > window.innerWidth) {
-          await screen.orientation.lock('landscape');
-        }
-      } catch {}
-      playBtn.click();
-    });
-
-    // Enter key closes Intencao modal
-    modalIntent.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') { intentOk.click(); }
-    });
-
-    stopBtn.addEventListener('click', async () => {
-      if (audio && audio.pause) await audio.pause();
-      visuals.setActive(false);
-    });
+    // STOP (pausar)
+    stopBtn.addEventListener('click', async () => { if (audio && audio.pause) await audio.pause(); visuals.setActive(false); });
 
     // Fase navigation
-    prevPhaseBtn.addEventListener('click', () => {
-      const idx = Math.max(0, audio.currentPhaseIndex() - 1);
-      audio.setPhaseIndex(idx, 1.0);
-      visuals.setPhase(idx);
-      phaseEl.textContent = audio.currentPhaseName();
-    });
+    prevPhaseBtn.addEventListener('click', () => { const idx = Math.max(0, audio.currentPhaseIndex() - 1); audio.setPhaseIndex(idx, 1.0); visuals.setPhase(idx); phaseEl.textContent = audio.currentPhaseName(); });
+    nextPhaseBtn.addEventListener('click', () => { const idx = Math.min(3, audio.currentPhaseIndex() + 1); audio.setPhaseIndex(idx, 1.0); visuals.setPhase(idx); phaseEl.textContent = audio.currentPhaseName(); });
 
-    nextPhaseBtn.addEventListener('click', () => {
-      const idx = Math.min(3, audio.currentPhaseIndex() + 1);
-      audio.setPhaseIndex(idx, 1.0);
-      visuals.setPhase(idx);
-      phaseEl.textContent = audio.currentPhaseName();
-    });
+    // Exit modal
+    exitBtn.addEventListener('click', () => { showModal(modalSeal); sealOk.focus(); });
+    sealOk.addEventListener('click', async () => { await audio.fadeOutAndStop(1.5); visuals.setActive(false); try { if (document.fullscreenElement) await document.exitFullscreen(); } catch {}; hideModal(modalSeal); });
+    sealCancel.addEventListener('click', () => { hideModal(modalSeal); });
 
-    // Exit button -> Seal modal
-    exitBtn.addEventListener('click', () => {
-      showModal(modalSeal);
-      sealOk.focus();
-    });
+    // Fullscreen hide UI
+    const controls = document.getElementById('controls'); let hideTimer=null; function scheduleHideControls(){ if(!document.fullscreenElement) return; controls.classList.remove('hidden'); if(hideTimer) clearTimeout(hideTimer); hideTimer=setTimeout(()=>controls.classList.add('hidden'),3000);} document.addEventListener('fullscreenchange',()=>{ const fs=!!document.fullscreenElement; document.body.classList.toggle('is-fullscreen',fs); if(fs){controls.classList.remove('hidden'); scheduleHideControls();} else {controls.classList.remove('hidden');}}); document.addEventListener('mousemove',()=>scheduleHideControls()); document.addEventListener('touchstart',()=>scheduleHideControls());
 
-    sealOk.addEventListener('click', async () => {
-      await audio.fadeOutAndStop(1.5);
-      visuals.setActive(false);
-      if (document.fullscreenElement) {
-        try { await document.exitFullscreen(); } catch {}
-      }
-      hideModal(modalSeal);
-      if (timerInterval) clearInterval(timerInterval);
-      timerEl.textContent = '00:00 / 90:00';
-      phaseEl.textContent = 'Pronto';
-    });
-
-    sealCancel.addEventListener('click', () => {
-      hideModal(modalSeal);
-    });
-
-    modalSeal.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') { sealCancel.click(); }
-      if (e.key === 'Enter') { sealOk.click(); }
-    });
-
-    // Fullscreen state handlers
-    const controls = document.getElementById('controls');
-    let hideTimer = null;
-    function scheduleHideControls() {
-      if (!document.fullscreenElement) return;
-      controls.classList.remove('hidden');
-      if (hideTimer) clearTimeout(hideTimer);
-      hideTimer = setTimeout(() => controls.classList.add('hidden'), 3000);
-    }
-
-    function onFsChange() {
-      const fs = !!document.fullscreenElement;
-      document.body.classList.toggle('is-fullscreen', fs);
-      if (fs) {
-        controls.classList.remove('hidden');
-        scheduleHideControls();
-      } else {
-        controls.classList.remove('hidden');
-      }
-    }
-    document.addEventListener('fullscreenchange', onFsChange);
-
-    document.addEventListener('mousemove', () => scheduleHideControls());
-    document.addEventListener('touchstart', () => scheduleHideControls());
-
-    // Fallback de binaural -> isocrônico quando a aba perde foco
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'hidden' && audio && audio.fallbackToIso) {
-        audio.fallbackToIso();
-      }
-    });
-
-    // Re-entry fullscreen button
-    const fsBtn = document.getElementById('fsBtn');
-    fsBtn.addEventListener('click', () => enterFullscreenIfPossible());
-
-    // Troca de módulo
-    const moduleSel = document.getElementById('moduleSel');
-    moduleSel.addEventListener('change', async () => {
-      const wasPlaying = audio && audio._started;
-      if (audio) await audio.fadeOutAndStop(0.8);
-      configUrl = moduleSel.value;
-      audio = new SessionAudio(configUrl);
-      const cfg = await audio.init();
-      if (cfg.popups && cfg.popups.intent) {
-        intentTitle.textContent = cfg.popups.intent.title || intentTitle.textContent;
-        intentText.innerHTML = cfg.popups.intent.message || intentText.innerHTML;
-      }
-      if (cfg.popups && cfg.popups.seal) {
-        sealTitle.textContent = cfg.popups.seal.title || sealTitle.textContent;
-        sealText.innerHTML = cfg.popups.seal.message || sealText.innerHTML;
-      }
-      // Atualiza parâmetros de visuals mantendo animação
-      visuals.init({
-        breathingBpm: cfg.breathingBpm,
-        rotationRadPerSec: cfg.rotationRadPerSec,
-        brightnessMax: cfg.brightnessMax,
-        petals: cfg.visual?.flowerPetals,
-        flowerOpacity: cfg.visual?.flowerOpacity,
-        palette: cfg.visual?.palette,
-        centralSphere: cfg.visual?.centralSphere,
-        geometry: cfg.visual?.geometry,
-        maxMicropulsesPerCycle: cfg.visual?.maxMicropulsesPerCycle
-      });
-      visuals.setAudioTimeProvider(() => audio.currentTime());
-      if (cfg.visual?.palette?.bg1) {
-        const p = cfg.visual.palette;
-        document.body.style.setProperty('--bg1', p.bg1);
-        document.body.style.setProperty('--bg2', p.bg2 || p.bg1);
-        document.body.style.setProperty('--bg3', p.bg3 || p.bg2 || p.bg1);
-      }
-      if (wasPlaying) playBtn.click();
-    });
-
-    // Troca de modo (Auto / Binaural / Isocrônico)
+    // Mode change
     const modeSel = document.getElementById('modeSel');
-    modeSel.addEventListener('change', async () => {
-      if (audio && audio.setBeatMode) {
-        audio.setBeatMode(modeSel.value);
-      }
-    });
+    modeSel.addEventListener('change', ()=>{ if(audio && audio.setBeatMode) audio.setBeatMode(modeSel.value); });
 
     // Export debug
-    exportBtn?.addEventListener('click', () => {
-      const blob = new Blob([ JSON.stringify({ audio: audio.snapshot?.(), visual: visuals.snapshot?.(), cfg: audio?.cfg }, null, 2) ], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = 'ringlight_debug.json'; a.click();
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
-    });
+    exportBtn?.addEventListener('click', () => { const blob = new Blob([ JSON.stringify({ audio: audio.snapshot?.(), visual: visuals.snapshot?.(), cfg: audio?.cfg }, null, 2) ], { type: 'application/json' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'ringlight_debug.json'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1000); });
 
     // Self-Test (heurístico)
-    function runSelfTest() {
-      const s = { ok: true, notes: [] };
-      const a = audio.snapshot?.() || {};
-      const v = visuals.snapshot?.() || {};
-      // JSON carregado
-      if (!audio?.cfg?.name) { s.ok = false; s.notes.push('Config não carregado'); }
-      // Carrier 432 esperado
-      if (audio?.cfg?.brainwave?.carrierHz && audio.cfg.brainwave.carrierHz !== 432) { s.notes.push('Carrier != 432 configurado'); }
-      // Beat ativo coerente
-      if (audio.beatMode && audio.activeBeatType) {
-        const m = audio.beatMode(); const b = audio.activeBeatType();
-        if (m === 'binaural' && b !== 'binaural') { s.ok = false; s.notes.push('Beat set binaural mas ativo não é binaural'); }
-        if (m === 'iso' && b !== 'iso') { s.ok = false; s.notes.push('Beat set iso mas ativo não é iso'); }
-      }
-      // Pan depth por modo
-      if (a.pan?.depth != null && audio.activeBeatType) {
-        const depth = a.pan.depth;
-        const b = audio.activeBeatType();
-        if (b === 'iso' && depth > 0.35) s.notes.push('Pan depth alto em modo Ambiente');
-      }
-      // Visual geometry dial
-      if (v.geometry?.type === 'ring' && (v.ringLineWidth == null)) { s.notes.push('ringLineWidth ausente'); }
-      // Micropulsos limit prop
-      if (v.geometry && v.maxMicropulsesPerCycle && v.maxMicropulsesPerCycle > 3) s.notes.push('Micropulsos > 3');
-      dbgTest.textContent = (s.ok ? 'Self‑Test: OK' : 'Self‑Test: Atenção') + '\n' + s.notes.join('\n');
-    }
+    function runSelfTest(){ const s={ok:true,notes:[]}; const a=audio.snapshot?.()||{}; const v=visuals.snapshot?.()||{}; if(!audio?.cfg?.name){ s.ok=false; s.notes.push('Config não carregado'); } if(audio?.cfg?.brainwave?.carrierHz && audio.cfg.brainwave.carrierHz!==432){ s.notes.push('Carrier != 432'); } if(audio.beatMode && audio.activeBeatType){ const m=audio.beatMode(); const b=audio.activeBeatType(); if(m==='binaural'&&b!=='binaural'){ s.ok=false; s.notes.push('Beat set binaural mas ativo não é binaural'); } if(m==='iso'&&b!=='iso'){ s.ok=false; s.notes.push('Beat set iso mas ativo não é iso'); } } if(a.pan?.depth!=null && audio.activeBeatType){ const depth=a.pan.depth; const b=audio.activeBeatType(); if(b==='iso' && depth>0.35) s.notes.push('Pan depth alto em Ambiente'); } if(v.geometry?.type==='ring' && (v.ringLineWidth==null)) { s.notes.push('ringLineWidth ausente'); } if(v.geometry && v.maxMicropulsesPerCycle && v.maxMicropulsesPerCycle>3) s.notes.push('Micropulsos > 3'); dbgTest.textContent=(s.ok?'Self‑Test: OK':'Self‑Test: Atenção')+'\n'+s.notes.join('\n'); }
     selfTestBtn?.addEventListener('click', runSelfTest);
 
+    // Helpers
     async function sleep(ms){ return new Promise(r=>setTimeout(r, ms)); }
 
-    async function runFullE2E(){
-      const report = { when: new Date().toISOString(), results: [] };
-      const moduleSelEl = document.getElementById('moduleSel');
-      const opts = Array.from(moduleSelEl.options).map(o=>({ url:o.value, name:o.text }));
-      for (const mod of opts){
-        // Stop current
-        try { await audio.fadeOutAndStop?.(0.4); } catch {}
-        // Load fresh module
-        audio = new SessionAudio(mod.url);
-        const cfg = await audio.init();
-        visuals.init({
-          breathingBpm: cfg.breathingBpm,
-          rotationRadPerSec: cfg.rotationRadPerSec,
-          brightnessMax: cfg.brightnessMax,
-          petals: cfg.visual?.flowerPetals,
-          flowerOpacity: cfg.visual?.flowerOpacity,
-          palette: cfg.visual?.palette,
-          centralSphere: cfg.visual?.centralSphere,
-          geometry: cfg.visual?.geometry,
-          maxMicropulsesPerCycle: cfg.visual?.maxMicropulsesPerCycle
-        });
-        visuals.setAudioTimeProvider(()=>audio.currentTime());
-        const pre = (cfg.prebufferSec||2.0)*1000;
-        await audio.start();
-        await sleep(pre + 600);
-        const modes = ['binaural','iso','auto'];
-        for (const m of modes){
-          audio.setBeatMode?.(m);
-          if (m==='auto') { audio.fallbackToIso?.(); }
-          await sleep(600);
-          const phaseSamples = [];
-          for (const p of [0,1,2]){
-            audio.setPhaseIndex?.(p, 0.4);
-            await sleep(500);
-            phaseSamples.push({ p, audio: audio.snapshot?.(), visual: visuals.snapshot?.() });
-          }
-          report.results.push({ module: mod.name, moduleUrl: mod.url, mode: m, sample: audio.snapshot?.(), visual: visuals.snapshot?.(), phases: phaseSamples });
-        }
-        await audio.pause?.();
-      }
-      dbgTest.textContent = 'E2E conclu�do. Use Exportar E2E.';
-      window._ringlightE2E = report;
-    }
+    // Full E2E Runner
+    async function runFullE2E(){ const report={ when:new Date().toISOString(), results:[] }; const moduleSelEl=document.getElementById('moduleSel'); const opts=Array.from(moduleSelEl.options).map(o=>({url:o.value,name:o.text})); for(const mod of opts){ try{ await audio.fadeOutAndStop?.(0.4); }catch{} audio=new SessionAudio(mod.url); const cfg=await audio.init(); visuals.init({ breathingBpm:cfg.breathingBpm, rotationRadPerSec:cfg.rotationRadPerSec, brightnessMax:cfg.brightnessMax, petals:cfg.visual?.flowerPetals, flowerOpacity:cfg.visual?.flowerOpacity, palette:cfg.visual?.palette, centralSphere:cfg.visual?.centralSphere, geometry:cfg.visual?.geometry, maxMicropulsesPerCycle:cfg.visual?.maxMicropulsesPerCycle }); visuals.setAudioTimeProvider(()=>audio.currentTime()); const pre=(cfg.prebufferSec||2.0)*1000; await audio.start(); await sleep(pre+600); const modes=['binaural','iso','auto']; for(const m of modes){ audio.setBeatMode?.(m); if(m==='auto'){ audio.fallbackToIso?.(); } await sleep(600); const phaseSamples=[]; for(const p of [0,1,2]){ audio.setPhaseIndex?.(p,0.4); await sleep(500); phaseSamples.push({ p, audio:audio.snapshot?.(), visual:visuals.snapshot?.() }); } report.results.push({ module:mod.name, moduleUrl:mod.url, mode:m, sample:audio.snapshot?.(), visual:visuals.snapshot?.(), phases:phaseSamples }); } await audio.pause?.(); } catch(e){ report.results.push({ module:mod.name, error:String(e) }); } } dbgTest.textContent='E2E concluído. Use Exportar E2E.'; window._ringlightE2E=report; }
 
-    runE2EBtn?.addEventListener('click', ()=>{ runFullE2E().catch(e=>{ dbgTest.textContent = 'E2E erro: '+e; }); });
-    exportE2EBtn?.addEventListener('click', ()=>{
-      const data = window._ringlightE2E || { note: 'E2E ainda n�o executado' };
-      const blob = new Blob([ JSON.stringify(data, null, 2) ], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url; a.download = 'ringlight_e2e_report.json'; a.click();
-      setTimeout(()=>URL.revokeObjectURL(url), 1000);
-    });
+    runE2EBtn?.addEventListener('click', ()=>{ runFullE2E().catch(e=>{ dbgTest.textContent='E2E erro: '+e; }); });
+    exportE2EBtn?.addEventListener('click', ()=>{ const data=window._ringlightE2E||{note:'E2E ainda não executado'}; const blob=new Blob([ JSON.stringify(data,null,2) ], {type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='ringlight_e2e_report.json'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1000); });
 
     init();
   </script>
 </body>
 </html>
-
-
-
-
