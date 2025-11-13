@@ -19,6 +19,7 @@ body {
   transition: opacity 0.5s ease;
 }
 body.is-fullscreen #bg { opacity: 1; }
+body.is-fullscreen #bg { background-size: 180% 180%; }
 
 #container {
   width: 100vw;
