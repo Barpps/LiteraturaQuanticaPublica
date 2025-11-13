@@ -390,7 +390,7 @@ export class SessionAudio {
       toneFund, gFund,
       isoCarrier, isoGain, lfo, lfoScale, lfoOffset,
       binL, gBinL, binR, gBinR,
-      noise, noiseGain
+      noiseGain,\n      maskPeak,\n      noiseType
     };
     this._started = true;
 
