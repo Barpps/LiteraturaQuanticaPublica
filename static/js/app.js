@@ -254,3 +254,21 @@ const modeSel = document.getElementById('modeSel');
 modeSel.addEventListener('change', function(){ if (audio && audio.setBeatMode) { audio.setBeatMode(modeSel.value); } });
 
 init();
+
+// Public UI: keep fullscreen button above control bar
+(function(){
+  try{
+    var btn=document.getElementById('fsBtn');
+    var controls=document.getElementById('controls');
+    if(!btn||!controls) return;
+    function update(){
+      try {
+        var h=controls.getBoundingClientRect().height||56;
+        btn.style.bottom = (h + 14) + 'px';
+      } catch(e){}
+    }
+    window.addEventListener('resize',update);
+    window.addEventListener('orientationchange',update);
+    setTimeout(update,100);
+  }catch(e){}
+})();
