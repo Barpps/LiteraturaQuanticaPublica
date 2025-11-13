@@ -114,7 +114,7 @@
     const dbgVisual = document.getElementById('dbgVisual');
     const dbgTest = document.getElementById('dbgTest');
     const exportBtn = document.getElementById('exportDebug');
-    const selfTestBtn = document.getElementById('runSelfTest');
+    const selfTestBtn = document.getElementById('runSelfTest');\n    const runE2EBtn = document.getElementById('runE2E');\n    const exportE2EBtn = document.getElementById('exportE2E');
     
     let configUrl = '/static/config/modules/frequencias_diarias.json';
     let audio = new SessionAudio(configUrl);
@@ -392,6 +392,61 @@
       dbgTest.textContent = (s.ok ? 'Self‑Test: OK' : 'Self‑Test: Atenção') + '\n' + s.notes.join('\n');
     }
     selfTestBtn?.addEventListener('click', runSelfTest);
+
+    async function sleep(ms){ return new Promise(r=>setTimeout(r, ms)); }
+
+    async function runFullE2E(){
+      const report = { when: new Date().toISOString(), results: [] };
+      const moduleSelEl = document.getElementById('moduleSel');
+      const opts = Array.from(moduleSelEl.options).map(o=>({ url:o.value, name:o.text }));
+      for (const mod of opts){
+        // Stop current
+        try { await audio.fadeOutAndStop?.(0.4); } catch {}
+        // Load fresh module
+        audio = new SessionAudio(mod.url);
+        const cfg = await audio.init();
+        visuals.init({
+          breathingBpm: cfg.breathingBpm,
+          rotationRadPerSec: cfg.rotationRadPerSec,
+          brightnessMax: cfg.brightnessMax,
+          petals: cfg.visual?.flowerPetals,
+          flowerOpacity: cfg.visual?.flowerOpacity,
+          palette: cfg.visual?.palette,
+          centralSphere: cfg.visual?.centralSphere,
+          geometry: cfg.visual?.geometry,
+          maxMicropulsesPerCycle: cfg.visual?.maxMicropulsesPerCycle
+        });
+        visuals.setAudioTimeProvider(()=>audio.currentTime());
+        const pre = (cfg.prebufferSec||2.0)*1000;
+        await audio.start();
+        await sleep(pre + 600);
+        const modes = ['binaural','iso','auto'];
+        for (const m of modes){
+          audio.setBeatMode?.(m);
+          if (m==='auto') { audio.fallbackToIso?.(); }
+          await sleep(600);
+          const phaseSamples = [];
+          for (const p of [0,1,2]){
+            audio.setPhaseIndex?.(p, 0.4);
+            await sleep(500);
+            phaseSamples.push({ p, audio: audio.snapshot?.(), visual: visuals.snapshot?.() });
+          }
+          report.results.push({ module: mod.name, moduleUrl: mod.url, mode: m, sample: audio.snapshot?.(), visual: visuals.snapshot?.(), phases: phaseSamples });
+        }
+        await audio.pause?.();
+      }
+      dbgTest.textContent = 'E2E conclu�do. Use Exportar E2E.';
+      window._ringlightE2E = report;
+    }
+
+    runE2EBtn?.addEventListener('click', ()=>{ runFullE2E().catch(e=>{ dbgTest.textContent = 'E2E erro: '+e; }); });
+    exportE2EBtn?.addEventListener('click', ()=>{
+      const data = window._ringlightE2E || { note: 'E2E ainda n�o executado' };
+      const blob = new Blob([ JSON.stringify(data, null, 2) ], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = 'ringlight_e2e_report.json'; a.click();
+      setTimeout(()=>URL.revokeObjectURL(url), 1000);
+    });
 
     init();
   </script>
