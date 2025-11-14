@@ -15,11 +15,10 @@ body {
   background-size: 140% 140%; /* cobre alem das bordas para evitar banding nas extremidades */
   background-position: center center;
   background-repeat: no-repeat;
-  opacity: 1; /* manter identico ao canvas para evitar marca das bordas */
+  opacity: 0.96; /* fora do FS */
   transition: opacity 0.5s ease;
 }
 body.is-fullscreen #bg { opacity: 1; }
-body.is-fullscreen #bg { background-size: 180% 180%; }
 
 #container {
   width: 100vw;
@@ -35,27 +34,17 @@ body.is-fullscreen #bg { background-size: 180% 180%; }
   width: min(96vw, 96vh);
   height: min(96vw, 96vh);
   display: block;
-  background: radial-gradient(circle at 50% 50%, var(--bg1, #12072F) 0%, var(--bg2, #0E0627) 55%, var(--bg3, #0B0522) 100%);
-  background-size: 140% 140%;
-  background-position: center center;
-}
-body.is-fullscreen #viz {
-  width: min(100vw, 100vh);
-  height: min(100vw, 100vh);
-  background-size: 180% 180%;
 }
 
 #controls {
   position: fixed;
   left: 50%;
-  bottom: 14px;
+  bottom: 20px;
   transform: translateX(-50%);
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px 12px;
+  gap: 12px;
   align-items: center;
-  padding: 10px 14px;
+  padding: 10px 16px;
   background: rgba(0,0,0,0.55);
   border-radius: 999px;
   color: #ffd700;
@@ -64,7 +53,6 @@ body.is-fullscreen #viz {
   z-index: 100;
   font-size: 12px;
   letter-spacing: 0.5px;
-  width: min(96vw, 1100px);
 }
 select#moduleSel {
   appearance: none;
@@ -134,19 +122,19 @@ button {
 
 /* Botão padrão RingLight: Violeta Dourado Invertido */
 .btn-ringlight {
-  background: linear-gradient(180deg, #240046 0%, #3B0A6E 100%);
-  color: #E9DAFF;
-  border: 1px solid #6F38C5;
-  box-shadow: 0 0 14px rgba(124,76,255,0.45);
+  background: linear-gradient(145deg, #3B006A 0%, #FFE773 90%);
+  color: #FFFFFF;
+  border: 1px solid #FFD700;
+  box-shadow: 0 0 14px #B26EFF;
   border-radius: 999px;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.45);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.55), 0 0 6px #FFD700;
   transition: all 0.25s ease;
   letter-spacing: 0.3px;
   font-weight: 700;
 }
-.btn-ringlight:hover {
-  background: linear-gradient(180deg, #2E005D 0%, #5200A8 100%);
-  box-shadow: 0 0 22px rgba(138,84,255,0.65);
+.btn-ringlight:hover { 
+  background: linear-gradient(145deg, #5A00A1 10%, #FFD700 95%);
+  box-shadow: 0 0 24px #FFD700, 0 0 34px rgba(180,124,255,0.8);
   transform: translateY(-1px);
 }
 .btn-ringlight:active {
@@ -159,7 +147,7 @@ button {
   box-shadow: none;
 }
 .btn-ringlight:focus-visible {
-  outline: 2px solid rgba(178,124,255,.9);
+  outline: 2px solid rgba(249,212,35,.8);
   outline-offset: 3px;
 }
 
@@ -203,7 +191,7 @@ button {
 #fsBtn {
   position: fixed;
   right: 16px;
-  bottom: calc(72px + env(safe-area-inset-bottom));
+  bottom: 16px;
   opacity: 0.5;
   padding: 8px 12px;
   border-radius: 10px;
@@ -215,14 +203,13 @@ button {
 body:not(.is-fullscreen) #fsBtn { display: inline-block; }
 #fsBtn:hover { opacity: 0.8; }
 
-/* Responsividade mobile */
-@media (max-width: 560px) {
-  #controls { bottom: 10px; gap: 8px 10px; padding: 8px 12px; font-size: 11px; width: 96vw; }
-  button, .btn-ringlight { padding: 8px 12px; }
-  select#moduleSel, select#modeSel { padding: 8px 32px 8px 12px; }
-  #fsBtn { bottom: calc(66px + env(safe-area-inset-bottom)); right: 12px; }
-}
-@media (max-width: 380px) {
-  #controls { font-size: 10px; gap: 6px 8px; }
-  button, .btn-ringlight { padding: 7px 10px; }
-}
+/* --- RingLight public: responsive controls + violet theme overrides --- */
+#controls{bottom:14px;transform:translateX(-50%);display:flex;flex-wrap:wrap;justify-content:center;gap:10px 12px;padding:10px 14px;width:min(96vw,1100px)}
+.btn-ringlight{background:linear-gradient(180deg,#240046 0%,#3B0A6E 100%);color:#E9DAFF;border:1px solid #6F38C5;box-shadow:0 0 14px rgba(124,76,255,.45);border-radius:999px;text-shadow:0 1px 2px rgba(0,0,0,.45);transition:all .25s ease;letter-spacing:.3px;font-weight:700}
+.btn-ringlight:hover{background:linear-gradient(180deg,#2E005D 0%,#5200A8 100%);box-shadow:0 0 22px rgba(138,84,255,.65);transform:translateY(-1px)}
+.btn-ringlight:active{transform:translateY(0);filter:brightness(.98)}
+.btn-ringlight:disabled{opacity:.6;cursor:not-allowed;box-shadow:none}
+.btn-ringlight:focus-visible{outline:2px solid rgba(178,124,255,.9);outline-offset:3px}
+#fsBtn{bottom:72px}
+@media (max-width:560px){#controls{bottom:10px;gap:8px 10px;padding:8px 12px;font-size:11px;width:96vw}button,.btn-ringlight{padding:8px 12px}select#moduleSel,select#modeSel{padding:8px 32px 8px 12px}#fsBtn{bottom:66px;right:12px}}
+@media (max-width:380px){#controls{font-size:10px;gap:6px 8px}button,.btn-ringlight{padding:7px 10px}}
