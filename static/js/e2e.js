@@ -172,6 +172,8 @@ async function runE2E(){
     { n:'Presença Divina na Ação', u:'static/config/modules/presenca_divina_acao.json' },
     { n:'PAZ — Pôr do Sol da Integração', u:'static/config/modules/paz_por_do_sol.json' }
   ];
+  // Local only: adiciona PLENITUDE ao E2E
+  modules.push({ n:'PLENITUDE - Coluna de Luz do Todo', u:'static/config/modules/plenitude_coluna_de_luz.json' });
 
   log('Iniciando Full E2E...', 'mono');
   for (var i=0;i<modules.length;i++){
