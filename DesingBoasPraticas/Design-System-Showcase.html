@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎨 Academia ProFlow - Design System Showcase</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-primary-start: #667eea;
+            --color-primary-end: #764ba2;
+            --color-accent: #00d4ff;
+            --color-bg-dark: #0a0e27;
+            --color-text-primary: #ffffff;
+            --color-text-secondary: rgba(255,255,255,0.7);
+            --color-text-tertiary: rgba(255,255,255,0.5);
+            --color-overlay-light: rgba(255,255,255,0.08);
+            --color-overlay-dark: rgba(0,0,0,0.3);
+            --spacing-xs: 4px;
+            --spacing-sm: 6px;
+            --spacing-md: 8px;
+            --spacing-lg: 12px;
+            --spacing-xl: 16px;
+            --spacing-2xl: 24px;
+            --spacing-3xl: 32px;
+        }
+
+        html, body {
+            width: 100%;
+            background: var(--color-bg-dark);
+            color: var(--color-text-primary);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            padding: var(--spacing-2xl);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: var(--spacing-xl);
+            background: linear-gradient(135deg, var(--color-primary-start), var(--color-primary-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-top: var(--spacing-3xl);
+            margin-bottom: var(--spacing-xl);
+            color: var(--color-accent);
+        }
+
+        h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: var(--spacing-2xl);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        p {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-lg);
+            line-height: 1.8;
+        }
+
+        .section {
+            margin-bottom: var(--spacing-3xl);
+            padding-bottom: var(--spacing-2xl);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .intro {
+            font-size: 16px;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-2xl);
+            padding: var(--spacing-xl);
+            background: var(--color-overlay-light);
+            border-radius: 8px;
+            border-left: 3px solid var(--color-accent);
+        }
+
+        /* COLORS SHOWCASE */
+        .colors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .color-box {
+            border-radius: 8px;
+            padding: var(--spacing-xl);
+            text-align: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .color-primary {
+            background: linear-gradient(135deg, var(--color-primary-start), var(--color-primary-end));
+        }
+
+        .color-accent {
+            background: var(--color-accent);
+            color: var(--color-bg-dark);
+        }
+
+        .color-dark {
+            background: var(--color-bg-dark);
+            border: 1px solid var(--color-overlay-light);
+        }
+
+        /* BUTTONS */
+        .buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-2xl);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+        }
+
+        .button-group-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            -webkit-appearance: none;
+            appearance: none;
+            touch-action: manipulation;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--color-primary-start), var(--color-primary-end));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background: var(--color-overlay-light);
+            color: var(--color-accent);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 212, 255, 0.15);
+            border-color: var(--color-accent);
+        }
+
+        .btn-outline {
+            background: rgba(255,255,255,0.05);
+            color: rgba(255,255,255,0.6);
+            border: 2px solid rgba(255,255,255,0.2);
+            padding: 10px 16px;
+        }
+
+        .btn-outline.active {
+            background: linear-gradient(135deg, var(--color-primary-start), var(--color-primary-end));
+            color: white;
+            border-color: var(--color-accent);
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* COMPONENTS SHOWCASE */
+        .component-showcase {
+            background: var(--color-overlay-light);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 12px;
+            padding: var(--spacing-2xl);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .component-title {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        /* CARDS */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .card {
+            background: var(--color-overlay-light);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+            color: var(--color-accent);
+        }
+
+        .card-description {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+        }
+
+        .card-primary {
+            background: linear-gradient(135deg, rgba(102,126,234,0.2), rgba(118,75,162,0.2));
+            border-color: rgba(102,126,234,0.3);
+        }
+
+        /* BADGES */
+        .badges-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .badge {
+            background: var(--color-overlay-light);
+            color: var(--color-text-secondary);
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .badge.active {
+            background: linear-gradient(135deg, rgba(0,212,255,0.3), rgba(102,126,234,0.3));
+            border-color: var(--color-accent);
+            color: var(--color-accent);
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
+        }
+
+        /* RAYS */
+        .rays-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .ray {
+            padding: var(--spacing-lg);
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 12px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .ray-red { background: #ff4444; }
+        .ray-orange { background: #ff8800; }
+        .ray-yellow { background: #ffdd00; color: #0a0e27; }
+        .ray-green { background: #00dd00; color: #0a0e27; }
+        .ray-blue { background: #0088ff; }
+        .ray-indigo { background: #4400ff; }
+        .ray-violet { background: #aa00ff; }
+        .ray-white { background: #ffffff; color: #0a0e27; border: 1px solid #ccc; }
+
+        /* INPUTS */
+        .input-group {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .input-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-sm);
+            display: block;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--color-overlay-light);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 8px;
+            color: white;
+            font-family: inherit;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--color-accent);
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+            background: rgba(255,255,255,0.12);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(255,255,255,0.2);
+            outline: none;
+            -webkit-appearance: slider-horizontal;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-primary-start), var(--color-primary-end));
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-primary-start), var(--color-primary-end));
+            cursor: pointer;
+            border: none;
+        }
+
+        /* HEADER */
+        .header-showcase {
+            background: linear-gradient(135deg, var(--color-primary-start) 0%, var(--color-primary-end) 50%, var(--color-bg-dark) 100%);
+            padding: var(--spacing-2xl);
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .header-subtitle {
+            font-size: 12px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* CODE SNIPPETS */
+        .code-snippet {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 6px;
+            padding: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            color: #00ff88;
+            overflow-x: auto;
+            line-height: 1.4;
+        }
+
+        /* TYPOGRAPHY */
+        .typography-showcase {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-2xl);
+        }
+
+        .typo-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-xl);
+        }
+
+        .typo-label {
+            min-width: 120px;
+            font-weight: 600;
+            color: var(--color-accent);
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        .typo-example {
+            flex: 1;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            body {
+                padding: var(--spacing-lg);
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            h2 {
+                font-size: 18px;
+            }
+
+            .colors-grid,
+            .cards-grid,
+            .rays-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .buttons-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* UTILITIES */
+        .mt-lg { margin-top: var(--spacing-2xl); }
+        .mb-lg { margin-bottom: var(--spacing-2xl); }
+        .text-center { text-align: center; }
+        .text-secondary { color: var(--color-text-secondary); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="section">
+            <h1>🎨 Academia ProFlow - Design System Showcase</h1>
+            <p class="intro">Documentação visual completa do design system. Copie HTML/CSS conforme necessário. Todos os componentes são prontos para integração em seu site.</p>
+        </div>
+
+        <!-- CORES -->
+        <div class="section">
+            <h2>🎨 Paleta de Cores</h2>
+            
+            <h3>Cores Primárias</h3>
+            <div class="colors-grid">
+                <div class="color-box color-primary">
+                    Gradiente Principal<br>
+                    #667eea → #764ba2
+                </div>
+                <div class="color-box color-accent">
+                    Destaque<br>
+                    #00d4ff
+                </div>
+                <div class="color-box color-dark">
+                    Background<br>
+                    #0a0e27
+                </div>
+            </div>
+
+            <h3>7 Raios Cósmicos</h3>
+            <div class="rays-grid">
+                <div class="ray ray-red">🔴 Red</div>
+                <div class="ray ray-orange">🟠 Orange</div>
+                <div class="ray ray-yellow">🟡 Yellow</div>
+                <div class="ray ray-green">🟢 Green</div>
+                <div class="ray ray-blue">🔵 Blue</div>
+                <div class="ray ray-indigo">🟣 Indigo</div>
+                <div class="ray ray-violet">🟣 Violet</div>
+                <div class="ray ray-white">⚪ White</div>
+            </div>
+        </div>
+
+        <!-- TIPOGRAFIA -->
+        <div class="section">
+            <h2>🔤 Tipografia</h2>
+            <div class="typography-showcase">
+                <div class="typo-item">
+                    <div class="typo-label">H1</div>
+                    <div class="typo-example" style="font-size: 32px; font-weight: 700;">Display Heading - 32px Bold</div>
+                </div>
+                <div class="typo-item">
+                    <div class="typo-label">H2</div>
+                    <div class="typo-example" style="font-size: 24px; font-weight: 700;">Section Heading - 24px Bold</div>
+                </div>
+                <div class="typo-item">
+                    <div class="typo-label">H3</div>
+                    <div class="typo-example" style="font-size: 18px; font-weight: 600;">Subsection - 18px SemiBold</div>
+                </div>
+                <div class="typo-item">
+                    <div class="typo-label">Body</div>
+                    <div class="typo-example" style="font-size: 14px;">Regular paragraph text - 14px Regular</div>
+                </div>
+                <div class="typo-item">
+                    <div class="typo-label">Small</div>
+                    <div class="typo-example" style="font-size: 12px; color: rgba(255,255,255,0.7);">Label or metadata - 12px Regular</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTÕES -->
+        <div class="section">
+            <h2>🎯 Botões</h2>
+            
+            <div class="buttons-grid">
+                <div>
+                    <div class="button-group-title">Primary (CTA)</div>
+                    <div class="button-group">
+                        <button class="btn btn-primary">▶ Começar Treino</button>
+                        <button class="btn btn-primary" disabled>▶ Desabilitado</button>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="button-group-title">Secondary</div>
+                    <div class="button-group">
+                        <button class="btn btn-secondary">⏹ Parar</button>
+                        <button class="btn btn-secondary" disabled>⏹ Desabilitado</button>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="button-group-title">Outline (Fases)</div>
+                    <div class="button-group">
+                        <button class="btn btn-outline active">🔥 Ativo</button>
+                        <button class="btn btn-outline">💪 Inativo</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARDS -->
+        <div class="section">
+            <h2>📦 Cards</h2>
+            <div class="cards-grid">
+                <div class="card card-primary">
+                    <div class="card-title">🔊 Ruído Marrom</div>
+                    <div class="card-description">Base harmônica contínua que não interfere nos benefícios das frequências Solfeggio.</div>
+                </div>
+                <div class="card card-primary">
+                    <div class="card-title">🎮 Controle Manual</div>
+                    <div class="card-description">Você controla cada fase do treino. Sem timer automático, liberdade total.</div>
+                </div>
+                <div class="card card-primary">
+                    <div class="card-title">✨ 7 Raios</div>
+                    <div class="card-description">Sincronize seus 7 corpos com os 7 raios cósmicos para harmonia completa.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BADGES -->
+        <div class="section">
+            <h2>🏷️ Badges & Tags</h2>
+            <div class="badges-grid">
+                <span class="badge">Inativo</span>
+                <span class="badge active">✓ Ativo</span>
+                <span class="badge">174 Hz</span>
+                <span class="badge active">285 Hz</span>
+                <span class="badge">Dopamina</span>
+                <span class="badge active">✓ Serotonina</span>
+                <span class="badge">Beta</span>
+                <span class="badge active">✓ Theta</span>
+            </div>
+        </div>
+
+        <!-- HEADER -->
+        <div class="section">
+            <h2>📋 Header</h2>
+            <div class="header-showcase">
+                <div class="header-title">🎵 Academia ProFlow</div>
+                <div class="header-subtitle">Frequências + Intenção Vibracional</div>
+            </div>
+        </div>
+
+        <!-- INPUTS -->
+        <div class="section">
+            <h2>⌨️ Inputs & Controls</h2>
+            
+            <div class="component-showcase">
+                <div class="component-title">Text Input</div>
+                <div class="input-group">
+                    <label class="input-label">Email</label>
+                    <input type="email" placeholder="seu@email.com">
+                </div>
+            </div>
+
+            <div class="component-showcase">
+                <div class="component-title">Volume Slider</div>
+                <div class="input-group">
+                    <label class="input-label">Volume (0-100%)</label>
+                    <input type="range" min="0" max="100" value="50">
+                </div>
+            </div>
+        </div>
+
+        <!-- CODE EXAMPLES -->
+        <div class="section">
+            <h2>💻 Snippets HTML/CSS</h2>
+            
+            <div class="component-showcase">
+                <div class="component-title">Button Primary</div>
+                <button class="btn btn-primary" style="display: block;">Preview</button>
+                <div class="code-snippet">&lt;button class="btn btn-primary"&gt;
+  ▶ Começar Treino
+&lt;/button&gt;</div>
+            </div>
+
+            <div class="component-showcase">
+                <div class="component-title">Card Component</div>
+                <div class="card card-primary" style="max-width: 300px;">
+                    <div class="card-title">📱 Card Title</div>
+                    <div class="card-description">Descrição do card aqui</div>
+                </div>
+                <div class="code-snippet">&lt;div class="card card-primary"&gt;
+  &lt;div class="card-title"&gt;Title&lt;/div&gt;
+  &lt;div class="card-description"&gt;Description&lt;/div&gt;
+&lt;/div&gt;</div>
+            </div>
+
+            <div class="component-showcase">
+                <div class="component-title">Badge</div>
+                <span class="badge active">✓ Active Badge</span>
+                <div class="code-snippet">&lt;span class="badge active"&gt;✓ Active Badge&lt;/span&gt;</div>
+            </div>
+
+            <div class="component-showcase">
+                <div class="component-title">CSS Variables</div>
+                <div class="code-snippet">:root {
+  --color-primary-start: #667eea;
+  --color-primary-end: #764ba2;
+  --color-accent: #00d4ff;
+  --color-bg-dark: #0a0e27;
+  --spacing-lg: 12px;
+}</div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="section">
+            <h2>📝 Notas para Dev</h2>
+            <p>✓ Todos os componentes estão prontos para uso</p>
+            <p>✓ Use CSS variables para cores e espaçamentos</p>
+            <p>✓ Responsive design incluído (breakpoints: 768px, 480px)</p>
+            <p>✓ Dark mode por padrão (não precisa configuração adicional)</p>
+            <p>✓ Animações suaves com transition 0.3s ease</p>
+            <p>✓ WCAG AA+ contraste de acessibilidade</p>
+            <p>✓ Gradiente 135deg padrão em todos primários</p>
+            <p>✓ Glassmorphism com backdrop-filter blur(10px)</p>
+        </div>
+
+    </div>
+</body>
+</html>
