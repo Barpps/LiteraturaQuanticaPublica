@@ -161,7 +161,7 @@
     const secAlphaPulse = (this.secondaryPulseAlpha != null) ? this.secondaryPulseAlpha : (0.3 * (0.65 + 0.35 * breath));
     const violet = this._rgba(this.palette.violet || '#CAC2FF', secAlphaPulse);
 
-    if (this.geometry && (this.geometry.type === 'ring' || this.geometry.type === 'pintura_viva')) {
+    if (this.geometry && (this.geometry.type === 'ring' || this.geometry.type === 'pintura_viva' || this.geometry.type === 'plenitude_coluna')) {
       // Ring central
       ctx.lineWidth = this.ringLineWidth;
       ctx.strokeStyle = gold;
@@ -226,6 +226,11 @@
     }
 
     ctx.restore();
+
+    // Coluna de Luz + 7 anéis (PLENITUDE)
+    if (this.geometry && this.geometry.type === 'plenitude_coluna') {
+      this._drawPlenitudeColumnAndBands(width, height, breath);
+    }
   }
 
   _updateAndDrawPhotons(ctx, t, radius) {
@@ -390,6 +395,54 @@
       else ctx.lineTo(x, y);
     }
     ctx.stroke();
+    ctx.restore();
+  }
+
+  _drawPlenitudeColumnAndBands(width, height, breath) {
+    const ctx = this.ctx;
+    const minDim = Math.min(width, height);
+    const colHeight = minDim * 0.78;
+    const colWidth = minDim * 0.16;
+    const cx = width / 2;
+    const cy = height / 2;
+
+    ctx.save();
+    ctx.translate(cx, cy);
+
+    // Coluna elíptica de luz (escala em X para formar coluna)
+    ctx.save();
+    const scaleX = colWidth / colHeight;
+    ctx.scale(scaleX, 1);
+    const r = colHeight / 2;
+    const alphaBase = 0.35 + 0.20 * breath; // 0.35–0.55
+    const g = ctx.createRadialGradient(0, 0, 0, 0, 0, r);
+    g.addColorStop(0.0, this._rgba('#F5F4FF', alphaBase));
+    g.addColorStop(0.4, this._rgba('#F5F4FF', alphaBase * 0.6));
+    g.addColorStop(1.0, 'rgba(7,7,22,0)');
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(0, 0, r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    // 7 elipses horizontais (7 corpos)
+    const bands = 7;
+    const baseRx = colWidth * 0.55;
+    const baseRy = colWidth * 0.14;
+    const stroke = this._rgba('#F7F5FF', 0.22 + 0.04 * breath);
+    ctx.strokeStyle = stroke;
+    ctx.lineWidth = 1.2;
+
+    for (let i = 0; i < bands; i++) {
+      const t = (bands === 1) ? 0.5 : (i / (bands - 1));
+      const y = (t - 0.5) * colHeight;
+      const rx = baseRx * (0.9 + 0.15 * t);
+      const ry = baseRy * (0.9 + 0.15 * (1 - t));
+      ctx.beginPath();
+      ctx.ellipse(0, y, rx, ry, 0, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
     ctx.restore();
   }
 
