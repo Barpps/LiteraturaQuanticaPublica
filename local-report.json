@@ -1,0 +1,417 @@
+﻿{
+  "ts": "2025-11-15T18:14:14.820Z",
+  "results": [
+    {
+      "module": "Prosperidade Consciente + Serenidade",
+      "cfgUrl": "static/config/modules/frequencias_diarias.json",
+      "steps": [
+        {
+          "name": "JSON carregado",
+          "ok": true,
+          "notes": "ok"
+        },
+        {
+          "name": "Propriedades visuais",
+          "ok": true,
+          "notes": "geometry/ringLineWidth/secondaryPulseAlpha"
+        },
+        {
+          "name": "Audio start",
+          "ok": true,
+          "notes": "started=true"
+        },
+        {
+          "name": "Tons base (432/174)",
+          "ok": true,
+          "notes": "ok"
+        },
+        {
+          "name": "Beat mode ativo",
+          "ok": true,
+          "notes": "binaural"
+        },
+        {
+          "name": "Tons por mÃ³dulo",
+          "ok": true,
+          "notes": "{\"has528\":true,\"has963\":true,\"hasFund\":false}"
+        },
+        {
+          "name": "MÃ¡scara 600Hz",
+          "ok": true,
+          "notes": "gain=0.00"
+        },
+        {
+          "name": "RuÃ­do pink+brownBlend",
+          "ok": true,
+          "notes": "kind=brown"
+        },
+        {
+          "name": "Visual geometry",
+          "ok": true,
+          "notes": "{\"type\":\"flower\",\"ringLineWidth\":3.5,\"secAlpha\":null,\"micropulses\":null,\"rot\":0.08}"
+        },
+        {
+          "name": "Troca de fase",
+          "ok": true,
+          "notes": "p=1"
+        },
+        {
+          "name": "Stop/Resume",
+          "ok": true,
+          "notes": "paused=true, running=true"
+        },
+        {
+          "name": "Modo Fones (Binaural)",
+          "ok": true,
+          "notes": "mode=binaural, panDepth=0.60"
+        },
+        {
+          "name": "Modo Ambiente (IsocrÃ´nico)",
+          "ok": true,
+          "notes": "mode=iso, panDepth=0.25"
+        },
+        {
+          "name": "Fallback para IsocrÃ´nico",
+          "ok": true,
+          "notes": "mode=iso"
+        },
+        {
+          "name": "Retorno Auto",
+          "ok": true,
+          "notes": "mode=binaural"
+        }
+      ],
+      "ok": true
+    },
+    {
+      "module": "O SilÃªncio entre os Raios",
+      "cfgUrl": "static/config/modules/silencio_entre_os_raios.json",
+      "steps": [
+        {
+          "name": "JSON carregado",
+          "ok": true,
+          "notes": "ok"
+        },
+        {
+          "name": "Propriedades visuais",
+          "ok": true,
+          "notes": "geometry/ringLineWidth/secondaryPulseAlpha"
+        },
+        {
+          "name": "Audio start",
+          "ok": true,
+          "notes": "started=true"
+        },
+        {
+          "name": "Tons base (432/174)",
+          "ok": true,
+          "notes": "ok"
+        },
+        {
+          "name": "Beat mode ativo",
+          "ok": true,
+          "notes": "binaural"
+        },
+        {
+          "name": "Tons por mÃ³dulo",
+          "ok": true,
+          "notes": "{\"has528\":true,\"has963\":true,\"hasFund\":true}"
+        },
+        {
+          "name": "MÃ¡scara 600Hz",
+          "ok": true,
+          "notes": "gain=0.00"
+        },
+        {
+          "name": "RuÃ­do pink+brownBlend",
+          "ok": true,
+          "notes": "kind=brown"
+        },
+        {
+          "name": "Visual geometry",
+          "ok": true,
+          "notes": "{\"type\":\"flower\",\"ringLineWidth\":3.5,\"secAlpha\":null,\"micropulses\":null,\"rot\":0.05}"
+        },
+        {
+          "name": "Troca de fase",
+          "ok": true,
+          "notes": "p=1"
+        },
+        {
+          "name": "Stop/Resume",
+          "ok": true,
+          "notes": "paused=true, running=true"
+        },
+        {
+          "name": "Modo Fones (Binaural)",
+          "ok": true,
+          "notes": "mode=binaural, panDepth=0.60"
+        },
+        {
+          "name": "Modo Ambiente (IsocrÃ´nico)",
+          "ok": true,
+          "notes": "mode=iso, panDepth=0.25"
+        },
+        {
+          "name": "Fallback para IsocrÃ´nico",
+          "ok": true,
+          "notes": "mode=iso"
+        },
+        {
+          "name": "Retorno Auto",
+          "ok": true,
+          "notes": "mode=binaural"
+        }
+      ],
+      "ok": true
+    },
+    {
+      "module": "PresenÃ§a Divina na AÃ§Ã£o",
+      "cfgUrl": "static/config/modules/presenca_divina_acao.json",
+      "steps": [
+        {
+          "name": "JSON carregado",
+          "ok": true,
+          "notes": "ok"
+        },
+        {
+          "name": "Propriedades visuais",
+          "ok": true,
+          "notes": "geometry/ringLineWidth/secondaryPulseAlpha"
+        },
+        {
+          "name": "Audio start",
+          "ok": true,
+          "notes": "started=true"
+        },
+        {
+          "name": "Tons base (432/174)",
+          "ok": true,
+          "notes": "ok"
+        },
+        {
+          "name": "Beat mode ativo",
+          "ok": true,
+          "notes": "binaural"
+        },
+        {
+          "name": "Tons por mÃ³dulo",
+          "ok": true,
+          "notes": "{\"has528\":true,\"has963\":true,\"hasFund\":false}"
+        },
+        {
+          "name": "MÃ¡scara 600Hz",
+          "ok": true,
+          "notes": "gain=0.00"
+        },
+        {
+          "name": "RuÃ­do pink+brownBlend",
+          "ok": true,
+          "notes": "kind=brown"
+        },
+        {
+          "name": "Visual geometry",
+          "ok": true,
+          "notes": "{\"type\":\"ring\",\"ringLineWidth\":3.5,\"secAlpha\":0.14,\"micropulses\":3,\"rot\":0.04}"
+        },
+        {
+          "name": "Troca de fase",
+          "ok": true,
+          "notes": "p=1"
+        },
+        {
+          "name": "Stop/Resume",
+          "ok": true,
+          "notes": "paused=true, running=true"
+        },
+        {
+          "name": "Modo Fones (Binaural)",
+          "ok": true,
+          "notes": "mode=binaural, panDepth=0.60"
+        },
+        {
+          "name": "Modo Ambiente (IsocrÃ´nico)",
+          "ok": true,
+          "notes": "mode=iso, panDepth=0.25"
+        },
+        {
+          "name": "Fallback para IsocrÃ´nico",
+          "ok": true,
+          "notes": "mode=iso"
+        },
+        {
+          "name": "Retorno Auto",
+          "ok": true,
+          "notes": "mode=binaural"
+        }
+      ],
+      "ok": true
+    },
+    {
+      "module": "PAZ â€” PÃ´r do Sol da IntegraÃ§Ã£o",
+      "cfgUrl": "static/config/modules/paz_por_do_sol.json",
+      "steps": [
+        {
+          "name": "JSON carregado",
+          "ok": true,
+          "notes": "ok"
+        },
+        {
+          "name": "Propriedades visuais",
+          "ok": true,
+          "notes": "geometry/ringLineWidth/secondaryPulseAlpha"
+        },
+        {
+          "name": "Audio start",
+          "ok": true,
+          "notes": "started=true"
+        },
+        {
+          "name": "Tons base (432/174)",
+          "ok": true,
+          "notes": "ok"
+        },
+        {
+          "name": "Beat mode ativo",
+          "ok": true,
+          "notes": "binaural"
+        },
+        {
+          "name": "Tons por mÃ³dulo",
+          "ok": true,
+          "notes": "{\"has528\":true,\"has963\":true,\"hasFund\":false}"
+        },
+        {
+          "name": "MÃ¡scara 600Hz",
+          "ok": true,
+          "notes": "gain=2.00"
+        },
+        {
+          "name": "RuÃ­do pink+brownBlend",
+          "ok": true,
+          "notes": "kind=pink+brownblend"
+        },
+        {
+          "name": "Visual geometry",
+          "ok": true,
+          "notes": "{\"type\":\"ring\",\"ringLineWidth\":3.5,\"secAlpha\":0.16,\"micropulses\":3,\"rot\":0.035}"
+        },
+        {
+          "name": "Troca de fase",
+          "ok": true,
+          "notes": "p=1"
+        },
+        {
+          "name": "Stop/Resume",
+          "ok": true,
+          "notes": "paused=true, running=true"
+        },
+        {
+          "name": "Modo Fones (Binaural)",
+          "ok": true,
+          "notes": "mode=binaural, panDepth=0.60"
+        },
+        {
+          "name": "Modo Ambiente (IsocrÃ´nico)",
+          "ok": true,
+          "notes": "mode=iso, panDepth=0.25"
+        },
+        {
+          "name": "Fallback para IsocrÃ´nico",
+          "ok": true,
+          "notes": "mode=iso"
+        },
+        {
+          "name": "Retorno Auto",
+          "ok": true,
+          "notes": "mode=binaural"
+        }
+      ],
+      "ok": true
+    },
+    {
+      "module": "PLENITUDE - Coluna de Luz do Todo",
+      "cfgUrl": "static/config/modules/plenitude_coluna_de_luz.json",
+      "steps": [
+        {
+          "name": "JSON carregado",
+          "ok": true,
+          "notes": "ok"
+        },
+        {
+          "name": "Propriedades visuais",
+          "ok": true,
+          "notes": "geometry/ringLineWidth/secondaryPulseAlpha"
+        },
+        {
+          "name": "Audio start",
+          "ok": true,
+          "notes": "started=true"
+        },
+        {
+          "name": "Tons base (432/174)",
+          "ok": true,
+          "notes": "ok"
+        },
+        {
+          "name": "Beat mode ativo",
+          "ok": true,
+          "notes": "binaural"
+        },
+        {
+          "name": "Tons por mÃ³dulo",
+          "ok": true,
+          "notes": "{\"has528\":true,\"has963\":true,\"hasFund\":true}"
+        },
+        {
+          "name": "MÃ¡scara 600Hz",
+          "ok": true,
+          "notes": "gain=1.50"
+        },
+        {
+          "name": "RuÃ­do pink+brownBlend",
+          "ok": true,
+          "notes": "kind=pink+brownblend"
+        },
+        {
+          "name": "Visual geometry",
+          "ok": true,
+          "notes": "{\"type\":\"plenitude_coluna\",\"ringLineWidth\":3.6,\"secAlpha\":0.15,\"micropulses\":3,\"rot\":0.04}"
+        },
+        {
+          "name": "Troca de fase",
+          "ok": true,
+          "notes": "p=1"
+        },
+        {
+          "name": "Stop/Resume",
+          "ok": true,
+          "notes": "paused=true, running=true"
+        },
+        {
+          "name": "Modo Fones (Binaural)",
+          "ok": true,
+          "notes": "mode=binaural, panDepth=0.60"
+        },
+        {
+          "name": "Modo Ambiente (IsocrÃ´nico)",
+          "ok": true,
+          "notes": "mode=iso, panDepth=0.25"
+        },
+        {
+          "name": "Fallback para IsocrÃ´nico",
+          "ok": true,
+          "notes": "mode=iso"
+        },
+        {
+          "name": "Retorno Auto",
+          "ok": true,
+          "notes": "mode=binaural"
+        }
+      ],
+      "ok": true
+    }
+  ],
+  "ok": true,
+  "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+}

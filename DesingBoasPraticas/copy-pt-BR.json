@@ -1,0 +1,183 @@
+{
+  "global": {
+    "app_name": "RingLight Effect",
+    "tagline_global": "Luz, Som e Intenção para harmonizar o seu dia.",
+    "nav": {
+      "home": "Home",
+      "user_guide": "Guia do Usuário",
+      "daily_frequencies": "Frequências Diárias",
+      "fragments": "Fragmentos de Transformação"
+    },
+    "footer": {
+      "legal_short": "RingLight Effect — ferramenta experimental de harmonização.",
+      "legal_disclaimer": "Não substitui cuidados médicos, psicológicos ou espirituais profissionais."
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "RingLight Effect",
+      "subtitle": "Luz + Som + Intenção em um só lugar.",
+      "body": "Experiências guiadas com luz, frequências sonoras e narrativa simbólica para apoiar o seu processo de presença, foco e serenidade — sem promessas mágicas, só convite à experimentação consciente.",
+      "primary_cta": "Entrar no App",
+      "secondary_cta": "Abrir Guia do Usuário (PDF)"
+    },
+    "modules_section": {
+      "title": "Escolha o seu próximo passo",
+      "subtitle": "Tudo começa com uma intenção clara. Selecione o módulo que faz mais sentido para o seu momento agora.",
+      "modules": {
+        "ringlight": {
+          "title": "RingLight Effect",
+          "description": "Sequências de luz, som e narrativa para harmonizar corpo, emoção e mente em sessões guiadas e intuitivas.",
+          "cta": "Explorar RingLight"
+        },
+        "user_guide": {
+          "title": "Guia do Usuário",
+          "description": "Um manual direto ao ponto explicando como usar o RingLight Effect, as fases, frequências e melhores práticas de uso.",
+          "cta": "Abrir Guia em PDF"
+        },
+        "daily_frequencies": {
+          "title": "Frequências Diárias",
+          "description": "Sessões rápidas para uso cotidiano: foco, descanso, recolhimento ou retomada de energia, de forma simples e repetível.",
+          "cta": "Abrir Frequências Diárias"
+        },
+        "fragments": {
+          "title": "Fragmentos de Transformação",
+          "description": "Meditações curtas e profundas, combinando narrativa, frequências e luz para apoiar momentos-chave do seu dia.",
+          "cta": "Ver Fragmentos"
+        }
+      }
+    },
+    "phases_section": {
+      "title": "As 4 Fases do Processo",
+      "subtitle": "Cada experiência pode ser vivida em fases. Você não precisa usar todas de uma vez: siga o seu ritmo interno.",
+      "phases": {
+        "phase_1": {
+          "label_short": "Ativar",
+          "label_full": "Fase 1 – Ativar",
+          "description": "Despertar a energia, a presença e o corpo para o momento."
+        },
+        "phase_2": {
+          "label_short": "Harmonizar",
+          "label_full": "Fase 2 – Harmonizar",
+          "description": "Ajustar respiração, emoção e mente para um estado mais coerente."
+        },
+        "phase_3": {
+          "label_short": "Expandir",
+          "label_full": "Fase 3 – Expandir",
+          "description": "Abrir espaço interno para novas percepções, insights e possibilidades."
+        },
+        "phase_4": {
+          "label_short": "Dissolver",
+          "label_full": "Fase 4 – Dissolver",
+          "description": "Soltar tensões, histórias antigas e ruídos desnecessários, com suavidade."
+        }
+      }
+    },
+    "experiences_section": {
+      "title": "Experiências Disponíveis",
+      "subtitle": "Cada experiência foi desenhada como um campo vibracional específico. Comece pela que mais conversa com o seu momento de vida.",
+      "experiences": {
+        "prosperidade_serenidade": {
+          "title": "Prosperidade + Serenidade",
+          "description": "Um espaço para alinhar prosperidade com paz interna, soltando a ansiedade por resultados e abrindo espaço para decisões mais calmas e assertivas.",
+          "tag": "Prosperidade tranquila"
+        },
+        "silencio_entre_os_raios": {
+          "title": "O Silêncio entre os Raios",
+          "description": "Um mergulho no intervalo entre um pensamento e outro, usando luz e som como convite para um silêncio vivo, fértil e consciente.",
+          "tag": "Quietude e clareza"
+        },
+        "presenca_na_acao": {
+          "title": "Presença na Ação",
+          "description": "Para momentos em que você precisa agir, mas sem entrar no modo automático. Mantém o eixo interno enquanto a vida pede movimento.",
+          "tag": "Foco em movimento"
+        },
+        "por_do_sol_integracao": {
+          "title": "Pôr do Sol da Integração",
+          "description": "Um encerramento suave para o dia: integra aprendizados, desacelera o sistema e prepara o terreno para descanso e sonhos mais lúcidos.",
+          "tag": "Encerramento do dia"
+        },
+        "plenitude_luz": {
+          "title": "Plenitude + Luz",
+          "description": "Uma lembrança de que você não precisa estar “perfeito” para se sentir inteiro. Luz suave que ajuda a reconhecer o que já está funcionando em você.",
+          "tag": "Autocompaixão"
+        },
+        "pintura_viva_prosperidade_serena": {
+          "title": "Pintura Viva na Prosperidade Serena",
+          "description": "Uma experiência mais criativa, quase pictórica: cores, formas e frequências se misturam para inspirar novas ideias com base em um chão sereno.",
+          "tag": "Criatividade próspera"
+        }
+      }
+    },
+    "final_cta": {
+      "title": "Pronto para entrar em outra frequência?",
+      "body": "Escolha uma experiência, coloque fones de ouvido se possível, ajuste o volume e trate cada sessão como um pequeno ritual de cuidado consigo mesmo.",
+      "primary_cta": "Abrir RingLight Effect",
+      "secondary_cta": "Ver Fragmentos de Transformação"
+    }
+  },
+  "fragments_list_page": {
+    "header": {
+      "title": "Fragmentos de Transformação",
+      "subtitle": "Meditações curtas, simbólicas e profundas, para momentos em que você precisa lembrar quem você é — sem complicar.",
+      "body": "Cada fragmento é um recorte de narrativa + frequências + luz pensado para situações específicas do dia a dia: desânimo, sobrecarga, distração, excesso de pensamento. Você não precisa “acertar” na escolha: deixe a intenção te guiar."
+    },
+    "list_intro": "Comece pelo primeiro fragmento sugerido ou explore as opções conforme a sua necessidade.",
+    "items": {
+      "fragment_01": {
+        "title": "Harmonia dos 7 Corpos — Semente Dourada",
+        "description": "Um momento para realinhar corpo, emoção, mente e sutil, lembrando que a semente dourada dentro de você continua germinando — mesmo nos dias em que nada parece andar.",
+        "badges": [
+          "Uso diário",
+          "7 corpos",
+          "Reconexão"
+        ]
+      },
+      "coming_soon": {
+        "title": "Em breve",
+        "description": "Novos fragmentos de transformação estão sendo preparados. Esta área vai crescer junto com o seu processo."
+      }
+    }
+  },
+  "fragment_01_page": {
+    "header": {
+      "title": "Harmonia dos 7 Corpos — Semente Dourada",
+      "subtitle": "Um retorno simples ao eixo, para quando você esquece que já carrega a Luz dentro de si.",
+      "body": "Esta experiência foi pensada para momentos de desconexão, cansaço interno ou desânimo. Em vez de forçar motivação, ela te convida a lembrar — com suavidade — que a sua semente dourada continua viva, mesmo sob a terra."
+    },
+    "when_to_use": {
+      "title": "Quando usar este fragmento",
+      "items": [
+        "Quando você se sente desconectado de si mesmo ou do que está fazendo.",
+        "Quando a motivação parece ter sumido, mas você sabe que não quer desistir.",
+        "Quando a mente está pesada demais e você precisa de um ponto de pausa.",
+        "Antes de dormir ou ao acordar, para alinhar o dia com uma intenção mais profunda."
+      ]
+    },
+    "what_you_live": {
+      "title": "O que você vive aqui",
+      "body": "Em vez de tentar “consertar” você, este fragmento te lembra que algo em você já está em processo de crescimento.\nA harmonização dos sete corpos aqui é simbólica: luz e som criam um ambiente em que o corpo físico relaxa, o campo emocional aquieta, a mente ganha espaço e o sutil encontra um pouco mais de campo para se manifestar — no seu tempo."
+    },
+    "how_to_use": {
+      "title": "Como usar na prática",
+      "steps": [
+        "Escolha um lugar minimamente tranquilo. Sente-se ou deite-se de forma confortável. Se puder, use fones de ouvido.",
+        "Defina uma intenção simples. Algo como: “Eu me permito lembrar da Luz que eu sou”, ou qualquer frase que faça sentido para você.",
+        "Pressione “Iniciar Fragmento” e apenas acompanhe. Observe a luz, escute o som e perceba o corpo. Não há certo ou errado, apenas experiência.",
+        "Ao final, respire fundo 3 vezes. Antes de sair correndo para a próxima coisa, note qualquer pequena mudança interna — mesmo que sutil."
+      ]
+    },
+    "meta": {
+      "intention": "Harmonização dos 7 corpos",
+      "recommendation": "Uso diário, especialmente em momentos de desconexão",
+      "suggested_duration": "10–20 minutos"
+    },
+    "ui": {
+      "primary_button": "Iniciar Fragmento",
+      "secondary_button": "Voltar para Fragmentos",
+      "loading_text": "Preparando luz e frequências…",
+      "tooltip_audio": "Use fones de ouvido se possível e mantenha o volume em um nível confortável."
+    },
+    "disclaimer": "Esta experiência é um apoio simbólico e energético, não um tratamento médico ou psicológico. Se você estiver passando por um momento delicado, considere também buscar ajuda profissional que você confie."
+  }
+}

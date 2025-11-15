@@ -1,0 +1,183 @@
+{
+  "global": {
+    "app_name": "RingLight Effect",
+    "tagline_global": "Light, Sound and Intention to harmonize your day.",
+    "nav": {
+      "home": "Home",
+      "user_guide": "User Guide",
+      "daily_frequencies": "Daily Frequencies",
+      "fragments": "Transformation Fragments"
+    },
+    "footer": {
+      "legal_short": "RingLight Effect — experimental harmonization tool.",
+      "legal_disclaimer": "It does not replace professional medical, psychological or spiritual care."
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "RingLight Effect",
+      "subtitle": "Light + Sound + Intention in one place.",
+      "body": "Guided experiences with light, sound frequencies and symbolic storytelling to support your process of presence, focus and serenity — no magic promises, just an invitation to conscious experimentation.",
+      "primary_cta": "Enter the App",
+      "secondary_cta": "Open User Guide (PDF)"
+    },
+    "modules_section": {
+      "title": "Choose your next step",
+      "subtitle": "Everything starts with a clear intention. Select the module that makes the most sense for your moment right now.",
+      "modules": {
+        "ringlight": {
+          "title": "RingLight Effect",
+          "description": "Sequences of light, sound and narrative to harmonize body, emotion and mind in intuitive guided sessions.",
+          "cta": "Explore RingLight"
+        },
+        "user_guide": {
+          "title": "User Guide",
+          "description": "A straightforward guide explaining how to use RingLight Effect, the phases, frequencies and best practices.",
+          "cta": "Open Guide (PDF)"
+        },
+        "daily_frequencies": {
+          "title": "Daily Frequencies",
+          "description": "Quick sessions for everyday use: focus, rest, winding down or recharging, in a simple and repeatable way.",
+          "cta": "Open Daily Frequencies"
+        },
+        "fragments": {
+          "title": "Transformation Fragments",
+          "description": "Short and deep meditations combining narrative, frequencies and light to support key moments in your day.",
+          "cta": "View Fragments"
+        }
+      }
+    },
+    "phases_section": {
+      "title": "The 4 Phases of the Process",
+      "subtitle": "Each experience can be lived in phases. You do not need to use all of them at once: follow your inner rhythm.",
+      "phases": {
+        "phase_1": {
+          "label_short": "Activate",
+          "label_full": "Phase 1 – Activate",
+          "description": "Awaken your energy, presence and body for this moment."
+        },
+        "phase_2": {
+          "label_short": "Harmonize",
+          "label_full": "Phase 2 – Harmonize",
+          "description": "Adjust breath, emotion and mind into a more coherent state."
+        },
+        "phase_3": {
+          "label_short": "Expand",
+          "label_full": "Phase 3 – Expand",
+          "description": "Open inner space for new perceptions, insights and possibilities."
+        },
+        "phase_4": {
+          "label_short": "Dissolve",
+          "label_full": "Phase 4 – Dissolve",
+          "description": "Gently release tension, old stories and unnecessary noise."
+        }
+      }
+    },
+    "experiences_section": {
+      "title": "Available Experiences",
+      "subtitle": "Each experience was designed as a specific vibrational field. Start with the one that resonates most with your current moment.",
+      "experiences": {
+        "prosperidade_serenidade": {
+          "title": "Prosperity + Serenity",
+          "description": "A space to align prosperity with inner peace, releasing anxiety about results and opening room for calmer and more assertive decisions.",
+          "tag": "Calm prosperity"
+        },
+        "silencio_entre_os_raios": {
+          "title": "The Silence Between Rays",
+          "description": "A dive into the gap between one thought and another, using light and sound as an invitation to a living, fertile and conscious silence.",
+          "tag": "Stillness and clarity"
+        },
+        "presenca_na_acao": {
+          "title": "Presence in Action",
+          "description": "For moments when you need to act without going into autopilot. Keeps your inner axis steady while life asks for movement.",
+          "tag": "Focused in motion"
+        },
+        "por_do_sol_integracao": {
+          "title": "Sunset of Integration",
+          "description": "A gentle closing for the day: integrates learnings, slows down your system and prepares the ground for rest and more lucid dreams.",
+          "tag": "End of day"
+        },
+        "plenitude_luz": {
+          "title": "Wholeness + Light",
+          "description": "A reminder that you do not need to be “perfect” to feel whole. Soft light that helps you recognize what is already working in you.",
+          "tag": "Self-compassion"
+        },
+        "pintura_viva_prosperidade_serena": {
+          "title": "Living Painting in Serene Prosperity",
+          "description": "A more creative, almost pictorial experience: colors, shapes and frequencies blend to inspire new ideas rooted in a serene foundation.",
+          "tag": "Prosperous creativity"
+        }
+      }
+    },
+    "final_cta": {
+      "title": "Ready to tune into another frequency?",
+      "body": "Choose an experience, wear headphones if possible, adjust the volume and treat each session as a small ritual of self-care.",
+      "primary_cta": "Open RingLight Effect",
+      "secondary_cta": "View Transformation Fragments"
+    }
+  },
+  "fragments_list_page": {
+    "header": {
+      "title": "Transformation Fragments",
+      "subtitle": "Short, symbolic and deep meditations for moments when you need to remember who you are — without overcomplicating it.",
+      "body": "Each fragment is a weave of narrative + frequencies + light designed for specific day-to-day situations: discouragement, overload, distraction, overthinking. You do not need to “get it right” when choosing: let your intention guide you."
+    },
+    "list_intro": "Start with the first suggested fragment or explore the options based on what you need right now.",
+    "items": {
+      "fragment_01": {
+        "title": "Harmony of the 7 Bodies — Golden Seed",
+        "description": "A moment to realign body, emotion, mind and subtle layers, remembering that the golden seed inside you keeps germinating — even on days when nothing seems to move.",
+        "badges": [
+          "Daily use",
+          "7 bodies",
+          "Reconnection"
+        ]
+      },
+      "coming_soon": {
+        "title": "Coming soon",
+        "description": "New transformation fragments are being prepared. This area will grow alongside your process."
+      }
+    }
+  },
+  "fragment_01_page": {
+    "header": {
+      "title": "Harmony of the 7 Bodies — Golden Seed",
+      "subtitle": "A simple return to your axis, for when you forget you already carry the Light within.",
+      "body": "This experience was designed for moments of disconnection, inner tiredness or discouragement. Instead of forcing motivation, it gently invites you to remember that your golden seed is still alive, even beneath the soil."
+    },
+    "when_to_use": {
+      "title": "When to use this fragment",
+      "items": [
+        "When you feel disconnected from yourself or from what you are doing.",
+        "When motivation seems gone, but you know you do not want to give up.",
+        "When your mind feels too heavy and you need a pause point.",
+        "Before sleep or upon waking, to align the day with a deeper intention."
+      ]
+    },
+    "what_you_live": {
+      "title": "What you experience here",
+      "body": "Instead of trying to “fix” you, this fragment reminds you that something in you is already in a growth process.\nThe harmonization of the seven bodies here is symbolic: light and sound create an environment where the physical body relaxes, the emotional field softens, the mind gains space and the subtle layer finds a bit more room to manifest — in its own time."
+    },
+    "how_to_use": {
+      "title": "How to use it in practice",
+      "steps": [
+        "Choose a minimally quiet place. Sit or lie down comfortably. Use headphones if you can.",
+        "Set a simple intention. Something like: “I allow myself to remember the Light I am”, or any sentence that feels true for you.",
+        "Press “Start Fragment” and simply follow along. Watch the light, listen to the sound and notice your body. There is no right or wrong, only experience.",
+        "At the end, take 3 deep breaths. Before rushing into the next thing, notice any small inner shift — even if subtle."
+      ]
+    },
+    "meta": {
+      "intention": "Harmonization of the 7 bodies",
+      "recommendation": "Daily use, especially in moments of disconnection",
+      "suggested_duration": "10–20 minutes"
+    },
+    "ui": {
+      "primary_button": "Start Fragment",
+      "secondary_button": "Back to Fragments",
+      "loading_text": "Preparing light and frequencies…",
+      "tooltip_audio": "Use headphones if possible and keep the volume at a comfortable level."
+    },
+    "disclaimer": "This experience is a symbolic and energetic support, not a medical or psychological treatment. If you are going through a delicate moment, consider also seeking professional help you trust."
+  }
+}

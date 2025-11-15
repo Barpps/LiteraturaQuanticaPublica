@@ -1,6 +1,6 @@
 {
   "moduleId": "presenca_divina_acao",
-  "name": "Presença Divina na Ação",
+  "name": "Presença na Ação",
   "sampleRate": 44100,
   "durationsSec": { "activation": 120, "harmony": 3180, "expansion": 300, "dissolution": 0 },
   "breathingBpm": 3.0,
@@ -14,12 +14,22 @@
   "noiseLevelDb": -31,
   "noiseType": "brown",
   "prebufferSec": 2.5,
-  "brainwave": { "carrierHz": 432, "binauralHz": 7.5, "preferBinaural": true, "fallbackIsochronicOnMono": true },
+  "brainwave": {
+    "carrierHz": 432,
+    "binauralHz": 7.5,
+    "preferBinaural": true,
+    "fallbackIsochronicOnMono": true
+  },
   "visual": {
     "flowerPetals": 0,
     "flowerOpacity": 0.0,
     "centralSphere": false,
-    "geometry": { "type": "ring", "metatronOpacity": 0.28, "ringLineWidth": 3.5, "secondaryPulseAlpha": 0.14 },
+    "geometry": {
+      "type": "ring",
+      "metatronOpacity": 0.28,
+      "ringLineWidth": 3.5,
+      "secondaryPulseAlpha": 0.14
+    },
     "palette": {
       "dominant": "#0A1C4F",
       "gold": "#EBD36E",
@@ -43,3 +53,4 @@
     }
   }
 }
+

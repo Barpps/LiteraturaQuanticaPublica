@@ -1,6 +1,6 @@
 {
   "moduleId": "paz_por_do_sol",
-  "name": "PAZ — Pôr do Sol da Integração",
+  "name": "Pôr do Sol da Integração",
   "sampleRate": 44100,
   "durationsSec": { "activation": 120, "harmony": 3180, "expansion": 300, "dissolution": 0 },
   "breathingBpm": 3.0,
@@ -14,13 +14,25 @@
   "noiseLevelDb": -30,
   "noiseType": "pink+brownBlend",
   "prebufferSec": 2.5,
-  "brainwave": { "carrierHz": 432, "binauralHz": 7.5, "preferBinaural": true, "fallbackIsochronicOnMono": true },
+  "brainwave": {
+    "carrierHz": 432,
+    "binauralHz": 7.5,
+    "preferBinaural": true,
+    "fallbackIsochronicOnMono": true
+  },
   "mask": { "hz": 600, "gainDb": 2.0 },
   "visual": {
     "flowerPetals": 12,
     "flowerOpacity": 0.25,
     "centralSphere": false,
-    "geometry": { "type": "ring", "metatronOpacity": 0.0, "support": "flower", "supportOpacity": 0.25, "ringLineWidth": 3.5, "secondaryPulseAlpha": 0.16 },
+    "geometry": {
+      "type": "ring",
+      "metatronOpacity": 0.0,
+      "support": "flower",
+      "supportOpacity": 0.25,
+      "ringLineWidth": 3.5,
+      "secondaryPulseAlpha": 0.16
+    },
     "palette": {
       "dominant": "#F2A17C",
       "gold": "#FCE3B5",
