@@ -34,10 +34,39 @@ if (moduleSel) {
   }).join('');
 }
 
+if (moduleSel) {
+  const optPinturaViva = document.createElement('option');
+  optPinturaViva.value = 'static/config/modules/pintura_viva.json';
+  optPinturaViva.textContent = 'PINTURA VIVA - Prosperidade Serena';
+  moduleSel.appendChild(optPinturaViva);
+}
+
 // Use relative path so it works both locally and on GitHub Pages subpaths
 let configUrl = (moduleSel && moduleSel.value) ? moduleSel.value : 'static/config/modules/frequencias_diarias.json';
 let audio = new SessionAudio(configUrl);
 const visuals = new Visuals(canvas);
+
+function phaseLabel(idx) {
+  const labels = [
+    'Fase 1 - Ativacao',
+    'Fase 2 - Harmonia',
+    'Fase 3 - Expansao',
+    'Fase 4 - Dissolucao'
+  ];
+  return (idx >= 0 && idx < labels.length) ? labels[idx] : ('Fase ' + (idx + 1));
+}
+
+function attachPhaseLabelOverride(target) {
+  if (target && typeof target.currentPhaseName === 'function' && typeof target.currentPhaseIndex === 'function') {
+    const originalCurrentPhaseIndex = target.currentPhaseIndex.bind(target);
+    target.currentPhaseName = function () {
+      const idx = originalCurrentPhaseIndex();
+      return phaseLabel(idx);
+    };
+  }
+}
+
+attachPhaseLabelOverride(audio);
 // Expose for quick console checks
 window.audio = audio;
 window.visuals = visuals;
@@ -85,6 +114,12 @@ async function init() {
     document.body.style.setProperty('--bg1', p.bg1);
     document.body.style.setProperty('--bg2', p.bg2 || p.bg1);
     document.body.style.setProperty('--bg3', p.bg3 || p.bg2 || p.bg1);
+  }
+  // Tema especial para Pintura Viva: ondas no fundo
+  if (configUrl.indexOf('pintura_viva') !== -1) {
+    document.body.classList.add('theme-pintura-viva');
+  } else {
+    document.body.classList.remove('theme-pintura-viva');
   }
   visuals.setAudioTimeProvider(function(){ return audio.currentTime(); });
   visuals.animate();
@@ -231,6 +266,7 @@ if (moduleSel) moduleSel.addEventListener('change', async function(){
   if (audio) await audio.fadeOutAndStop(0.8);
   configUrl = moduleSel.value;
   audio = new SessionAudio(configUrl);
+  attachPhaseLabelOverride(audio);
   window.audio = audio;
   const cfg = await audio.init();
   if (cfg.popups && cfg.popups.intent) {
@@ -258,6 +294,11 @@ if (moduleSel) moduleSel.addEventListener('change', async function(){
     document.body.style.setProperty('--bg1', p.bg1);
     document.body.style.setProperty('--bg2', p.bg2 || p.bg1);
     document.body.style.setProperty('--bg3', p.bg3 || p.bg2 || p.bg1);
+  }
+  if (configUrl.indexOf('pintura_viva') !== -1) {
+    document.body.classList.add('theme-pintura-viva');
+  } else {
+    document.body.classList.remove('theme-pintura-viva');
   }
   if (wasPlaying) playBtn.click();
 });
