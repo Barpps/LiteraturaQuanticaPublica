@@ -30,11 +30,11 @@
     "flowerOpacity": 0.22,
     "centralSphere": false,
     "geometry": {
-      "type": "ring",
+      "type": "plenitude_coluna",
       "metatronOpacity": 0.0,
       "support": "flower",
       "supportOpacity": 0.22,
-      "ringLineWidth": 3.5,
+      "ringLineWidth": 3.6,
       "secondaryPulseAlpha": 0.15
     },
     "palette": {
@@ -60,4 +60,3 @@
     }
   }
 }
-
