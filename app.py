@@ -16,6 +16,10 @@ def favicon():
 def debug_index():
     return send_from_directory("static", "index_debug.html")
 
+@app.get("/UAT")
+def uat_page():
+    return send_from_directory("static", "UAT.html")
+
 
 if __name__ == "__main__":
     # Para acessar de outros dispositivos na mesma rede:

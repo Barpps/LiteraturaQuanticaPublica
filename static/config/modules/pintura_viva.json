@@ -1,0 +1,62 @@
+{
+  "moduleId": "pintura_viva_prosperidade_serena",
+  "name": "PINTURA VIVA - Prosperidade Serena",
+  "sampleRate": 44100,
+  "durationsSec": { "activation": 300, "harmony": 3300, "expansion": 1200, "dissolution": 600 },
+  "breathingBpm": 3.4,
+  "rotationRadPerSec": 0.01,
+  "brightnessMax": 0.78,
+  "frequenciesHz": {
+    "drone": 174,
+    "fundamental": 396,
+    "tones": [432, 528, 639, 963]
+  },
+  "isochronicHz": 4.2,
+  "reverb": { "wetGain": 0.10, "boostDbPhase3": 1.8 },
+  "shelf": { "highStartHz": 1800, "phase3BoostDb": 1.8, "phase4CutDb": -6 },
+  "pan": { "lfoHz": 0.015, "depth": 0.25 },
+  "noiseLevelDb": -28,
+  "noiseType": "pink+brownBlend",
+  "prebufferSec": 2.5,
+  "brainwave": {
+    "carrierHz": 432,
+    "binauralHz": 4.2,
+    "preferBinaural": true,
+    "fallbackIsochronicOnMono": true
+  },
+  "mask": { "hz": 888, "gainDb": 1.2 },
+  "visual": {
+    "flowerPetals": 18,
+    "flowerOpacity": 0.24,
+    "centralSphere": true,
+    "geometry": {
+      "type": "pintura_viva",
+      "metatronOpacity": 0.10,
+      "support": "flower",
+      "supportOpacity": 0.20,
+      "ringLineWidth": 4.2,
+      "secondaryPulseAlpha": 0.16
+    },
+    "palette": {
+      "dominant": "#F2D58A",
+      "gold": "#FFDFA6",
+      "rose": "rgba(234, 187, 217, 0.60)",
+      "violet": "rgba(99, 60, 153, 0.40)",
+      "aura": "rgba(247, 245, 255, 0.16)",
+      "bg1": "#F2D58A",
+      "bg2": "#FFDFA6",
+      "bg3": "#0B0420"
+    },
+    "maxMicropulsesPerCycle": 3
+  },
+  "popups": {
+    "intent": {
+      "title": "Portal da Pintura Viva",
+      "message": "A Pintura Viva se abre.<br>Paz e prosperidade fluem suavemente pelo meu campo."
+    },
+    "seal": {
+      "title": "Selamento da Pintura Viva",
+      "message": "Eu descanso na abundancia.<br>Minha energia se renova na luz."
+    }
+  }
+}

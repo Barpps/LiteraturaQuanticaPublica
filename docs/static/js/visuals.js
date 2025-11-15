@@ -13,6 +13,10 @@
     this.targetFps = 60;
     this.visible = true;
     this._phaseBlend = { from: 0, to: 0, start: 0, dur: 0 };
+    // Fótons (Pintura Viva)
+    this.photons = [];
+    this._lastPhotonTime = 0;
+    this._photonEnabled = false;
   }
 
   init({ breathingBpm = 3.6, rotationRadPerSec = 0.08, brightnessMax = 0.78, petals = 12, flowerOpacity = 1.0, palette = null, centralSphere = false, geometry = null, maxMicropulsesPerCycle = null } = {}) {
@@ -29,6 +33,8 @@
     };
     this.centralSphere = centralSphere;
     this.geometry = geometry || { type: 'flower', metatronOpacity: 0.3 };
+    // Ativa fótons apenas para geometria específica (ex.: Pintura Viva)
+    this._photonEnabled = !!(this.geometry && this.geometry.type === 'pintura_viva');
     // JSON overrides ÔÇö ring thickness and secondary pulse alpha (8%ÔÇô20%).
     // Important: if secondaryPulseAlpha is not provided, preserve previous behavior
     // (dynamic alpha based on brightness), i.e., don't force a constant.
@@ -90,7 +96,14 @@
     // Time base
     const t = performance.now() / 1000;
     const breath = (Math.sin(2 * Math.PI * this.breathHz * t) + 1) / 2; // 0..1
-    const pulseScale = 0.85 + 0.15 * breath; // breathing size
+    // breathing size (Pintura Viva respira um pouco mais)
+    let pulseBase = 0.85;
+    let pulseAmp = 0.15;
+    if (this.geometry && this.geometry.type === 'pintura_viva') {
+      pulseBase = 0.80;
+      pulseAmp = 0.25;
+    }
+    const pulseScale = pulseBase + pulseAmp * breath;
     // blend de brilho por fase
     let phaseMul = this.phaseBrightness[this.phaseIndex] || 1.0;
     if (this._phaseBlend.dur > 0) {
@@ -148,7 +161,7 @@
     const secAlphaPulse = (this.secondaryPulseAlpha != null) ? this.secondaryPulseAlpha : (0.3 * (0.65 + 0.35 * breath));
     const violet = this._rgba(this.palette.violet || '#CAC2FF', secAlphaPulse);
 
-    if (this.geometry && this.geometry.type === 'ring') {
+    if (this.geometry && (this.geometry.type === 'ring' || this.geometry.type === 'pintura_viva')) {
       // Ring central
       ctx.lineWidth = this.ringLineWidth;
       ctx.strokeStyle = gold;
@@ -158,11 +171,12 @@
       this._flowerOfLife(ctx, radius, gold, dom);
     }
 
-    // Geometria de apoio: flowerOfLife (apoio) ou metatron
+    // Geometrias de apoio
     const support = (this.geometry && this.geometry.support) || 'metatron';
     const supportOpacity = (this.geometry && this.geometry.supportOpacity != null)
       ? this.geometry.supportOpacity
       : secAlphaPulse;
+
     if (support === 'flower') {
       const prevOpacity = this.flowerOpacity;
       this.flowerOpacity = supportOpacity;
@@ -170,6 +184,17 @@
       this.flowerOpacity = prevOpacity;
     } else {
       this._metatronsCube(ctx, radius * 0.9, this._withAlpha(violet, supportOpacity));
+    }
+
+    // Camadas adicionais apenas para Pintura Viva
+    if (this._photonEnabled) {
+      const softStroke = this._withAlpha(gold, 0.12);
+      const softViolet = this._withAlpha(violet, 0.12);
+      this._vesicaPiscis(ctx, radius * 0.90, softStroke);
+      this._merkabaStar(ctx, radius * 0.70, softViolet);
+      this._phiSpiral(ctx, radius * 0.88, this._withAlpha(gold, 0.18));
+      // Metatron etérico extra no centro
+      this._metatronsCube(ctx, radius * 0.55, this._withAlpha(violet, 0.10));
     }
 
     // Central golden sphere if enabled
@@ -195,11 +220,81 @@
     ctx.arc(0, 0, radius * 1.2, 0, Math.PI * 2);
     ctx.fill();
 
+    // Fótons no núcleo (apenas se habilitado)
+    if (this._photonEnabled) {
+      this._updateAndDrawPhotons(ctx, t, radius);
+    }
+
     ctx.restore();
   }
 
+  _updateAndDrawPhotons(ctx, t, radius) {
+    const maxPhotons = 7;
+    const centerX = 0;
+    const centerY = 0;
+    const dt = 1 / this.targetFps;
+
+    // Geração pseudo-aleatória com intervalo médio 0.6–1.2s
+    if (this.photons.length < maxPhotons) {
+      const interval = 0.6 + Math.random() * 0.6;
+      if (t - this._lastPhotonTime > interval) {
+        this._lastPhotonTime = t;
+        const pRadius = radius * 0.18;
+        const px = centerX + (Math.random() - 0.5) * pRadius * 0.3;
+        const py = centerY + (Math.random() - 0.5) * pRadius * 0.3;
+        const lifeMax = 2.5 + Math.random(); // 2.5–3.5s
+        const size = 2 + Math.random() * 4;
+        this.photons.push({
+          x: px,
+          y: py,
+          life: 0,
+          lifeMax: lifeMax,
+          size: size
+        });
+      }
+    }
+
+    const palette = this.palette || {};
+    const baseInner = palette.whiteLight || palette.gold || '#FFDFA6';
+
+    const alive = [];
+    for (let i = 0; i < this.photons.length; i++) {
+      const p = this.photons[i];
+      const lifeDt = dt;
+      p.life += lifeDt;
+      // leve subida
+      p.y -= lifeDt * radius * 0.08;
+      if (p.life < p.lifeMax) {
+        alive.push(p);
+        const tt = p.life / p.lifeMax;
+        let alpha;
+        if (tt < 0.3) {
+          alpha = tt / 0.3;
+        } else if (tt > 0.7) {
+          alpha = (1 - tt) / 0.3;
+        } else {
+          alpha = 1;
+        }
+        alpha = Math.max(0, Math.min(alpha, 1)) * 0.8;
+
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size);
+        g.addColorStop(0, this._rgba(baseInner, 1));
+        g.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+    this.photons = alive;
+  }
+
   _flowerOfLife(ctx, r, colorCenter, colorRing) {
-    ctx.lineWidth = 2;
+    const isPintura = this.geometry && this.geometry.type === 'pintura_viva';
+    ctx.lineWidth = isPintura ? 2.4 : 2;
     // center
     ctx.strokeStyle = this._withAlpha(colorCenter, Math.min(1, this.flowerOpacity));
     this._circle(ctx, 0, 0, r);
@@ -245,6 +340,57 @@
     ctx.beginPath();
     ctx.arc(x, y, r, 0, Math.PI * 2);
     ctx.stroke();
+  }
+
+  _vesicaPiscis(ctx, r, stroke) {
+    ctx.save();
+    ctx.strokeStyle = stroke;
+    ctx.lineWidth = 1.2;
+    const offset = r * (1 / 1.618); // aproximação Phi
+    this._circle(ctx, -offset, 0, r);
+    this._circle(ctx, offset, 0, r);
+    ctx.restore();
+  }
+
+  _merkabaStar(ctx, r, stroke) {
+    ctx.save();
+    ctx.strokeStyle = stroke;
+    ctx.lineWidth = 1.2;
+    const drawTriangle = (angleOffset) => {
+      ctx.beginPath();
+      for (let i = 0; i < 3; i++) {
+        const a = angleOffset + (i / 3) * Math.PI * 2;
+        const x = Math.cos(a) * r;
+        const y = Math.sin(a) * r;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.stroke();
+    };
+    drawTriangle(-Math.PI / 2);
+    drawTriangle(Math.PI / 2);
+    ctx.restore();
+  }
+
+  _phiSpiral(ctx, r, stroke) {
+    ctx.save();
+    ctx.strokeStyle = stroke;
+    ctx.lineWidth = 1.4;
+    ctx.beginPath();
+    const turns = 3;
+    const steps = 140;
+    const phi = 1.618;
+    for (let i = 0; i <= steps; i++) {
+      const t = (i / steps) * (Math.PI * 2 * turns);
+      const rr = r * Math.pow(1 / phi, (steps - i) / steps);
+      const x = Math.cos(t) * rr * 0.9;
+      const y = Math.sin(t) * rr * 0.9;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+    ctx.restore();
   }
 
   _rgba(color, alpha) {
