@@ -34,10 +34,10 @@ if (moduleSel) {
   }).join('');
 }
 
-if (moduleSel) {
+if (moduleSel && document.body && document.body.classList.contains('enable-pintura-viva')) {
   const optPinturaViva = document.createElement('option');
   optPinturaViva.value = 'static/config/modules/pintura_viva.json';
-  optPinturaViva.textContent = 'PINTURA VIVA - Prosperidade Serena';
+  optPinturaViva.textContent = 'Pintura Viva na Prosperidade Serena';
   moduleSel.appendChild(optPinturaViva);
 }
 
@@ -48,10 +48,10 @@ const visuals = new Visuals(canvas);
 
 function phaseLabel(idx) {
   const labels = [
-    'Fase 1 - Ativacao',
-    'Fase 2 - Harmonia',
-    'Fase 3 - Expansao',
-    'Fase 4 - Dissolucao'
+    'Fase 1 - Ativar',
+    'Fase 2 - Harmonizar',
+    'Faze 3 - Expandir',
+    'Fase 4 - Dissolver'
   ];
   return (idx >= 0 && idx < labels.length) ? labels[idx] : ('Fase ' + (idx + 1));
 }
@@ -67,6 +67,23 @@ function attachPhaseLabelOverride(target) {
 }
 
 attachPhaseLabelOverride(audio);
+
+// Override rótulos dos módulos na combo, para nomes finais
+if (moduleSel) {
+  const labelOverrides = {
+    'static/config/modules/frequencias_diarias.json': 'Prosperidade + Serenidade',
+    'static/config/modules/silencio_entre_os_raios.json': 'O Silêncio entre os Raios',
+    'static/config/modules/presenca_divina_acao.json': 'Presença na Ação',
+    'static/config/modules/paz_por_do_sol.json': 'Pôr do Sol da Integração',
+    'static/config/modules/plenitude_coluna_de_luz.json': 'Plenitude + Luz',
+    'static/config/modules/pintura_viva.json': 'Pintura Viva na Prosperidade Serena'
+  };
+  for (let i = 0; i < moduleSel.options.length; i++) {
+    const opt = moduleSel.options[i];
+    const label = labelOverrides[opt.value];
+    if (label) opt.textContent = label;
+  }
+}
 // Expose for quick console checks
 window.audio = audio;
 window.visuals = visuals;
