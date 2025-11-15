@@ -19,9 +19,23 @@ const sealTitle = document.getElementById('seal-title');
 const sealText = document.getElementById('seal-text');
 const canvas = document.getElementById('viz');
 const bwStatus = document.getElementById('bwStatus');
+const moduleSel = document.getElementById('moduleSel');
+
+// Garante lista de módulos consistente (inclui PLENITUDE)
+if (moduleSel) {
+  moduleSel.innerHTML = [
+    { v: 'static/config/modules/frequencias_diarias.json', t: 'Prosperidade Consciente + Serenidade' },
+    { v: 'static/config/modules/silencio_entre_os_raios.json', t: 'O Silêncio entre os Raios' },
+    { v: 'static/config/modules/presenca_divina_acao.json', t: 'Presença Divina na Ação' },
+    { v: 'static/config/modules/paz_por_do_sol.json', t: 'PAZ — Pôr do Sol da Integração' },
+    { v: 'static/config/modules/plenitude_coluna_de_luz.json', t: 'PLENITUDE — Coluna de Luz do Todo' }
+  ].map(function(o, i){
+    return '<option value=\"' + o.v + '\"' + (i===0 ? ' selected' : '') + '>' + o.t + '</option>';
+  }).join('');
+}
 
 // Use relative path so it works both locally and on GitHub Pages subpaths
-let configUrl = 'static/config/modules/frequencias_diarias.json';
+let configUrl = (moduleSel && moduleSel.value) ? moduleSel.value : 'static/config/modules/frequencias_diarias.json';
 let audio = new SessionAudio(configUrl);
 const visuals = new Visuals(canvas);
 // Expose for quick console checks
@@ -212,8 +226,7 @@ const fsBtn = document.getElementById('fsBtn');
 fsBtn.addEventListener('click', function(){ enterFullscreenIfPossible(); });
 
 // Module selector
-const moduleSel = document.getElementById('moduleSel');
-moduleSel.addEventListener('change', async function(){
+if (moduleSel) moduleSel.addEventListener('change', async function(){
   const wasPlaying = audio && audio._started;
   if (audio) await audio.fadeOutAndStop(0.8);
   configUrl = moduleSel.value;

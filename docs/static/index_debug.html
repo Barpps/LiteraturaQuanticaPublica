@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/css/styles.css" />
+  <link rel="stylesheet" href="static/css/styles.css" />
   <style>
     #e2eOverlay { position: fixed; top: 16px; right: 16px; width: 360px; z-index: 2000; font-family: Inter, system-ui, Arial; }
     #e2eOverlay .panel { background: rgba(0,0,0,0.65); border: 1px solid rgba(255,215,0,0.4); border-radius: 12px; padding: 12px; color: #eee; }
@@ -26,26 +26,31 @@
     <div id="controls" role="group" aria-label="Controles">
       <label for="moduleSel" class="sr-only">Módulo</label>
       <select id="moduleSel" title="Selecionar módulo" aria-label="Selecionar módulo">
-        <option value="/static/config/modules/frequencias_diarias.json" selected>Prosperidade Consciente + Serenidade</option>
-        <option value="/static/config/modules/silencio_entre_os_raios.json">O Silêncio entre os Raios</option>
-        <option value="/static/config/modules/presenca_divina_acao.json">Presença Divina na Ação</option>
-        <option value="/static/config/modules/paz_por_do_sol.json">PAZ — Pôr do Sol da Integração</option>
+        <option value="static/config/modules/frequencias_diarias.json" selected>Prosperidade Consciente + Serenidade</option>
+        <option value="static/config/modules/silencio_entre_os_raios.json">O Silêncio entre os Raios</option>
+        <option value="static/config/modules/presenca_divina_acao.json">Presença Divina na Ação</option>
+        <option value="static/config/modules/paz_por_do_sol.json">PAZ — Pôr do Sol da Integração</option>
+        <option value="static/config/modules/plenitude_coluna_de_luz.json">PLENITUDE — Coluna de Luz do Todo</option>
       </select>
+
       <label for="modeSel" class="sr-only">Modo de Batimento</label>
       <select id="modeSel" title="Modo de Batimento" aria-label="Modo de Batimento">
         <option value="auto" selected>Auto</option>
         <option value="binaural">Fones (Binaural)</option>
         <option value="iso">Ambiente (Isocrônico)</option>
       </select>
+
       <button class="btn-ringlight" id="play" aria-label="Play">PLAY</button>
       <button class="btn-ringlight" id="stop" aria-label="Stop">STOP</button>
       <button class="btn-ringlight" id="prevPhase" aria-label="Retroceder Fase">Retroceder Fase</button>
       <button class="btn-ringlight" id="nextPhase" aria-label="Avançar Fase">Avançar Fase</button>
       <button class="btn-ringlight" id="exitBtn" aria-label="Sair">Sair</button>
+
       <span id="timer" aria-live="polite">00:00 / 90:00</span>
       <span id="bwStatus" aria-live="polite" style="color:#FFE773;">Isocrônico ativo</span>
       <span id="phase" aria-live="polite">Pronto</span>
     </div>
+
     <button class="btn-ringlight" id="fsBtn" aria-label="Tela Cheia" title="Tela Cheia">Tela Cheia</button>
   </div>
 
@@ -53,10 +58,12 @@
   <div id="modal-intent" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="intent-title">
     <div class="modal-content">
       <h2 id="intent-title">Intenção Vibracional Declarada</h2>
-      <p id="intent-text" class="modal-text">“Este espaço visual-sonoro é um campo de coerência.<br>
-      A luz pulsa no ritmo do coração.<br>
-      O som guia o tempo.<br>
-      Eu Sou o centro sereno de abundância consciente.”</p>
+      <p id="intent-text" class="modal-text">
+        Este espaço visual-sonoro é um campo de coerência.<br>
+        A luz pulsa no ritmo do coração.<br>
+        O som guia o tempo.<br>
+        Eu Sou o centro sereno de abundância consciente.
+      </p>
       <div class="modal-actions">
         <button class="btn-ringlight" id="intent-ok" autofocus>OK</button>
       </div>
@@ -67,8 +74,10 @@
   <div id="modal-seal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="seal-title">
     <div class="modal-content">
       <h2 id="seal-title">Selamento do Campo</h2>
-      <p id="seal-text" class="modal-text">“Antes de encerrar, eu selo o trabalho de hoje com gratidão e ordem divina.<br>
-      Levo comigo a calma, a clareza e a prosperidade consciente.”</p>
+      <p id="seal-text" class="modal-text">
+        Antes de encerrar, eu selo o trabalho de hoje com gratidão e ordem divina.<br>
+        Levo comigo a calma, a clareza e a prosperidade consciente.
+      </p>
       <div class="modal-actions">
         <button class="btn-ringlight" id="seal-ok" autofocus>OK</button>
         <button class="btn-ringlight" id="seal-cancel">Cancelar</button>
@@ -88,8 +97,7 @@
     </div>
   </div>
 
-  <script type="module" src="/static/js/app.js"></script>
-  <script type="module" src="/static/js/e2e.js"></script>
+  <script type="module" src="static/js/app.js"></script>
+  <script type="module" src="static/js/e2e.js"></script>
 </body>
 </html>
-

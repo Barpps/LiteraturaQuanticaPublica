@@ -30,9 +30,13 @@ git remote get-url site >nul 2>&1 || (
 )
 
 echo.
-echo [2/4] Copiando static/ para docs/ ...
+echo [2/4] Copiando static/ para docs/ e docs/static/ ...
 if not exist docs mkdir docs
+rem Raiz: index.html, index_debug.html, guia, favicon etc.
 robocopy static docs /E /NFL /NDL /NJH /NJS /NC /NS >nul
+rem Assets usados em producao (paths /static/css, /static/js, /static/config)
+if not exist docs\\static mkdir docs\\static
+robocopy static docs\\static /E /NFL /NDL /NJH /NJS /NC /NS >nul
 if errorlevel 8 (
   echo [ERRO] Falha ao copiar arquivos para docs/.
   pause & exit /b 1
@@ -61,4 +65,3 @@ exit /b 0
 echo Operacao cancelada. Nada foi publicado.
 pause
 exit /b 0
-
