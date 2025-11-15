@@ -50,7 +50,7 @@ function phaseLabel(idx) {
   const labels = [
     'Fase 1 - Ativar',
     'Fase 2 - Harmonizar',
-    'Faze 3 - Expandir',
+    'Fase 3 - Expandir',
     'Fase 4 - Dissolver'
   ];
   return (idx >= 0 && idx < labels.length) ? labels[idx] : ('Fase ' + (idx + 1));

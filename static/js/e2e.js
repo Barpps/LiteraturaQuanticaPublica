@@ -1,7 +1,14 @@
 // Edge/Chrome-safe E2E runner. No optional chaining, no top-level await.
 
 function qs(id){ return document.getElementById(id); }
-function log(s, cls){ var b = qs('e2eBody'); if(!b) return; var p = document.createElement('div'); if(cls) p.className = cls; p.textContent = s; b.appendChild(p); b.scrollTop = b.scrollHeight; }
+function log(s, cls){
+  var b = qs('e2eBody'); if(!b) return;
+  var p = document.createElement('div');
+  if(cls) p.className = cls;
+  p.textContent = s;
+  b.appendChild(p);
+  b.scrollTop = b.scrollHeight;
+}
 function sleep(ms){ return new Promise(function(res){ setTimeout(res, ms); }); }
 function now(){ return (performance && performance.now ? performance.now() : Date.now()); }
 
@@ -26,15 +33,6 @@ function getParams(){
   return out;
 }
 
-function label(s){
-  try {
-    return String(s)
-      .replace(/[\u2010\u2011\u2012\u2013\u2014\u2212]/g, ' - ')
-      .replace(/ÔÇö|â€”|â€“/g, ' - ')
-      .replace(/\s*-\s*/g, ' - ');
-  } catch(e) { return s; }
-}
-
 async function runModule(modName, cfgUrl){
   var report = { module: modName, cfgUrl: cfgUrl, steps: [], ok: true };
   function step(name, ok, notes){ report.steps.push({ name: name, ok: !!ok, notes: notes||'' }); if(!ok) report.ok=false; }
@@ -45,7 +43,7 @@ async function runModule(modName, cfgUrl){
     moduleSel.value = cfgUrl;
     var evt = new Event('change'); moduleSel.dispatchEvent(evt);
     log('Carregando: ' + modName, 'mono');
-  } catch(e) { step('Selecionar módulo', false, String(e)); return report; }
+  } catch(e) { step('Selecionar modulo', false, String(e)); return report; }
 
   await sleep(200);
   var audio = window.audio, visuals = window.visuals;
@@ -56,7 +54,8 @@ async function runModule(modName, cfgUrl){
     // Basic props
     var hasGeom = !!(cfg.visual && cfg.visual.geometry);
     var hasRingDial = (cfg.visual && cfg.visual.geometry && (cfg.visual.geometry.ringLineWidth!=null));
-    var hasSecAlpha = (cfg.visual && cfg.visual.geometry && (cfg.visual.geometry.secondaryPulseAlpha!=null || cfg.visual.geometry.secondaryPulseAlpha===null));
+    var hasSecAlpha = (cfg.visual && cfg.visual.geometry &&
+      (cfg.visual.geometry.secondaryPulseAlpha!=null || cfg.visual.geometry.secondaryPulseAlpha===null));
     step('Propriedades visuais', (hasGeom && hasRingDial && hasSecAlpha), 'geometry/ringLineWidth/secondaryPulseAlpha');
   } catch(e){ step('Carregar JSON', false, String(e)); }
 
@@ -93,15 +92,18 @@ async function runModule(modName, cfgUrl){
     var ok528 = !want528 || !!(n.tone528 && n.g528);
     var ok963 = !want963 || !!(n.tone963 && n.g963);
     var okFund = !wantFund || !!(n.toneFund && n.gFund);
-    step('Tons por módulo', (ok528 && ok963 && okFund), JSON.stringify({has528: !!(n.tone528), has963: !!(n.tone963), hasFund: !!(n.toneFund)}));
+    step('Tons por modulo', (ok528 && ok963 && okFund),
+      JSON.stringify({has528: !!(n.tone528), has963: !!(n.tone963), hasFund: !!(n.toneFund)}));
 
-    // Mask 600Hz +2dB (PAZ)
-    var okMask = !wantMask || (n.maskPeak && Math.abs(n.maskPeak.gain.value - ((cfg && cfg.mask && cfg.mask.gainDb)||0)) < 0.6);
-    step('Máscara 600Hz', okMask, n.maskPeak ? ('gain=' + n.maskPeak.gain.value.toFixed(2)) : 'no mask');
+    // Mask 600Hz +2dB (PAZ) ou qualquer mask definida
+    var okMask = !wantMask || (n.maskPeak &&
+      Math.abs(n.maskPeak.gain.value - ((cfg && cfg.mask && cfg.mask.gainDb)||0)) < 0.6);
+    step('Mascara 600Hz', okMask,
+      n.maskPeak ? ('gain=' + n.maskPeak.gain.value.toFixed(2)) : 'no mask');
 
     // Noise blend kind
     var okNoise = !wantBlend || (n.noiseKind === 'pink+brownblend');
-    step('Ruído pink+brownBlend', okNoise, 'kind=' + (n.noiseKind||'n/a'));
+    step('Ruido pink+brownBlend', okNoise, 'kind=' + (n.noiseKind||'n/a'));
   } catch(e){ step('Engine nodes', false, String(e)); }
 
   // Visual checks
@@ -112,8 +114,17 @@ async function runModule(modName, cfgUrl){
     // Accept null (dynamic) or numeric secondaryPulseAlpha as OK
     var okSecAlpha = (geom && (visuals.secondaryPulseAlpha===null || typeof visuals.secondaryPulseAlpha === 'number'));
     var okMicrop = (!visuals.maxMicropulsesPerCycle || visuals.maxMicropulsesPerCycle <= 3);
-    var okRot = (visuals.rotSpeed >= 0.03 && visuals.rotSpeed <= 0.1);
-    step('Visual geometry', (okGeom && okRingDial && okSecAlpha && okMicrop && okRot), JSON.stringify({type: geom&&geom.type, ringLineWidth: visuals.ringLineWidth, secAlpha: visuals.secondaryPulseAlpha, micropulses: visuals.maxMicropulsesPerCycle, rot: visuals.rotSpeed}));
+    // Aceita rotações muito lentas (ex.: Pintura Viva) até 0.1 rad/s
+    var okRot = (visuals.rotSpeed > 0 && visuals.rotSpeed <= 0.1);
+    step('Visual geometry',
+      (okGeom && okRingDial && okSecAlpha && okMicrop && okRot),
+      JSON.stringify({
+        type: geom && geom.type,
+        ringLineWidth: visuals.ringLineWidth,
+        secAlpha: visuals.secondaryPulseAlpha,
+        micropulses: visuals.maxMicropulsesPerCycle,
+        rot: visuals.rotSpeed
+      }));
   } catch(e){ step('Visual state', false, String(e)); }
 
   // Phase and stop/resume
@@ -135,27 +146,30 @@ async function runModule(modName, cfgUrl){
   try {
     var modeSel = qs('modeSel');
     function setMode(m){ modeSel.value = m; var evt = new Event('change'); modeSel.dispatchEvent(evt); }
+
     setMode('binaural'); await sleep(900);
     var m1 = audio.activeBeatType();
-    var pan1 = (audio.nodes && (audio.nodes.panDepth!=null ? audio.nodes.panDepth : (audio.nodes.panScale && audio.nodes.panScale.gain.value))) || 0;
+    var pan1 = (audio.nodes &&
+      (audio.nodes.panDepth!=null ? audio.nodes.panDepth :
+        (audio.nodes.panScale && audio.nodes.panScale.gain.value))) || 0;
     var ok1 = (m1==='binaural' && pan1 > 0.4);
     step('Modo Fones (Binaural)', ok1, 'mode=' + m1 + ', panDepth=' + (pan1.toFixed?pan1.toFixed(2):pan1));
 
     setMode('iso'); await sleep(900);
     var m2 = audio.activeBeatType();
-    var pan2 = (audio.nodes && (audio.nodes.panDepth!=null ? audio.nodes.panDepth : (audio.nodes.panScale && audio.nodes.panScale.gain.value))) || 0;
+    var pan2 = (audio.nodes &&
+      (audio.nodes.panDepth!=null ? audio.nodes.panDepth :
+        (audio.nodes.panScale && audio.nodes.panScale.gain.value))) || 0;
     var ok2 = (m2==='iso' && pan2 <= 0.3 + 1e-3);
-    step('Modo Ambiente (Isocrônico)', ok2, 'mode=' + m2 + ', panDepth=' + (pan2.toFixed?pan2.toFixed(2):pan2));
+    step('Modo Ambiente (Isocronico)', ok2, 'mode=' + m2 + ', panDepth=' + (pan2.toFixed?pan2.toFixed(2):pan2));
 
     setMode('auto'); await sleep(600);
-    // Fallback explícito
     if (audio.fallbackToIso) { audio.fallbackToIso(); }
     await sleep(600);
     var mf = audio.activeBeatType();
     var okFbk = (mf==='iso');
-    step('Fallback para Isocrônico', okFbk, 'mode=' + mf);
+    step('Fallback para Isocronico', okFbk, 'mode=' + mf);
 
-    // Retorno ao Auto (esperado binaural em estéreo)
     setMode('auto'); await sleep(800);
     var ma = audio.activeBeatType();
     step('Retorno Auto', (ma==='binaural' || ma==='iso'), 'mode=' + ma);
@@ -167,13 +181,13 @@ async function runModule(modName, cfgUrl){
 async function runE2E(){
   var report = { ts: new Date().toISOString(), results: [], ok: true, ua: navigator.userAgent };
   var modules = [
-    { n:'Prosperidade Consciente + Serenidade', u:'static/config/modules/frequencias_diarias.json' },
-    { n:'O Silêncio entre os Raios', u:'static/config/modules/silencio_entre_os_raios.json' },
-    { n:'Presença Divina na Ação', u:'static/config/modules/presenca_divina_acao.json' },
-    { n:'PAZ — Pôr do Sol da Integração', u:'static/config/modules/paz_por_do_sol.json' }
+    { n:'Prosperidade + Serenidade', u:'static/config/modules/frequencias_diarias.json' },
+    { n:'O Silencio entre os Raios', u:'static/config/modules/silencio_entre_os_raios.json' },
+    { n:'Presenca na Acao', u:'static/config/modules/presenca_divina_acao.json' },
+    { n:'Por do Sol da Integracao', u:'static/config/modules/paz_por_do_sol.json' },
+    { n:'Plenitude + Luz', u:'static/config/modules/plenitude_coluna_de_luz.json' },
+    { n:'Pintura Viva na Prosperidade Serena', u:'static/config/modules/pintura_viva.json' }
   ];
-  // Local only: adiciona PLENITUDE ao E2E
-  modules.push({ n:'PLENITUDE - Coluna de Luz do Todo', u:'static/config/modules/plenitude_coluna_de_luz.json' });
 
   log('Iniciando Full E2E...', 'mono');
   for (var i=0;i<modules.length;i++){
@@ -182,7 +196,7 @@ async function runE2E(){
     log((r.ok? 'OK: ':'FALHA: ') + modules[i].n, (r.ok? 'ok' : 'err'));
     if(!r.ok) report.ok=false;
   }
-  log('E2E concluído: ' + (report.ok? 'OK' : 'FALHAS'), (report.ok? 'ok':'err'));
+  log('E2E concluido: ' + (report.ok? 'OK' : 'FALHAS'), (report.ok? 'ok':'err'));
   window.__E2E_REPORT__ = report;
   return report;
 }
@@ -202,10 +216,12 @@ function hookUI(){
 function autorunIfRequested(){
   var p = getParams();
   if (p && (p.autorun==='1' || p.autorun==='true')) {
-    // Nota: precisa de clique do usuário em alguns navegadores para iniciar áudio;
-    // autorun aqui dispara a sequência, mas o primeiro PLAY ainda pode requerer gesto.
     setTimeout(function(){
-      try { runE2E().then(function(rep){ if (p.autoexport==='1' || p.autoexport==='true') downloadJson('ringlight_e2e_report.json', rep); }); } catch(e){}
+      try {
+        runE2E().then(function(rep){
+          if (p.autoexport==='1' || p.autoexport==='true') downloadJson('ringlight_e2e_report.json', rep);
+        });
+      } catch(e){}
     }, 300);
   }
 }
