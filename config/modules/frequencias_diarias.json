@@ -1,0 +1,46 @@
+{
+  "moduleId": "frequencias_diarias",
+  "name": "Prosperidade + Serenidade",
+  "sampleRate": 44100,
+  "durationsSec": { "activation": 300, "harmony": 3300, "expansion": 1200, "dissolution": 600 },
+  "breathingBpm": 3.6,
+  "rotationRadPerSec": 0.08,
+  "brightnessMax": 0.78,
+  "frequenciesHz": { "drone": 174, "tones": [432, 528, 639, 852, 963] },
+  "isochronicHz": 7.5,
+  "reverb": { "wetGain": 0.15, "boostDbPhase3": 2.5 },
+  "shelf": { "highStartHz": 2000, "phase3BoostDb": 2.5, "phase4CutDb": -6 },
+  "pan": { "lfoHz": 0.03, "depth": 0.6 },
+  "noiseLevelDb": -28,
+  "prebufferSec": 2.5,
+  "loop": false,
+  "loopXfadeSec": 0.45,
+  "brainwave": {
+    "carrierHz": 432,
+    "binauralHz": 7.5,
+    "preferBinaural": true,
+    "fallbackIsochronicOnMono": true
+  },
+  "visual": {
+    "flowerPetals": 12,
+    "flowerOpacity": 1.0,
+    "centralSphere": false,
+    "geometry": { "type": "flower", "ringLineWidth": 3.5, "secondaryPulseAlpha": null },
+    "palette": {
+      "dominant": "#00FFAA",
+      "gold": "#FFD700",
+      "rose": "rgba(255, 182, 193, 0.6)",
+      "violet": "rgba(138, 43, 226, 0.3)"
+    }
+  },
+  "popups": {
+    "intent": {
+      "title": "Intenção Vibracional Declarada",
+      "message": "Este espaço visual-sonoro é um campo de coerência.<br>A luz pulsa no ritmo do coração.<br>O som guia o tempo.<br>Eu Sou o centro sereno de abundância consciente."
+    },
+    "seal": {
+      "title": "Selamento do Campo",
+      "message": "Antes de encerrar, eu selo o trabalho de hoje com gratidão e ordem divina.<br>Levo comigo a calma, a clareza e a prosperidade consciente."
+    }
+  }
+}

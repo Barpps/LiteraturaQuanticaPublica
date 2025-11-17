@@ -1,0 +1,62 @@
+{
+  "moduleId": "plenitude_coluna_de_luz",
+  "name": "PLENITUDE — Coluna de Luz do Todo",
+  "sampleRate": 44100,
+  "durationsSec": { "activation": 300, "harmony": 3300, "expansion": 1200, "dissolution": 600 },
+  "breathingBpm": 3.6,
+  "rotationRadPerSec": 0.04,
+  "brightnessMax": 0.70,
+  "frequenciesHz": {
+    "drone": 174,
+    "fundamental": 741,
+    "tones": [432, 528, 639, 963]
+  },
+  "isochronicHz": 6.0,
+  "reverb": { "wetGain": 0.12, "boostDbPhase3": 2.0 },
+  "shelf": { "highStartHz": 1900, "phase3BoostDb": 2.0, "phase4CutDb": -6 },
+  "pan": { "lfoHz": 0.025, "depth": 0.5 },
+  "noiseLevelDb": -32,
+  "noiseType": "pink+brownBlend",
+  "prebufferSec": 2.5,
+  "brainwave": {
+    "carrierHz": 432,
+    "binauralHz": 6.0,
+    "preferBinaural": true,
+    "fallbackIsochronicOnMono": true
+  },
+  "mask": { "hz": 963, "gainDb": 1.5 },
+  "visual": {
+    "flowerPetals": 12,
+    "flowerOpacity": 0.22,
+    "centralSphere": false,
+    "geometry": {
+      "type": "plenitude_coluna",
+      "metatronOpacity": 0.0,
+      "support": "flower",
+      "supportOpacity": 0.22,
+      "ringLineWidth": 3.6,
+      "secondaryPulseAlpha": 0.15
+    },
+    "palette": {
+      "dominant": "#C3B6FF",
+      "gold": "#F9F5FF",
+      "rose": "rgba(255, 214, 240, 0.60)",
+      "violet": "rgba(164, 140, 255, 0.36)",
+      "aura": "rgba(245, 244, 255, 0.14)",
+      "bg1": "#070319",
+      "bg2": "#0A0423",
+      "bg3": "#050214"
+    },
+    "maxMicropulsesPerCycle": 3
+  },
+  "popups": {
+    "intent": {
+      "title": "Portal da Coluna de Luz",
+      "message": "Eu entro na Coluna de Luz do Todo.<br>Cada um dos meus corpos se alinha em suavidade, leveza e presença."
+    },
+    "seal": {
+      "title": "Selamento da Plenitude",
+      "message": "Eu selo este campo de plenitude.<br>Permaneço uno com o Todo enquanto sigo o meu dia."
+    }
+  }
+}
