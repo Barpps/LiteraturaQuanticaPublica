@@ -20,6 +20,7 @@ export class SessionAudio {
     this._forcedPhase = null;
     this._beatMode = 'auto'; // auto | binaural | iso
     this._activeBeatType = 'iso';
+    this._baseReverbWetGain = null;
     // Normalize em-dash to ASCII hyphen to avoid mojibake on some setups
     try {
       this.phases = (this.phases || []).map(function(p){
@@ -31,9 +32,17 @@ export class SessionAudio {
   }
 
   async init() {
-    const res = await fetch(this.configUrl);
-    this.cfg = await res.json();
-    return this.cfg;
+    try {
+      const res = await fetch(this.configUrl);
+      if (!res.ok) {
+        throw new Error('HTTP ' + res.status + ' ao carregar ' + this.configUrl);
+      }
+      this.cfg = await res.json();
+      return this.cfg;
+    } catch (e) {
+      try { console.error('SessionAudio.init failed for', this.configUrl, e); } catch (_) {}
+      throw e;
+    }
   }
 
   _createContext() {
@@ -134,6 +143,9 @@ export class SessionAudio {
     const convolver = ctx.createConvolver();
     convolver.buffer = this._makeReverbImpulse();
     const reverbWet = this._gain(cfg.reverb.wetGain);
+    this._baseReverbWetGain = cfg.reverb && typeof cfg.reverb.wetGain === 'number'
+      ? cfg.reverb.wetGain
+      : reverbWet.gain.value;
 
     // Connect graph
     const duck = this._gain(1); // para janelas de sil├¬ncio (m├│dulos opcionais)
@@ -553,8 +565,11 @@ export class SessionAudio {
     ramp(n.lfoOffset.offset, lfoBase);
     ramp(n.noiseGain.gain, noise);
     ramp(n.shelf.gain, shelfDb);
-    if (wetDb !== 0.0) {
-      const wetTarget = n.reverbWet.gain.value * this._dbToGain(wetDb);
+    if (this._baseReverbWetGain !== null) {
+      const base = this._baseReverbWetGain;
+      const wetTarget = (wetDb !== 0.0)
+        ? base * this._dbToGain(wetDb)
+        : base;
       ramp(n.reverbWet.gain, wetTarget);
     }
 
@@ -635,3 +650,4 @@ export class SessionAudio {
     }
   }
 }
+

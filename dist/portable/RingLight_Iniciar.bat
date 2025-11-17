@@ -3,7 +3,10 @@ setlocal ENABLEDELAYEDEXPANSION
 cd /d "%~dp0"
 
 set "PORT=5000"
-set "URL=http://127.0.0.1:%PORT%/"
+set "TARGET=/"
+if /I "%~1"=="UAT" set "TARGET=/UAT"
+if /I "%~1"=="DEBUG" set "TARGET=/debug"
+set "URL=http://127.0.0.1:%PORT%%TARGET%"
 set "VENV=.venv\Scripts\python.exe"
 
 echo [RingLight] Verificando servidor em %URL%
@@ -54,4 +57,3 @@ exit /b 0
 set "UP=False"
 for /f %%r in ('powershell -NoLogo -NoProfile -Command "try{(Invoke-WebRequest -UseBasicParsing -Uri %URL% -TimeoutSec 1).StatusCode -eq 200}catch{$false}"') do set "UP=%%r"
 exit /b 0
-

@@ -34,7 +34,7 @@ if (moduleSel) {
   }).join('');
 }
 
-if (moduleSel && document.body && document.body.classList.contains('enable-pintura-viva')) {
+if (moduleSel) {
   const optPinturaViva = document.createElement('option');
   optPinturaViva.value = 'static/config/modules/pintura_viva.json';
   optPinturaViva.textContent = 'Pintura Viva na Prosperidade Serena';
@@ -106,7 +106,14 @@ function normalizeLabel(s){
 }
 
 async function init() {
-  const cfg = await audio.init();
+  let cfg;
+  try {
+    cfg = await audio.init();
+  } catch (e) {
+    try { console.error('Falha ao carregar módulo inicial', configUrl, e); } catch (_) {}
+    try { alert('Não foi possível carregar o módulo inicial.\nVerifique sua conexão e tente novamente.'); } catch (_) {}
+    return;
+  }
   if (cfg.popups && cfg.popups.intent) {
     intentTitle.textContent = cfg.popups.intent.title || intentTitle.textContent;
     intentText.innerHTML = cfg.popups.intent.message || intentText.innerHTML;
@@ -188,12 +195,6 @@ playBtn.addEventListener('click', window.__ringPlay);
 intentOk.addEventListener('click', async function(){
   hideModal(modalIntent);
   intentionShown = true;
-  await enterFullscreenIfPossible();
-  try {
-    if (screen.orientation && screen.orientation.lock && window.innerHeight > window.innerWidth) {
-      await screen.orientation.lock('landscape');
-    }
-  } catch (e) {}
   playBtn.click();
 });
 
@@ -280,12 +281,30 @@ fsBtn.addEventListener('click', function(){ enterFullscreenIfPossible(); });
 // Module selector
 if (moduleSel) moduleSel.addEventListener('change', async function(){
   const wasPlaying = audio && audio._started;
-  if (audio) await audio.fadeOutAndStop(0.8);
-  configUrl = moduleSel.value;
-  audio = new SessionAudio(configUrl);
-  attachPhaseLabelOverride(audio);
+  const prevUrl = configUrl;
+  const prevAudio = audio;
+  const newUrl = moduleSel.value;
+
+  const nextAudio = new SessionAudio(newUrl);
+  attachPhaseLabelOverride(nextAudio);
+
+  let cfg;
+  try {
+    cfg = await nextAudio.init();
+  } catch (e) {
+    try { console.error('Falha ao trocar de módulo', newUrl, e); } catch (_) {}
+    try { alert('Não foi possível carregar o novo módulo.\nMantendo o módulo anterior.'); } catch (_) {}
+    moduleSel.value = prevUrl;
+    window.audio = prevAudio;
+    return;
+  }
+
+  if (prevAudio) await prevAudio.fadeOutAndStop(0.8);
+
+  configUrl = newUrl;
+  audio = nextAudio;
   window.audio = audio;
-  const cfg = await audio.init();
+
   if (cfg.popups && cfg.popups.intent) {
     intentTitle.textContent = cfg.popups.intent.title || intentTitle.textContent;
     intentText.innerHTML = cfg.popups.intent.message || intentText.innerHTML;

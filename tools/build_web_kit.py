@@ -22,7 +22,17 @@ PORTABLE = DIST / 'portable'
 
 def clean_dir(p: Path):
     if p.exists():
-        shutil.rmtree(p)
+        # Windows pode marcar arquivos/copias anteriores como somente leitura;
+        # este handler ajusta permissões e tenta remover novamente.
+        def _on_rm_error(func, path, exc_info):
+            try:
+                os.chmod(path, 0o700)
+                func(path)
+            except OSError:
+                # fallback: ignora entrada problemática, para não quebrar o build
+                pass
+
+        shutil.rmtree(p, onerror=_on_rm_error)
     p.mkdir(parents=True, exist_ok=True)
 
 
@@ -90,4 +100,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

@@ -16,7 +16,13 @@ def favicon():
 def debug_index():
     return send_from_directory("static", "index_debug.html")
 
+@app.get("/UAT")
+def uat_page():
+    return send_from_directory("static", "UAT.html")
+
 
 if __name__ == "__main__":
-    # Runs on http://127.0.0.1:5000
-    app.run(debug=False)
+    # Para acessar de outros dispositivos na mesma rede:
+    # - Servidor escuta em 0.0.0.0 (todas as interfaces)
+    # - No PC, descubra o IPv4 local (ex.: 192.168.0.23) e use http://192.168.0.23:5000 no celular.
+    app.run(host="0.0.0.0", debug=False)

@@ -16,7 +16,25 @@ body {
   background-position: center center;
   background-repeat: no-repeat;
   opacity: 0.96; /* fora do FS */
-  transition: opacity 0.5s ease;
+  transition: opacity 0.5s ease, background-size 6s ease-in-out, filter 6s ease-in-out;
+}
+
+/* Ondas suaves e gradiente especial para Pintura Viva */
+body.theme-pintura-viva #bg {
+  background:
+    radial-gradient(circle at center,
+      #D5B65F 0%,
+      #B8943F 16%,
+      #6B3FA8 52%,
+      #130634 100%);
+  animation: pinturaVivaWaves 20s ease-in-out infinite;
+  filter: brightness(0.85);
+}
+
+@keyframes pinturaVivaWaves {
+  0%   { background-size: 130% 130%; }
+  50%  { background-size: 170% 170%; }
+  100% { background-size: 130% 130%; }
 }
 body.is-fullscreen #bg { opacity: 1; }
 
@@ -36,7 +54,7 @@ body.is-fullscreen #bg { opacity: 1; }
   display: block;
 }
 
-#controls {
+body.theme-gold #controls {
   position: fixed;
   left: 50%;
   bottom: 20px;
@@ -121,7 +139,7 @@ button {
 }
 
 /* Botão padrão RingLight: Violeta Dourado Invertido */
-.btn-ringlight {
+body.theme-gold .btn-ringlight {
   background: linear-gradient(145deg, #3B006A 0%, #FFE773 90%);
   color: #FFFFFF;
   border: 1px solid #FFD700;
@@ -132,26 +150,34 @@ button {
   letter-spacing: 0.3px;
   font-weight: 700;
 }
-.btn-ringlight:hover { 
+body.theme-gold .btn-ringlight:hover { 
   background: linear-gradient(145deg, #5A00A1 10%, #FFD700 95%);
   box-shadow: 0 0 24px #FFD700, 0 0 34px rgba(180,124,255,0.8);
   transform: translateY(-1px);
 }
-.btn-ringlight:active {
+body.theme-gold .btn-ringlight:active {
   transform: translateY(0);
   filter: brightness(0.98);
 }
-.btn-ringlight:disabled {
+body.theme-gold .btn-ringlight:disabled {
   opacity: 0.6;
   cursor: not-allowed;
   box-shadow: none;
 }
-.btn-ringlight:focus-visible {
+body.theme-gold .btn-ringlight:focus-visible {
   outline: 2px solid rgba(249,212,35,.8);
   outline-offset: 3px;
 }
 
 #timer { color: #fff; font-weight: 700; }
+#phase {
+  color: #FFE9A6;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 50% 0%, rgba(12,0,32,0.9), rgba(8,0,26,0.9));
+}
 
 /* Modals */
 .modal {
@@ -202,3 +228,26 @@ button {
 }
 body:not(.is-fullscreen) #fsBtn { display: inline-block; }
 #fsBtn:hover { opacity: 0.8; }
+
+/* --- RingLight public: responsive controls + violet theme overrides --- */
+#controls{
+  position: fixed;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 12px;
+  padding: 10px 14px;
+  width: min(96vw, 1100px);
+  z-index: 100;
+}
+.btn-ringlight{background:linear-gradient(180deg,#240046 0%,#3B0A6E 100%);color:#E9DAFF;border:1px solid #6F38C5;box-shadow:0 0 14px rgba(124,76,255,.45);border-radius:999px;text-shadow:0 1px 2px rgba(0,0,0,.45);transition:all .25s ease;letter-spacing:.3px;font-weight:700}
+.btn-ringlight:hover{background:linear-gradient(180deg,#2E005D 0%,#5200A8 100%);box-shadow:0 0 22px rgba(138,84,255,.65);transform:translateY(-1px)}
+.btn-ringlight:active{transform:translateY(0);filter:brightness(.98)}
+.btn-ringlight:disabled{opacity:.6;cursor:not-allowed;box-shadow:none}
+.btn-ringlight:focus-visible{outline:2px solid rgba(178,124,255,.9);outline-offset:3px}
+#fsBtn{bottom:72px}
+@media (max-width:560px){#controls{bottom:10px;gap:8px 10px;padding:8px 12px;font-size:11px;width:96vw}button,.btn-ringlight{padding:8px 12px}select#moduleSel,select#modeSel{padding:8px 32px 8px 12px}#fsBtn{bottom:66px;right:12px}}
+@media (max-width:380px){#controls{font-size:10px;gap:6px 8px}button,.btn-ringlight{padding:7px 10px}}

@@ -1,6 +1,6 @@
 {
   "moduleId": "frequencias_diarias",
-  "name": "Prosperidade Consciente + Serenidade",
+  "name": "Prosperidade + Serenidade",
   "sampleRate": 44100,
   "durationsSec": { "activation": 300, "harmony": 3300, "expansion": 1200, "dissolution": 600 },
   "breathingBpm": 3.6,

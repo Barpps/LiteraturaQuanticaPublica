@@ -46,23 +46,28 @@
     this._cycleIndex = 0;
     this._micropulsesSoFar = 0;
 
-    const resize = () => {
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-      const size = Math.min(vw, vh) * 0.96; // usa 96% do menor lado para margens
-      this.canvas.width = size;
-      this.canvas.height = size;
-    };
-    window.addEventListener('resize', resize);
-    resize();
+    // Listeners globais: registrar apenas uma vez por instância
+    if (!this._resizeHandler) {
+      this._resizeHandler = () => {
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const size = Math.min(vw, vh) * 0.96; // usa 96% do menor lado para margens
+        this.canvas.width = size;
+        this.canvas.height = size;
+      };
+      window.addEventListener('resize', this._resizeHandler);
+    }
+    this._resizeHandler();
 
     // Frame throttling inteligente
-    const onVis = () => {
-      this.visible = (document.visibilityState === 'visible');
-      this.targetFps = this.visible ? 60 : 15; // reduz quando aba nao esta ativa
-    };
-    document.addEventListener('visibilitychange', onVis);
-    onVis();
+    if (!this._visHandler) {
+      this._visHandler = () => {
+        this.visible = (document.visibilityState === 'visible');
+        this.targetFps = this.visible ? 60 : 15; // reduz quando aba nao esta ativa
+      };
+      document.addEventListener('visibilitychange', this._visHandler);
+    }
+    this._visHandler();
   }
 
   setActive(on) { this.active = on; }
