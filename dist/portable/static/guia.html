@@ -3,24 +3,44 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Guia do Usuário — RingLight</title>
+  <title>Guia do Usuário – RingLight</title>
   <link rel="stylesheet" href="static/css/styles.css" />
   <style>
-    body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:#eee; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: #eee;
+    }
     .wrap { max-width: 980px; margin: 24px auto; padding: 0 16px; }
     h1,h2,h3 { color:#FFD700; margin: 16px 0 8px; }
-    .btn { background: linear-gradient(145deg, #3B006A 0%, #FFE773 90%); color:#111; border:1px solid #FFD700; border-radius:999px; padding:8px 14px; cursor:pointer; }
-    .box { background: rgba(0,0,0,0.45); border:1px solid rgba(255,215,0,0.25); border-radius:12px; padding:12px 14px; margin:12px 0; }
+    .btn {
+      background: linear-gradient(145deg, #3B006A 0%, #FFE773 90%);
+      color:#111;
+      border:1px solid #FFD700;
+      border-radius:999px;
+      padding:8px 14px;
+      cursor:pointer;
+    }
+    .box {
+      background: rgba(0,0,0,0.45);
+      border:1px solid rgba(255,215,0,0.25);
+      border-radius:12px;
+      padding:12px 14px;
+      margin:12px 0;
+    }
     ul { margin: 8px 0 8px 20px; }
     code { background: rgba(255,255,255,0.06); padding: 1px 6px; border-radius:6px; }
-    @media print { .no-print { display:none } body { background:#fff; color:#000 } }
+    @media print {
+      .no-print { display:none }
+      body { background:#fff; color:#000 }
+    }
   </style>
 </head>
 <body>
   <div id="bg" aria-hidden="true"></div>
   <div class="wrap">
-    <h1>Guia do Usuário — RingLight</h1>
-    <p class="no-print"><button class="btn" onclick="window.print()">Imprimir / Salvar como PDF</button>
+    <h1>Guia do Usuário – RingLight</h1>
+    <p class="no-print">
+      <button class="btn" onclick="window.print()">Imprimir / Salvar como PDF</button>
       &nbsp; <a class="btn" href="index.html">Abrir o App</a>
       &nbsp; <a class="btn" href="index_debug.html">Debug / E2E</a>
     </p>
@@ -38,10 +58,10 @@
     <h2>Fases (90 minutos)</h2>
     <div class="box">
       <ul>
-        <li><strong>Fase 1 — Ativação (0–5 min)</strong>: 174 Hz constante; 432/528 Hz emergem; fade-in global de 2 min.</li>
-        <li><strong>Fase 2 — Harmonia (5–60 min)</strong>: entra batimento 7.5 Hz; ruído marrom; harmônicos 639/852; campo estável.</li>
-        <li><strong>Fase 3 — Expansão (60–80 min)</strong>: introduz 963 Hz; brilho/reverb +2–3 dB (suave).</li>
-        <li><strong>Fase 4 — Dissolução (80–90 min)</strong>: retira altas e batimento; fica o <em>drone</em> 174 Hz até o fade final.</li>
+        <li><strong>Fase 1 – Ativar (0–5 min)</strong>: 174 Hz constante; 432/528 Hz emergem; fade-in global de 2 min.</li>
+        <li><strong>Fase 2 – Harmonizar (5–60 min)</strong>: entra batimento 7.5 Hz; ruído marrom; harmônicos 639/852; campo estável.</li>
+        <li><strong>Fase 3 – Expandir (60–80 min)</strong>: introduz 963 Hz; brilho/reverb +2–3 dB (suave).</li>
+        <li><strong>Fase 4 – Dissolver (80–90 min)</strong>: retira altas e batimento; fica o <em>drone</em> 174 Hz até o fade final.</li>
       </ul>
       <p>Visual: respiração luminosa ~3 cpm; rotação suave (0.03–0.08 rad/s); micropulsos ≤ 3 por ciclo; pico de brilho na <strong>4ª batida</strong> (7.5 Hz).</p>
     </div>
@@ -51,7 +71,7 @@
       <h3>Prosperidade Consciente + Serenidade</h3>
       <ul>
         <li><strong>Som</strong>: 432 Hz (base); 528/639/852/963 Hz conforme fase; 174 Hz <em>drone</em>; 7.5 Hz Auto (binaural/iso); ruído marrom (~-28 dB); pré‑buffer 2.5 s.</li>
-        <li><strong>Visual</strong>: Flor da Vida; paleta dourado‑esmeralda + rosa‑dourado; brilho máx. ~0.78; rotação 0.08; “alpha” secundário dinâmico.</li>
+        <li><strong>Visual</strong>: Flor da Vida; paleta dourado‑esmeralda + rosa‑dourado; brilho máx. ~0.78; rotação 0.08; alpha secundário dinâmico.</li>
       </ul>
 
       <h3>O Silêncio entre os Raios</h3>
@@ -63,13 +83,13 @@
       <h3>Presença Divina na Ação</h3>
       <ul>
         <li><strong>Som</strong>: 432 Hz + 963 Hz sutil; 174 Hz base; 7.5 Hz Auto; ruído marrom ~-31 dB; pré‑buffer 2.5 s.</li>
-        <li><strong>Visual</strong>: <strong>Ring</strong> central estável + Cubo de Metatron (~28%); <code>ringLineWidth</code> médio; <code>secondaryPulseAlpha≈0.14</code>; rotação 0.04.</li>
+        <li><strong>Visual</strong>: <strong>Ring</strong> central estável + Cubo de Metatron (~28%); <code>ringLineWidth</code> médio; <code>secondaryPulseAlpha ≈ 0.14</code>; rotação 0.04.</li>
       </ul>
 
-      <h3>PAZ — Pôr do Sol da Integração</h3>
+      <h3>PAZ – Pôr do Sol da Integração</h3>
       <ul>
         <li><strong>Som</strong>: 432 Hz + 528/963 Hz sutis; 174 Hz base; <strong>máscara 600 Hz +2 dB</strong>; ruído <em>pink+brownBlend</em> ~-30 dB; 7.5 Hz Auto.</li>
-        <li><strong>Visual</strong>: <strong>Ring</strong> + Flower apoio; <code>secondaryPulseAlpha≈0.16</code>; respiração 3 cpm; rotação ~0.035; aura dourado‑branco 8–12%.</li>
+        <li><strong>Visual</strong>: <strong>Ring</strong> + Flower apoio; <code>secondaryPulseAlpha ≈ 0.16</code>; respiração 3 cpm; rotação ~0.035; aura dourado‑branco 8–12%.</li>
       </ul>
     </div>
 
@@ -103,7 +123,9 @@
       </ul>
     </div>
 
-    <p style="opacity:.8">Este guia resume a experiência RingLight: som e luz em coerência, com ênfase em presença, paz e harmonia.</p>
+    <p style="opacity:.8">
+      Este guia resume a experiência RingLight: som e luz em coerência, com ênfase em presença, paz e harmonia.
+    </p>
   </div>
 </body>
 </html>
