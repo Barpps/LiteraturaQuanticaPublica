@@ -1,0 +1,70 @@
+{
+  "moduleId": "RLE_AMOR_COERENCIA_FONTE",
+  "name": "Amor — Coerência com a Fonte",
+  "sampleRate": 44100,
+  "durationsSec": { "activation": 180, "harmony": 420, "expansion": 360, "dissolution": 240 },
+  "breathingBpm": 6.0,
+  "rotationRadPerSec": 0.045,
+  "brightnessMax": 0.78,
+  "frequenciesHz": {
+    "drone": 174,
+    "tones": [432, 528, 639]
+  },
+  "isochronicHz": 6.0,
+  "reverb": { "wetGain": 0.13, "boostDbPhase3": 2.0 },
+  "shelf": { "highStartHz": 1900, "phase3BoostDb": 1.8, "phase4CutDb": -6 },
+  "pan": { "lfoHz": 0.03, "depth": 0.55 },
+  "noiseLevelDb": -29,
+  "noiseType": "brown",
+  "prebufferSec": 2.5,
+  "brainwave": {
+    "carrierHz": 432,
+    "binauralHz": 6.0,
+    "preferBinaural": true,
+    "fallbackIsochronicOnMono": true
+  },
+  "visual": {
+    "flowerPetals": 18,
+    "flowerOpacity": 0.55,
+    "centralSphere": true,
+    "geometry": {
+      "type": "ring",
+      "metatronOpacity": 0.16,
+      "support": "flower",
+      "supportOpacity": 0.26,
+      "ringLineWidth": 3.6,
+      "secondaryPulseAlpha": 0.18
+    },
+    "palette": {
+      "dominant": "#1E3A8A",
+      "gold": "#FFD166",
+      "rose": "#FF4D6D",
+      "violet": "rgba(247, 242, 232, 0.35)",
+      "aura": "rgba(255, 255, 255, 0.12)",
+      "bg1": "#050814",
+      "bg2": "#0B1027",
+      "bg3": "#141B3B"
+    },
+    "maxMicropulsesPerCycle": 3
+  },
+  "popups": {
+    "intent": {
+      "title": "Portal do Amor-Coerência",
+      "message": "Respire pelo coração em cinco tempos.<br>Inspire Amor, expire tensão.<br>Eu me alinho com a fonte de Amor que me sustenta."
+    },
+    "seal": {
+      "title": "Selamento em Amor-Coerência",
+      "message": "Guardo no coração o que é verdadeiramente amoroso, íntegro e compassivo.<br>Levo comigo calma, clareza e suavidade para o restante do meu dia."
+    }
+  },
+  "safety": {
+    "intended_use": "Relaxamento, contemplação e prática espiritual pessoal focada em Amor e coerência emocional.",
+    "not_medical": true,
+    "warnings": [
+      "Não utilizar ao dirigir ou operar máquinas.",
+      "Se sentir desconforto físico ou emocional intenso, interrompa a sessão.",
+      "Este conteúdo não substitui acompanhamento médico, psicológico ou espiritual especializado."
+    ]
+  }
+}
+

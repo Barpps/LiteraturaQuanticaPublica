@@ -182,6 +182,7 @@ async function runE2E(){
   var report = { ts: new Date().toISOString(), results: [], ok: true, ua: navigator.userAgent };
   var modules = [
     { n:'Prosperidade + Serenidade', u:'static/config/modules/frequencias_diarias.json' },
+    { n:'Amor - Coerencia com a Fonte', u:'static/config/modules/amor_coerencia_fonte.json' },
     { n:'O Silencio entre os Raios', u:'static/config/modules/silencio_entre_os_raios.json' },
     { n:'Presenca na Acao', u:'static/config/modules/presenca_divina_acao.json' },
     { n:'Por do Sol da Integracao', u:'static/config/modules/paz_por_do_sol.json' },

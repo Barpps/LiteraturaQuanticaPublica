@@ -5,7 +5,24 @@ app = Flask(__name__, static_folder="static", static_url_path="/static")
 
 
 @app.get("/")
-def index():
+def home():
+    return send_from_directory("static", "home.html")
+
+
+@app.get("/home")
+@app.get("/home.html")
+def home_alias():
+    return send_from_directory("static", "home.html")
+
+
+@app.get("/app")
+@app.get("/app.html")
+def app_main():
+    return send_from_directory("static", "index.html")
+
+
+@app.get("/index.html")
+def legacy_index():
     return send_from_directory("static", "index.html")
 
 @app.get("/favicon.ico")

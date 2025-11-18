@@ -19,7 +19,7 @@
     this._photonEnabled = false;
   }
 
-  init({ breathingBpm = 3.6, rotationRadPerSec = 0.08, brightnessMax = 0.78, petals = 12, flowerOpacity = 1.0, palette = null, centralSphere = false, geometry = null, maxMicropulsesPerCycle = null } = {}) {
+  init({ breathingBpm = 3.6, rotationRadPerSec = 0.08, brightnessMax = 0.78, petals = 12, flowerOpacity = 1.0, palette = null, centralSphere = false, geometry = null, maxMicropulsesPerCycle = null, moduleId = null, beatHz = 7.5 } = {}) {
     this.breathHz = breathingBpm / 60;
     this.rotSpeed = rotationRadPerSec;
     this.brightnessMax = brightnessMax;
@@ -33,6 +33,8 @@
     };
     this.centralSphere = centralSphere;
     this.geometry = geometry || { type: 'flower', metatronOpacity: 0.3 };
+    this.moduleId = moduleId || null;
+    this.beatHz = beatHz || 7.5;
     // Ativa fótons apenas para geometria específica (ex.: Pintura Viva)
     this._photonEnabled = !!(this.geometry && this.geometry.type === 'pintura_viva');
     // JSON overrides ÔÇö ring thickness and secondary pulse alpha (8%ÔÇô20%).
@@ -120,10 +122,11 @@
     }
     let brightness = this.brightnessMax * (0.65 + 0.35 * breath) * phaseMul;
 
-    // Spark synced to every 4th isochronic beat (7.5 Hz)
+    // Spark synced to every 4th isochronic beat (desativado para módulos especiais)
     const audioT = this.getAudioTime();
-    const isoHz = 7.5;
-    if (audioT > 0) {
+    const isoHz = this.beatHz || 7.5;
+    const isAmor = (this.moduleId === 'RLE_AMOR_COERENCIA_FONTE');
+    if (audioT > 0 && !isAmor) {
       const beat = Math.floor(audioT * isoHz);
       if (beat !== this.sparkLastBeat) {
         // Trigger spark on every 4th beat

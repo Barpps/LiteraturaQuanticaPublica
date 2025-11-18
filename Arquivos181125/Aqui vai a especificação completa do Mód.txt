@@ -1,0 +1,303 @@
+Aqui vai a especificação completa do Módulo AMOR – Coerência com a Fonte
+
+1. Identificação do Módulo RLE
+{
+  "id": "RLE_AMOR_COERENCIA_FONTE",
+  "title": "Amor · Coerência com a Fonte",
+  "category": "emocional",
+  "language": "pt-BR",
+  "narrative_mode": "literatura",
+  "duration_min_default": 20,
+  "duration_min_options": [10, 15, 20],
+  "visual_enabled": true,
+  "visual_style_pref": "ring_heart_coherence",
+  "tags": [
+    "amor",
+    "coerencia_cardiaca",
+    "emocional",
+    "harmonia_relacionamentos"
+  ]
+}
+
+2. Intenção do Módulo
+
+Foco: Coerência vibracional com a “fonte de Amor”.
+
+Eixo: Coração / emocional, com respiração em torno de 0,1 Hz (5s inspiração, 5s expiração).
+
+Cores principais:
+
+Azul profundo → ancoragem/proteção.
+
+Rosa → Amor/compaixão.
+
+Dourado → sabedoria amorosa.
+
+Branco suave → integração.
+
+Geometria: família ring + mandala/flower (anel que respira, pétalas suaves).
+
+3. Parâmetros de Áudio (audio_hints)
+{
+  "audio_hints": {
+    "binaural": {
+      "type": "monaural",
+      "beat_hz": 6.0,
+      "carrier_sequence_hz": [432, 528, 639],
+      "x_fade_seconds": 60
+    },
+    "noise": {
+      "type": "brown",
+      "level": 0.25
+    },
+    "voice": {
+      "enabled": true,
+      "provider": "azure_speech",
+      "voice_name": "pt-BR-MarcioNeural",
+      "style": "sussurrado_aconchegante",
+      "intensity": "low",
+      "language": "pt-BR"
+    }
+  }
+}
+
+
+Observação: se o sistema ainda não usa Azure aqui, basta ignorar provider/voice_name e usar só style/intensity.
+
+4. Fases do Módulo (Sessão de 20 minutos)
+
+Tempo total: 20 minutos (1200s)
+Sugestão de fases (conceito, para orientar luz + áudio):
+
+Fase 1 – Ancoragem & limpeza suave (0–180s / 3min)
+
+Cor base: azul profundo #1E3A8A.
+
+Geometria: ring.
+
+Efeito: respiração de brilho (ciclo ~10s).
+
+Fase 2 – Imersão no Amor (180–600s / 7min)
+
+Cor base: rosa #FF4D6D com brilhos dourados #FFD166.
+
+Geometria: ring_flower (anel com pétalas sutis).
+
+Micropulsos: até 2 micropulsos de 150 ms em transições importantes.
+
+Fase 3 – Coerência com a Fonte (600–960s / 6min)
+
+Transição Rosa → Branco suave.
+
+Geometria: ring_mandala (anéis concêntricos respirando).
+
+Respiração de brilho continua, estável.
+
+Fase 4 – Integração & silêncio lúcido (960–1200s / 4min)
+
+Cor base: branco dourado #F7F2E8 (branco com leve dourado).
+
+Geometria: ring_soft.
+
+Movimento mínimo, quase estático, só respiração sutil.
+
+5. Light Schedule – Exemplo para 20 min
+{
+  "light_schedule": [
+    {
+      "t": 0,
+      "action": "fade_to",
+      "duration": 10,
+      "color": "#1E3A8A",
+      "geometry": "ring",
+      "brightness": 0.7
+    },
+    {
+      "t": 10,
+      "action": "breath",
+      "duration": 170,
+      "color": "#1E3A8A",
+      "geometry": "ring",
+      "cycle_seconds": 10,
+      "brightness_min": 0.4,
+      "brightness_max": 0.9
+    },
+
+    {
+      "t": 180,
+      "action": "fade_to",
+      "duration": 20,
+      "color": "#FF4D6D",
+      "geometry": "ring_flower",
+      "brightness": 0.85
+    },
+    {
+      "t": 200,
+      "action": "pulse",
+      "duration": 0.15,
+      "color": "#FFD166",
+      "geometry": "ring_flower",
+      "brightness": 1.0
+    },
+    {
+      "t": 210,
+      "action": "breath",
+      "duration": 390,
+      "color": "#FF4D6D",
+      "geometry": "ring_flower",
+      "cycle_seconds": 10,
+      "brightness_min": 0.5,
+      "brightness_max": 0.95
+    },
+    {
+      "t": 420,
+      "action": "pulse",
+      "duration": 0.15,
+      "color": "#FFD166",
+      "geometry": "ring_flower",
+      "brightness": 1.0
+    },
+
+    {
+      "t": 600,
+      "action": "fade_to",
+      "duration": 20,
+      "color": "#F7F2E8",
+      "geometry": "ring_mandala",
+      "brightness": 0.8
+    },
+    {
+      "t": 620,
+      "action": "breath",
+      "duration": 340,
+      "color": "#F7F2E8",
+      "geometry": "ring_mandala",
+      "cycle_seconds": 10,
+      "brightness_min": 0.4,
+      "brightness_max": 0.8
+    },
+
+    {
+      "t": 960,
+      "action": "fade_to",
+      "duration": 20,
+      "color": "#F7F2E8",
+      "geometry": "ring_soft",
+      "brightness": 0.6
+    },
+    {
+      "t": 980,
+      "action": "breath",
+      "duration": 220,
+      "color": "#F7F2E8",
+      "geometry": "ring_soft",
+      "cycle_seconds": 12,
+      "brightness_min": 0.3,
+      "brightness_max": 0.6
+    }
+  ]
+}
+
+
+Regras embutidas aqui:
+
+Sem estrobo.
+
+Micropulsos ≤ 3 em toda sessão (aqui: 2 pulses).
+
+duration das ações longas cobre blocos de fase (respiração contínua).
+
+6. Script / Narrativa Mínima para o RLE
+
+Formato simples para o motor que gera as falas (ou só para documentação):
+
+{
+  "script": {
+    "style": "curto_pausado_com_lacunas",
+    "language": "pt-BR",
+    "blocks": [
+      {
+        "t": 0,
+        "text": "Respire pelo coração. Inspirando em cinco tempos, expirando em cinco tempos."
+      },
+      {
+        "t": 40,
+        "text": "O Amor é paciente. O Amor é bondoso."
+      },
+      {
+        "t": 80,
+        "text": "O Amor não é egoísta. O Amor não se irrita."
+      },
+      {
+        "t": 140,
+        "text": "O Amor se alegra com a verdade. Não com a injustiça."
+      },
+      {
+        "t": 220,
+        "text": "Amor que tudo sofre, tudo crê, tudo espera, tudo suporta."
+      },
+      {
+        "t": 320,
+        "text": "Amor é uma sintonia de rádio. Só o que é coerente com ele, ressoa com ele."
+      },
+      {
+        "t": 440,
+        "text": "Traga uma situação à mente. Pergunte em silêncio: isso é coerente com o Amor?"
+      },
+      {
+        "t": 620,
+        "text": "A vontade de Deus se revela no que é verdadeiramente amoroso, íntegro e compassivo."
+      },
+      {
+        "t": 840,
+        "text": "Guarde a resposta no peito. Não precisa resolver tudo agora. Só alinhar a direção."
+      },
+      {
+        "t": 1080,
+        "text": "Respire mais uma vez pelo coração. O Amor permanece. O resto se dissolve com o tempo."
+      }
+    ]
+  }
+}
+
+
+t em segundos, relativo ao início da sessão.
+
+Blocos curtos, com bastante espaço de silêncio entre eles, para deixar o áudio + luz trabalharem.
+
+7. Campo de Segurança (safety)
+{
+  "safety": {
+    "intended_use": "Relaxamento, contemplação e prática espiritual pessoal focada em Amor e coerência emocional.",
+    "not_medical": true,
+    "warnings": [
+      "Não utilizar ao dirigir ou operar máquinas.",
+      "Se sentir desconforto físico ou emocional intenso, interrompa a sessão.",
+      "Este conteúdo não substitui acompanhamento médico, psicológico ou espiritual especializado."
+    ]
+  }
+}
+
+8. Pacote Final (para você mandar)
+
+Você pode enviar este módulo como um único objeto:
+
+{
+  "id": "RLE_AMOR_COERENCIA_FONTE",
+  "title": "Amor · Coerência com a Fonte",
+  "category": "emocional",
+  "language": "pt-BR",
+  "narrative_mode": "literatura",
+  "duration_min_default": 20,
+  "duration_min_options": [10, 15, 20],
+  "visual_enabled": true,
+  "visual_style_pref": "ring_heart_coherence",
+  "tags": ["amor", "coerencia_cardiaca", "emocional", "harmonia_relacionamentos"],
+  "audio_hints": { ... },
+  "light_schedule": [ ... ],
+  "script": { ... },
+  "safety": { ... }
+}
+
+
+Basta colar os blocos audio_hints, light_schedule, script e safety exatamente como acima.
