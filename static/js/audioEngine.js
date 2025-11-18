@@ -9,6 +9,7 @@ export class SessionAudio {
     this.configUrl = configUrl;
     this.ctx = null;
     this.nodes = {};
+    this.totalDurationSec = 5400;
     this.phases = [
       { name: 'Fase 1 ÔÇö Ativa├º├úo', start: 0, end: 300 },
       { name: 'Fase 2 ÔÇö Harmonia', start: 300, end: 3600 },
@@ -38,6 +39,36 @@ export class SessionAudio {
         throw new Error('HTTP ' + res.status + ' ao carregar ' + this.configUrl);
       }
       this.cfg = await res.json();
+      // Ajusta fases e duração total a partir do JSON (se disponível)
+      try {
+        const d = this.cfg && this.cfg.durationsSec;
+        if (d) {
+          const a = Number(d.activation || 0);
+          const h = Number(d.harmony || 0);
+          const e = Number(d.expansion || 0);
+          const dis = Number(d.dissolution || 0);
+          const total = a + h + e + dis;
+          if (total > 0) {
+            this.totalDurationSec = total;
+            const p1End = a;
+            const p2End = a + h;
+            const p3End = a + h + e;
+            const p4End = total;
+            this.phases = [
+              { name: 'Fase 1 — Ativação', start: 0, end: p1End },
+              { name: 'Fase 2 — Harmonia', start: p1End, end: p2End },
+              { name: 'Fase 3 — Expansão', start: p2End, end: p3End },
+              { name: 'Fase 4 — Dissolução', start: p3End, end: p4End }
+            ];
+          } else {
+            this.totalDurationSec = 5400;
+          }
+        } else {
+          this.totalDurationSec = 5400;
+        }
+      } catch (e) {
+        this.totalDurationSec = 5400;
+      }
       return this.cfg;
     } catch (e) {
       try { console.error('SessionAudio.init failed for', this.configUrl, e); } catch (_) {}
@@ -487,7 +518,8 @@ export class SessionAudio {
 
   currentTime() {
     if (!this.ctx) return 0;
-    return Math.max(0, Math.min(5400, this.ctx.currentTime - this._startEpoch));
+    const total = this.totalDurationSec || 5400;
+    return Math.max(0, Math.min(total, this.ctx.currentTime - this._startEpoch));
   }
 
   currentPhaseIndex() {
