@@ -2,14 +2,23 @@
 setlocal ENABLEDELAYEDEXPANSION
 cd /d "%~dp0"
 
-set "PORT=5000"
 set "TARGET=/"
 if /I "%~1"=="UAT" set "TARGET=/UAT"
 if /I "%~1"=="DEBUG" set "TARGET=/debug"
-set "URL=http://127.0.0.1:%PORT%%TARGET%"
-set "VENV=.venv\Scripts\python.exe"
+if /I "%~1"=="CATALOGO" set "TARGET=/catalogo"
 
-echo [RingLight] Verificando servidor em %URL%
+set "PORT=%PORT%"
+if not defined PORT set "PORT=%RINGLIGHT_PORT%"
+if not defined PORT set "PORT=5000"
+
+set "BASE=http://127.0.0.1:%PORT%"
+set "URL=%BASE%%TARGET%"
+set "PING_URL=%BASE%/"
+set "HEALTH_URL=%BASE%/healthz"
+set "VENV=.venv\Scripts\python.exe"
+set "DEPS_MARKER=.venv\.deps_hash"
+
+echo [RingLight] Verificando servidor em %HEALTH_URL%
 call :is_up
 if /I "%UP%"=="True" (
   echo [RingLight] Servidor ja esta em execucao.
@@ -26,17 +35,35 @@ if not defined PYCMD (
   pause & exit /b 1
 )
 
-if not exist .venv\Scripts\python.exe (
+if not exist "%VENV%" (
   echo [RingLight] Criando venv...
   %PYCMD% -m venv .venv || (echo [ERRO] Falha ao criar venv & pause & exit /b 1)
 )
 
-echo [RingLight] Instalando dependencias...
-".venv\Scripts\python.exe" -m pip install --upgrade pip >nul
-".venv\Scripts\pip.exe" install -r requirements.txt || (echo [ERRO] pip falhou & pause & exit /b 1)
+rem Calcula hash de requirements.txt para evitar reinstalar quando ja satisfaz
+set "REQ_HASH="
+for /f "usebackq tokens=* delims=" %%H in (`powershell -NoLogo -NoProfile -Command "(Get-FileHash -Algorithm SHA256 'requirements.txt').Hash"`) do (
+  set "REQ_HASH=%%H"
+)
+if not defined REQ_HASH set "REQ_HASH=unknown"
+
+set "NEED_PIP=1"
+if exist "%DEPS_MARKER%" (
+  set /p OLD_HASH=<"%DEPS_MARKER%"
+  if /I "!OLD_HASH!"=="!REQ_HASH!" set "NEED_PIP=0"
+)
+
+if "!NEED_PIP!"=="1" (
+  echo [RingLight] Instalando dependencias...
+  "%VENV%" -m pip install --upgrade pip >nul
+  "%VENV%" -m pip install -r requirements.txt || (echo [ERRO] pip falhou & pause & exit /b 1)
+  >"%DEPS_MARKER%" echo !REQ_HASH!
+) else (
+  echo [RingLight] Dependencias ja instaladas (hash !REQ_HASH!).
+)
 
 echo [RingLight] Iniciando servidor Flask...
-start "RingLight-Server" /min cmd /c ".\.venv\Scripts\python.exe app.py"
+start "RingLight-Server" /min cmd /c "\"%VENV%\" app.py"
 
 echo [RingLight] Aguardando servidor ficar disponivel...
 for /L %%S in (1,1,30) do (
@@ -55,5 +82,7 @@ exit /b 0
 
 :is_up
 set "UP=False"
-for /f %%r in ('powershell -NoLogo -NoProfile -Command "try{(Invoke-WebRequest -UseBasicParsing -Uri %URL% -TimeoutSec 1).StatusCode -eq 200}catch{$false}"') do set "UP=%%r"
+for /f %%r in ('powershell -NoLogo -NoProfile -Command "try{(Invoke-WebRequest -UseBasicParsing -Uri %HEALTH_URL% -TimeoutSec 1).StatusCode -eq 200}catch{$false}"') do set "UP=%%r"
+if /I "%UP%"=="True" exit /b 0
+for /f %%r in ('powershell -NoLogo -NoProfile -Command "try{(Invoke-WebRequest -UseBasicParsing -Uri %PING_URL% -TimeoutSec 1).StatusCode -eq 200}catch{$false}"') do set "UP=%%r"
 exit /b 0

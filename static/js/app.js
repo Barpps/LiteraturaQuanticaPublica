@@ -20,6 +20,30 @@ const sealText = document.getElementById('seal-text');
 const canvas = document.getElementById('viz');
 const bwStatus = document.getElementById('bwStatus');
 const moduleSel = document.getElementById('moduleSel');
+const backCatalog = document.getElementById('backCatalog');
+
+// Mapeia IDs de módulo aceitos (para query param), mantendo caminhos canônicos
+const moduleMap = {
+  frequencias_diarias: 'static/config/modules/frequencias_diarias.json',
+  amor_coerencia_fonte: 'static/config/modules/amor_coerencia_fonte.json',
+  silencio_entre_os_raios: 'static/config/modules/silencio_entre_os_raios.json',
+  presenca_divina_acao: 'static/config/modules/presenca_divina_acao.json',
+  paz_por_do_sol: 'static/config/modules/paz_por_do_sol.json',
+  plenitude_coluna_de_luz: 'static/config/modules/plenitude_coluna_de_luz.json',
+  pintura_viva: 'static/config/modules/pintura_viva.json'
+};
+
+function getQueryModule() {
+  try {
+    const params = new URLSearchParams(window.location.search || '');
+    const m = (params.get('module') || '').trim();
+    if (!m) return null;
+    if (moduleMap[m]) return moduleMap[m];
+    // aceita também caminhos diretos se forem whitelisted
+    if (moduleMap[m.replace('.json','')]) return moduleMap[m.replace('.json','')];
+    return null;
+  } catch (e) { return null; }
+}
 
 // Lista de módulos disponível no app (fonte única)
 if (moduleSel) {
@@ -29,7 +53,8 @@ if (moduleSel) {
     { v: 'static/config/modules/silencio_entre_os_raios.json', t: 'O Silêncio entre os Raios' },
     { v: 'static/config/modules/presenca_divina_acao.json', t: 'Presença Divina na Ação' },
     { v: 'static/config/modules/paz_por_do_sol.json', t: 'PAZ — Pôr do Sol da Integração' },
-    { v: 'static/config/modules/plenitude_coluna_de_luz.json', t: 'PLENITUDE — Coluna de Luz do Todo' }
+    { v: 'static/config/modules/plenitude_coluna_de_luz.json', t: 'PLENITUDE — Coluna de Luz do Todo' },
+    { v: 'static/config/modules/pintura_viva.json', t: 'Pintura Viva na Prosperidade Serena' }
   ].map(function (o, i) {
     return '<option value="' + o.v + '"' + (i === 0 ? ' selected' : '') + '>' + o.t + '</option>';
   }).join('');
@@ -42,7 +67,7 @@ if (moduleSel) {
 }
 
 // Caminho inicial do módulo selecionado
-let configUrl = (moduleSel && moduleSel.value) ? moduleSel.value : 'static/config/modules/frequencias_diarias.json';
+let configUrl = getQueryModule() || (moduleSel && moduleSel.value) || 'static/config/modules/frequencias_diarias.json';
 let audio = new SessionAudio(configUrl);
 const visuals = new Visuals(canvas);
 
@@ -90,6 +115,13 @@ if (moduleSel) {
 window.audio = audio;
 window.visuals = visuals;
 
+// Botão de voltar para catálogo (se existir)
+if (backCatalog) {
+  backCatalog.addEventListener('click', function () {
+    window.location.href = 'catalogo.html';
+  });
+}
+
 let timerInterval = null;
 let totalDurationSec = 5400; // fallback: 90 min
 
@@ -126,7 +158,6 @@ function normalizeLabel(s) {
   try {
     return String(s)
       .replace(/[\u2010\u2011\u2012\u2013\u2014\u2212]/g, ' - ')
-      .replace(/�"����|ǽ�'��??|ǽ�'��?o/g, ' - ')
       .replace(/\s*-\s*/g, ' - ');
   } catch (e) { return s; }
 }
@@ -136,8 +167,8 @@ async function init() {
   try {
     cfg = await audio.init();
   } catch (e) {
-    try { console.error('Falha ao carregar m��dulo inicial', configUrl, e); } catch (_) {}
-    try { alert('N��o foi poss��vel carregar o m��dulo inicial.\nVerifique sua conex��o e tente novamente.'); } catch (_) {}
+    try { console.error('Falha ao carregar módulo inicial', configUrl, e); } catch (_) {}
+    try { alert('Não foi possível carregar o módulo inicial.\nVerifique sua conexão e tente novamente.'); } catch (_) {}
     return;
   }
 
@@ -330,8 +361,8 @@ if (moduleSel) moduleSel.addEventListener('change', async function () {
   try {
     cfg = await nextAudio.init();
   } catch (e) {
-    try { console.error('Falha ao trocar de m��dulo', newUrl, e); } catch (_) {}
-    try { alert('N��o foi poss��vel carregar o novo m��dulo.\nMantendo o m��dulo anterior.'); } catch (_) {}
+    try { console.error('Falha ao trocar de módulo', newUrl, e); } catch (_) {}
+    try { alert('Não foi possível carregar o novo módulo.\nMantendo o módulo anterior.'); } catch (_) {}
     moduleSel.value = prevUrl;
     window.audio = prevAudio;
     return;

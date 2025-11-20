@@ -7,38 +7,59 @@
   <link rel="stylesheet" href="static/css/styles.css" />
 </head>
 <body class="home-page">
+  <a class="skip-link" href="#main">Pular para o conteúdo principal</a>
   <div class="home-shell">
     <header class="home-header">
       <div class="home-header-inner">
         <div class="home-logo">
-          <span class="home-logo-mark">�-�</span>
+          <span class="home-logo-mark">RL</span>
           <div class="home-logo-text">
             <span class="home-logo-title">RingLight Effect</span>
-            <span class="home-logo-tagline">Luz, Som e Intenção para harmonizar o seu dia.</span>
+            <span class="home-logo-tagline">Luz, som e intenção para harmonizar o seu dia.</span>
           </div>
         </div>
         <nav class="home-nav">
-          <a href="home.html" class="home-nav-link is-active">Home</a>
+          <a href="home.html" class="home-nav-link is-active" aria-current="page">Home</a>
           <a href="guia.html" class="home-nav-link">Guia do Usuário</a>
-          <a href="app.html" class="home-nav-link">Frequências Diárias</a>
-          <a href="fragmentos.html" class="home-nav-link">Fragmentos de Transformação</a>
+          <a href="catalogo.html" class="home-nav-link">Catálogo</a>
+          <a href="frequencias.html" class="home-nav-link">Frequências</a>
+          <a href="fragmentos.html" class="home-nav-link">Fragmentos</a>
+          <a href="links.html" class="home-nav-link">Links</a>
         </nav>
       </div>
     </header>
 
-    <main class="home-main">
+    <main class="home-main" id="main">
       <section class="home-hero">
         <div class="home-hero-inner">
           <div class="home-hero-text">
             <h1 class="home-hero-title">RingLight Effect</h1>
-            <p class="home-hero-subtitle">Luz + Som + Intenção em um só lugar.</p>
+            <p class="home-hero-subtitle">Luz + Som + Intenção. Ritmo suave. Foco e serenidade.</p>
             <p class="home-hero-body">
-              Experiências guiadas com luz, frequências sonoras e narrativa simbólica para apoiar o seu processo de
-              presença, foco e serenidade — sem promessas mágicas, apenas convite à experimentação consciente.
+              Experiências guiadas com frequências sonoras, paletas de luz e narrativa simbólica para apoiar presença,
+              descanso e clareza — sem promessas de cura, apenas um ambiente propício para contemplação.
             </p>
             <div class="home-hero-actions">
-              <a href="app.html" class="btn btn-primary">Entrar no App</a>
-              <a href="guia.html" class="btn btn-secondary">Guia do Usuário (PDF)</a>
+              <a href="catalogo.html" class="btn btn-primary">Entrar no App</a>
+              <a href="guia.html" class="btn btn-secondary">Ver Guia do Usuário</a>
+              <a href="mailto:Mebadon@Mebadon.com.br" class="btn btn-secondary">Contato</a>
+            </div>
+
+            <div class="home-hero-feature">
+              <div class="feature-card">
+                <img src="static/img/banner2.jpg" alt="Padrões de luz fluida em violeta e dourado" loading="lazy" />
+                <div class="content">
+                  <h3>E se as frequências que você ouve… também pudessem ouvir você?</h3>
+                  <p>
+                    Imagine sessões onde luz e som respondem ao seu momento, mantendo micropulsos suaves, ritmo seguro e geometria sagrada respirando junto.
+                    Prosperidade, serenidade e presença, sem estímulos agressivos.
+                  </p>
+                  <div class="actions">
+                    <a href="links.html" class="btn btn-primary">Portal</a>
+                    <a href="https://www.youtube.com/@TransformativoQuantico" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">YouTube</a>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -49,43 +70,52 @@
           <header class="home-section-header">
             <h2 class="home-section-title">Escolha o seu próximo passo</h2>
             <p class="home-section-subtitle">
-              Tudo começa com uma intenção clara. Selecione o módulo que faz mais sentido para o seu momento agora.
+              Cada caminho mantém o coração do RingLight: som, luz e geometria em coerência. Comece por onde sentir mais afinidade.
             </p>
           </header>
 
           <div class="home-modules-grid">
             <article class="card card-primary">
-              <div class="card-icon">�-Z</div>
+              <div class="card-icon">∞</div>
               <h3 class="card-title">RingLight Effect</h3>
               <p class="card-description">
-                Sequências de luz, som e narrativa para harmonizar corpo, emoção e mente em sessões guiadas e intuitivas.
+                Sessões completas com 4 fases (90 min). Luz respiratória, batimento suave e narrativa para manter presença serena.
               </p>
-              <a href="app.html" class="btn btn-primary card-cta">Explorar RingLight</a>
+              <a href="app.html" class="btn btn-primary card-cta">Abrir Frequências Diárias</a>
             </article>
 
-            <article class="card">
-              <div class="card-icon">�Y"~</div>
-              <h3 class="card-title">Guia do Usuário</h3>
-              <p class="card-description">
-                Um manual direto ao ponto explicando fases, frequências, modos de uso e boas práticas da experiência.
-              </p>
-              <a href="guia.html" class="btn btn-secondary card-cta">Abrir Guia em PDF</a>
-            </article>
-
-            <article class="card">
-              <div class="card-icon">�?�</div>
+            <article class="card card-primary">
+              <div class="badge">Em breve</div>
               <h3 class="card-title">Frequências Diárias</h3>
               <p class="card-description">
-                Sessões mais objetivas para uso cotidiano: foco, descanso, recolhimento ou retomada de energia.
+                Rotas rápidas para foco, pausa consciente ou descanso — em evolução, com o mesmo núcleo som+luz+geometria suave.
               </p>
-              <a href="app.html" class="btn btn-secondary card-cta">Abrir Frequências Diárias</a>
+              <a href="frequencias.html" class="btn btn-secondary card-cta">Ver prévia</a>
             </article>
 
             <article class="card">
-              <div class="card-icon">�o�</div>
-              <h3 class="card-title">Fragmentos de Transformação</h3>
+              <div class="card-icon">✦</div>
+              <h3 class="card-title">Guia do Usuário</h3>
               <p class="card-description">
-                Meditações curtas e profundas combinando narrativa, frequências e luz para momentos-chave do seu dia.
+                Manual rápido: fases, frequências, modos de batimento e boas práticas para uso seguro e estável.
+              </p>
+              <a href="guia.html" class="btn btn-secondary card-cta">Ler Guia</a>
+            </article>
+
+            <article class="card">
+              <div class="card-icon">◉</div>
+              <h3 class="card-title">Frequências Diárias</h3>
+              <p class="card-description">
+                Ponto direto para o dia a dia: foco, recolhimento, descanso ou retomada de energia.
+              </p>
+              <a href="app.html" class="btn btn-secondary card-cta">Entrar</a>
+            </article>
+
+            <article class="card">
+              <div class="card-icon">ღ</div>
+              <h3 class="card-title">Fragmentos</h3>
+              <p class="card-description">
+                Meditações curtas com narrativa + luz + frequência para momentos-chave. Novos conteúdos chegam em breve.
               </p>
               <a href="fragmentos.html" class="btn btn-secondary card-cta">Ver Fragmentos</a>
             </article>
@@ -96,32 +126,24 @@
       <section class="home-section">
         <div class="home-section-inner">
           <header class="home-section-header">
-            <h2 class="home-section-title">As 4 Fases do Processo</h2>
+            <h2 class="home-section-title">As 4 fases do processo</h2>
             <p class="home-section-subtitle">
-              Cada sessão pode ser vivida em ciclos. Você não precisa passar por todas as fases de uma vez — siga o seu ritmo interno.
+              Você pode seguir o ciclo completo ou permanecer onde fizer sentido. Ritmo > intensidade.
             </p>
           </header>
 
           <div class="home-phases-grid">
             <div class="home-phase-item">
-              <button type="button" class="btn btn-outline active" data-phase="1">
-                Fase 1 — Ativar
-              </button>
+              <div class="btn btn-outline active phase-pill" aria-label="Fase 1 — Ativar">Fase 1 — Ativar</div>
             </div>
             <div class="home-phase-item">
-              <button type="button" class="btn btn-outline" data-phase="2">
-                Fase 2 — Harmonizar
-              </button>
+              <div class="btn btn-outline active phase-pill" aria-label="Fase 2 — Harmonizar">Fase 2 — Harmonizar</div>
             </div>
             <div class="home-phase-item">
-              <button type="button" class="btn btn-outline" data-phase="3">
-                Fase 3 — Expandir
-              </button>
+              <div class="btn btn-outline active phase-pill" aria-label="Fase 3 — Expandir">Fase 3 — Expandir</div>
             </div>
             <div class="home-phase-item">
-              <button type="button" class="btn btn-outline" data-phase="4">
-                Fase 4 — Dissolver
-              </button>
+              <div class="btn btn-outline active phase-pill" aria-label="Fase 4 — Dissolver">Fase 4 — Dissolver</div>
             </div>
           </div>
         </div>
@@ -130,9 +152,9 @@
       <section class="home-section">
         <div class="home-section-inner">
           <header class="home-section-header">
-            <h2 class="home-section-title">Experiências Disponíveis</h2>
+            <h2 class="home-section-title">Experiências disponíveis</h2>
             <p class="home-section-subtitle">
-              Cada experiência foi desenhada como um campo vibracional específico. Comece pela que mais conversa com o seu momento de vida.
+              Campos vibracionais desenhados para necessidades específicas, todos mantendo segurança e suavidade.
             </p>
           </header>
 
@@ -141,8 +163,7 @@
               <div class="badge">Prosperidade tranquila</div>
               <h3 class="card-title">Prosperidade + Serenidade</h3>
               <p class="card-description">
-                Um espaço para alinhar prosperidade com paz interna, soltando a ansiedade por resultados e abrindo espaço
-                para decisões mais calmas e assertivas.
+                Alinha prosperidade e paz interna, abrindo espaço para decisões calmas e visão ampla.
               </p>
             </article>
 
@@ -150,8 +171,7 @@
               <div class="badge">Quietude e clareza</div>
               <h3 class="card-title">O Silêncio entre os Raios</h3>
               <p class="card-description">
-                Um mergulho no intervalo entre um pensamento e outro, usando luz e som como convite para um silêncio vivo,
-                fértil e consciente.
+                Intervalos vivos de silêncio, com luz e som como convite a uma atenção suave e fértil.
               </p>
             </article>
 
@@ -159,7 +179,7 @@
               <div class="badge">Foco em movimento</div>
               <h3 class="card-title">Presença na Ação</h3>
               <p class="card-description">
-                Para momentos em que você precisa agir, mas sem entrar no modo automático. Mantém o eixo interno enquanto a vida pede movimento.
+                Para agir sem perder o eixo interno. Ritmo organizado, sem pressa nem dispersão.
               </p>
             </article>
 
@@ -167,7 +187,7 @@
               <div class="badge">Encerramento do dia</div>
               <h3 class="card-title">Pôr do Sol da Integração</h3>
               <p class="card-description">
-                Um encerramento suave para o dia: integra aprendizados, desacelera o sistema e prepara o terreno para descanso e sonhos mais lúcidos.
+                Desacelera, integra aprendizados e prepara um pouso suave para o descanso.
               </p>
             </article>
 
@@ -175,7 +195,7 @@
               <div class="badge">Autocompaixão</div>
               <h3 class="card-title">Plenitude + Luz</h3>
               <p class="card-description">
-                Uma lembrança de que você não precisa estar “perfeito” para se sentir inteiro. Luz suave para reconhecer o que já está funcionando em você.
+                Lembra que você já carrega plenitude. Luz suave, acolhimento e merecimento ético.
               </p>
             </article>
 
@@ -183,7 +203,7 @@
               <div class="badge">Coerência do coração</div>
               <h3 class="card-title">Amor — Coerência com a Fonte</h3>
               <p class="card-description">
-                Um campo para alinhar emoção e presença com suavidade: respiração pelo coração, batimento em torno de 6 Hz e anel luminoso respiratório focados em Amor e integração interna.
+                Respiração pelo coração, batimento em torno de 6 Hz e anel luminoso para integrar emoção e presença.
               </p>
             </article>
 
@@ -191,7 +211,7 @@
               <div class="badge">Criatividade próspera</div>
               <h3 class="card-title">Pintura Viva na Prosperidade Serena</h3>
               <p class="card-description">
-                Uma experiência mais criativa, quase pictórica: cores, formas e frequências se misturam para inspirar novas ideias a partir de um chão sereno.
+                Cores e formas orgânicas se misturam para inspirar ideias a partir de um chão sereno.
               </p>
             </article>
           </div>
@@ -212,4 +232,3 @@
   </div>
 </body>
 </html>
-

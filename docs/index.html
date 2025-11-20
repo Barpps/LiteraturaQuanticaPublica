@@ -3,213 +3,72 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RingLight Effect — Luz, Som e Intenção</title>
+  <title>RingLight — Sessão 90 min</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="static/css/styles.css" />
 </head>
-<body class="home-page">
-  <div class="home-shell">
-    <header class="home-header">
-      <div class="home-header-inner">
-        <div class="home-logo">
-          <span class="home-logo-mark">�-�</span>
-          <div class="home-logo-text">
-            <span class="home-logo-title">RingLight Effect</span>
-            <span class="home-logo-tagline">Luz, Som e Intenção para harmonizar o seu dia.</span>
-          </div>
-        </div>
-        <nav class="home-nav">
-          <a href="home.html" class="home-nav-link is-active">Home</a>
-          <a href="guia.html" class="home-nav-link">Guia do Usuário</a>
-          <a href="app.html" class="home-nav-link">Frequências Diárias</a>
-          <a href="fragmentos.html" class="home-nav-link">Fragmentos de Transformação</a>
-        </nav>
-      </div>
-    </header>
+<body>
+  <a class="skip-link" href="#controls">Pular para os controles</a>
+  <div id="bg" aria-hidden="true"></div>
+  <div id="container" role="main">
+    <canvas id="viz" aria-label="Visual de Geometria Sagrada" role="img"></canvas>
+    <div id="controls" role="group" aria-label="Controles">
+      <button class="btn-ringlight ghost" id="backCatalog" aria-label="Voltar para Catálogo">← Catálogo</button>
 
-    <main class="home-main">
-      <section class="home-hero">
-        <div class="home-hero-inner">
-          <div class="home-hero-text">
-            <h1 class="home-hero-title">RingLight Effect</h1>
-            <p class="home-hero-subtitle">Luz + Som + Intenção em um só lugar.</p>
-            <p class="home-hero-body">
-              Experiências guiadas com luz, frequências sonoras e narrativa simbólica para apoiar o seu processo de
-              presença, foco e serenidade — sem promessas mágicas, apenas convite à experimentação consciente.
-            </p>
-            <div class="home-hero-actions">
-              <a href="app.html" class="btn btn-primary">Entrar no App</a>
-              <a href="guia.html" class="btn btn-secondary">Guia do Usuário (PDF)</a>
-            </div>
-          </div>
-        </div>
-      </section>
+      <label for="modeSel" class="sr-only">Modo de Batimento</label>
+      <select id="modeSel" title="Modo de Batimento" aria-label="Modo de Batimento">
+        <option value="auto" selected>Auto</option>
+        <option value="binaural">Fones (Binaural)</option>
+        <option value="iso">Ambiente (Isocrônico)</option>
+      </select>
 
-      <section class="home-section">
-        <div class="home-section-inner">
-          <header class="home-section-header">
-            <h2 class="home-section-title">Escolha o seu próximo passo</h2>
-            <p class="home-section-subtitle">
-              Tudo começa com uma intenção clara. Selecione o módulo que faz mais sentido para o seu momento agora.
-            </p>
-          </header>
+      <button class="btn-ringlight" id="play" aria-label="Play">PLAY</button>
+      <button class="btn-ringlight" id="stop" aria-label="Stop">STOP</button>
+      <button class="btn-ringlight" id="prevPhase" aria-label="Retroceder Fase">Retroceder Fase</button>
+      <button class="btn-ringlight" id="nextPhase" aria-label="Avançar Fase">Avançar Fase</button>
+      <button class="btn-ringlight" id="exitBtn" aria-label="Sair">Sair</button>
 
-          <div class="home-modules-grid">
-            <article class="card card-primary">
-              <div class="card-icon">�-Z</div>
-              <h3 class="card-title">RingLight Effect</h3>
-              <p class="card-description">
-                Sequências de luz, som e narrativa para harmonizar corpo, emoção e mente em sessões guiadas e intuitivas.
-              </p>
-              <a href="app.html" class="btn btn-primary card-cta">Explorar RingLight</a>
-            </article>
+      <span id="timer" aria-live="polite">00:00 / 90:00</span>
+      <span id="bwStatus" aria-live="polite" style="color:#FFE773;">Isocrônico ativo</span>
+      <span id="phase" aria-live="polite">Pronto</span>
+    </div>
 
-            <article class="card">
-              <div class="card-icon">�Y"~</div>
-              <h3 class="card-title">Guia do Usuário</h3>
-              <p class="card-description">
-                Um manual direto ao ponto explicando fases, frequências, modos de uso e boas práticas da experiência.
-              </p>
-              <a href="guia.html" class="btn btn-secondary card-cta">Abrir Guia em PDF</a>
-            </article>
-
-            <article class="card">
-              <div class="card-icon">�?�</div>
-              <h3 class="card-title">Frequências Diárias</h3>
-              <p class="card-description">
-                Sessões mais objetivas para uso cotidiano: foco, descanso, recolhimento ou retomada de energia.
-              </p>
-              <a href="app.html" class="btn btn-secondary card-cta">Abrir Frequências Diárias</a>
-            </article>
-
-            <article class="card">
-              <div class="card-icon">�o�</div>
-              <h3 class="card-title">Fragmentos de Transformação</h3>
-              <p class="card-description">
-                Meditações curtas e profundas combinando narrativa, frequências e luz para momentos-chave do seu dia.
-              </p>
-              <a href="fragmentos.html" class="btn btn-secondary card-cta">Ver Fragmentos</a>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="home-section">
-        <div class="home-section-inner">
-          <header class="home-section-header">
-            <h2 class="home-section-title">As 4 Fases do Processo</h2>
-            <p class="home-section-subtitle">
-              Cada sessão pode ser vivida em ciclos. Você não precisa passar por todas as fases de uma vez — siga o seu ritmo interno.
-            </p>
-          </header>
-
-          <div class="home-phases-grid">
-            <div class="home-phase-item">
-              <button type="button" class="btn btn-outline active" data-phase="1">
-                Fase 1 — Ativar
-              </button>
-            </div>
-            <div class="home-phase-item">
-              <button type="button" class="btn btn-outline" data-phase="2">
-                Fase 2 — Harmonizar
-              </button>
-            </div>
-            <div class="home-phase-item">
-              <button type="button" class="btn btn-outline" data-phase="3">
-                Fase 3 — Expandir
-              </button>
-            </div>
-            <div class="home-phase-item">
-              <button type="button" class="btn btn-outline" data-phase="4">
-                Fase 4 — Dissolver
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="home-section">
-        <div class="home-section-inner">
-          <header class="home-section-header">
-            <h2 class="home-section-title">Experiências Disponíveis</h2>
-            <p class="home-section-subtitle">
-              Cada experiência foi desenhada como um campo vibracional específico. Comece pela que mais conversa com o seu momento de vida.
-            </p>
-          </header>
-
-          <div class="home-modules-grid">
-            <article class="card card-primary">
-              <div class="badge">Prosperidade tranquila</div>
-              <h3 class="card-title">Prosperidade + Serenidade</h3>
-              <p class="card-description">
-                Um espaço para alinhar prosperidade com paz interna, soltando a ansiedade por resultados e abrindo espaço
-                para decisões mais calmas e assertivas.
-              </p>
-            </article>
-
-            <article class="card card-primary">
-              <div class="badge">Quietude e clareza</div>
-              <h3 class="card-title">O Silêncio entre os Raios</h3>
-              <p class="card-description">
-                Um mergulho no intervalo entre um pensamento e outro, usando luz e som como convite para um silêncio vivo,
-                fértil e consciente.
-              </p>
-            </article>
-
-            <article class="card card-primary">
-              <div class="badge">Foco em movimento</div>
-              <h3 class="card-title">Presença na Ação</h3>
-              <p class="card-description">
-                Para momentos em que você precisa agir, mas sem entrar no modo automático. Mantém o eixo interno enquanto a vida pede movimento.
-              </p>
-            </article>
-
-            <article class="card card-primary">
-              <div class="badge">Encerramento do dia</div>
-              <h3 class="card-title">Pôr do Sol da Integração</h3>
-              <p class="card-description">
-                Um encerramento suave para o dia: integra aprendizados, desacelera o sistema e prepara o terreno para descanso e sonhos mais lúcidos.
-              </p>
-            </article>
-
-            <article class="card card-primary">
-              <div class="badge">Autocompaixão</div>
-              <h3 class="card-title">Plenitude + Luz</h3>
-              <p class="card-description">
-                Uma lembrança de que você não precisa estar “perfeito” para se sentir inteiro. Luz suave para reconhecer o que já está funcionando em você.
-              </p>
-            </article>
-
-            <article class="card card-primary">
-              <div class="badge">Coerência do coração</div>
-              <h3 class="card-title">Amor — Coerência com a Fonte</h3>
-              <p class="card-description">
-                Um campo para alinhar emoção e presença com suavidade: respiração pelo coração, batimento em torno de 6 Hz e anel luminoso respiratório focados em Amor e integração interna.
-              </p>
-            </article>
-
-            <article class="card card-primary">
-              <div class="badge">Criatividade próspera</div>
-              <h3 class="card-title">Pintura Viva na Prosperidade Serena</h3>
-              <p class="card-description">
-                Uma experiência mais criativa, quase pictórica: cores, formas e frequências se misturam para inspirar novas ideias a partir de um chão sereno.
-              </p>
-            </article>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="home-footer">
-      <div class="home-footer-inner">
-        <p class="home-footer-text">
-          RingLight Effect — ferramenta experimental de harmonização.
-        </p>
-        <p class="home-footer-disclaimer">
-          Não substitui cuidados médicos, psicológicos ou espirituais profissionais.
-        </p>
-      </div>
-    </footer>
+    <button class="btn-ringlight" id="fsBtn" aria-label="Tela Cheia" title="Tela Cheia">Tela Cheia</button>
   </div>
+
+  <!-- Modal: Intenção -->
+  <div id="modal-intent" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="intent-title">
+    <div class="modal-content">
+      <h2 id="intent-title">Intenção Vibracional Declarada</h2>
+      <p id="intent-text" class="modal-text">
+        Este espaço visual-sonoro é um campo de coerência.<br>
+        A luz pulsa no ritmo do coração.<br>
+        O som guia o tempo.<br>
+        Eu Sou o centro sereno de abundância consciente.
+      </p>
+      <div class="modal-actions">
+        <button class="btn-ringlight" id="intent-ok" autofocus>OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Selamento -->
+  <div id="modal-seal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="seal-title">
+    <div class="modal-content">
+      <h2 id="seal-title">Selamento do Campo</h2>
+      <p id="seal-text" class="modal-text">
+        Antes de encerrar, eu selo o trabalho de hoje com gratidão e ordem divina.<br>
+        Levo comigo a calma, a clareza e a prosperidade consciente.
+      </p>
+      <div class="modal-actions">
+        <button class="btn-ringlight" id="seal-ok" autofocus>OK</button>
+        <button class="btn-ringlight" id="seal-cancel">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="static/js/app.js"></script>
 </body>
 </html>
-

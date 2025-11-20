@@ -10,17 +10,12 @@
   <link rel="stylesheet" href="static/css/styles.css" />
 </head>
 <body class="enable-pintura-viva">
+  <a class="skip-link" href="#controls">Pular para os controles</a>
   <div id="bg" aria-hidden="true"></div>
-  <div id="container">
+  <div id="container" role="main">
     <canvas id="viz" aria-label="Visual de Geometria Sagrada" role="img"></canvas>
     <div id="controls" role="group" aria-label="Controles">
-      <label for="moduleSel" class="sr-only">Módulo</label>
-      <select id="moduleSel" title="Selecionar módulo" aria-label="Selecionar módulo">
-        <option value="static/config/modules/frequencias_diarias.json" selected>Prosperidade Consciente + Serenidade</option>
-        <option value="static/config/modules/silencio_entre_os_raios.json">O Silêncio entre os Raios</option>
-        <option value="static/config/modules/presenca_divina_acao.json">Presença Divina na Ação</option>
-        <option value="static/config/modules/paz_por_do_sol.json">PAZ — Pôr do Sol da Integração</option>
-      </select>
+      <button class="btn-ringlight ghost" id="backCatalog" aria-label="Voltar para Catálogo">← Catálogo</button>
 
       <label for="modeSel" class="sr-only">Modo de Batimento</label>
       <select id="modeSel" title="Modo de Batimento" aria-label="Modo de Batimento">
@@ -77,4 +72,3 @@
   <script type="module" src="static/js/app.js"></script>
 </body>
 </html>
-

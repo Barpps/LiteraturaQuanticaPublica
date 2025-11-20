@@ -3,7 +3,8 @@ setlocal ENABLEDELAYEDEXPANSION
 cd /d "%~dp0"
 
 set "PORT=5000"
-set "URL=http://127.0.0.1:%PORT%/debug?autorun=1&autoexport=1"
+rem Escapa & para evitar quebra de linha de comando
+set "URL=http://127.0.0.1:%PORT%/debug?autorun=1^&autoexport=1"
 
 echo [RingLight-E2E] Verificando servidor em http://127.0.0.1:%PORT%/
 call :is_up
@@ -42,11 +43,10 @@ pause & exit /b 1
 
 :open
 echo [RingLight-E2E] Abrindo %URL%
-start "" %URL%
+start "" "%URL%"
 exit /b 0
 
 :is_up
 set "UP=False"
 for /f %%r in ('powershell -NoLogo -NoProfile -Command "try{(Invoke-WebRequest -UseBasicParsing -Uri http://127.0.0.1:%PORT%/ -TimeoutSec 1).StatusCode -eq 200}catch{$false}"') do set "UP=%%r"
 exit /b 0
-

@@ -3,129 +3,149 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Guia do Usuário – RingLight</title>
+  <title>Guia do Usuário — RingLight</title>
   <link rel="stylesheet" href="static/css/styles.css" />
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      color: #eee;
-    }
-    .wrap { max-width: 980px; margin: 24px auto; padding: 0 16px; }
-    h1,h2,h3 { color:#FFD700; margin: 16px 0 8px; }
-    .btn {
-      background: linear-gradient(145deg, #3B006A 0%, #FFE773 90%);
-      color:#111;
-      border:1px solid #FFD700;
-      border-radius:999px;
-      padding:8px 14px;
-      cursor:pointer;
-    }
-    .box {
-      background: rgba(0,0,0,0.45);
-      border:1px solid rgba(255,215,0,0.25);
-      border-radius:12px;
-      padding:12px 14px;
-      margin:12px 0;
-    }
-    ul { margin: 8px 0 8px 20px; }
-    code { background: rgba(255,255,255,0.06); padding: 1px 6px; border-radius:6px; }
-    @media print {
-      .no-print { display:none }
-      body { background:#fff; color:#000 }
-    }
-  </style>
 </head>
-<body>
-  <div id="bg" aria-hidden="true"></div>
-  <div class="wrap">
-    <h1>Guia do Usuário – RingLight</h1>
-    <p class="no-print">
-      <button class="btn" onclick="window.print()">Imprimir / Salvar como PDF</button>
-      &nbsp; <a class="btn" href="app.html">Abrir o App</a>
-      &nbsp; <a class="btn" href="index_debug.html">Debug / E2E</a>
-    </p>
+<body class="home-page">
+  <a class="skip-link" href="#main">Pular para o conteúdo principal</a>
+  <div class="home-shell">
+    <header class="home-header">
+      <div class="home-header-inner">
+        <div class="home-logo">
+          <span class="home-logo-mark">RL</span>
+          <div class="home-logo-text">
+            <span class="home-logo-title">RingLight Effect</span>
+            <span class="home-logo-tagline">Luz, som e intenção para harmonizar o seu dia.</span>
+          </div>
+        </div>
+        <nav class="home-nav">
+          <a href="home.html" class="home-nav-link">Home</a>
+          <a href="guia.html" class="home-nav-link is-active" aria-current="page">Guia do Usuário</a>
+          <a href="catalogo.html" class="home-nav-link">Catálogo</a>
+          <a href="frequencias.html" class="home-nav-link">Frequências</a>
+          <a href="fragmentos.html" class="home-nav-link">Fragmentos</a>
+          <a href="links.html" class="home-nav-link">Links</a>
+        </nav>
+      </div>
+    </header>
 
-    <h2>Início Rápido</h2>
-    <div class="box">
-      <ul>
-        <li>Use fones estéreo para <strong>binaural 7.5 Hz</strong> (preferido). Sem fones ou em segundo plano, o app usa <strong>isocrônico 7.5 Hz</strong>.</li>
-        <li>Clique em <strong>PLAY</strong> → confirme o pop-up de intenção → (opcional) <strong>tela cheia</strong>.</li>
-        <li>Volume inicial é suave por design (fade-in global de ~2 minutos).</li>
-        <li>Controles: <strong>Play</strong>, <strong>Stop</strong>, <strong>Avançar/Retroceder Fase</strong>, <strong>Sair</strong>.</li>
-      </ul>
-    </div>
+    <main class="home-main" id="main">
+      <section class="home-section">
+        <div class="home-section-inner">
+          <header class="home-section-header" style="text-align:left;">
+            <h1 class="home-section-title">Guia do Usuário — RingLight</h1>
+            <p class="home-section-subtitle">Como usar com segurança e suavidade: passos rápidos, fases e modos.</p>
+            <div class="home-hero-actions" style="margin-top: var(--spacing-md);">
+              <button class="btn btn-primary" onclick="window.print()">Imprimir / Salvar PDF</button>
+              <a class="btn btn-secondary" href="app.html">Abrir o App</a>
+              <a class="btn btn-secondary" href="index_debug.html">Debug / E2E</a>
+              <a class="btn btn-secondary" href="mailto:Mebadon@Mebadon.com.br">Contato</a>
+            </div>
+          </header>
 
-    <h2>Fases (90 minutos)</h2>
-    <div class="box">
-      <ul>
-        <li><strong>Fase 1 – Ativar (0–5 min)</strong>: 174 Hz constante; 432/528 Hz emergem; fade-in global de 2 min.</li>
-        <li><strong>Fase 2 – Harmonizar (5–60 min)</strong>: entra batimento 7.5 Hz; ruído marrom; harmônicos 639/852; campo estável.</li>
-        <li><strong>Fase 3 – Expandir (60–80 min)</strong>: introduz 963 Hz; brilho/reverb +2–3 dB (suave).</li>
-        <li><strong>Fase 4 – Dissolver (80–90 min)</strong>: retira altas e batimento; fica o <em>drone</em> 174 Hz até o fade final.</li>
-      </ul>
-      <p>Visual: respiração luminosa ~3 cpm; rotação suave (0.03–0.08 rad/s); micropulsos ≤ 3 por ciclo; pico de brilho na <strong>4ª batida</strong> (7.5 Hz).</p>
-    </div>
+          <article class="box">
+            <h2>Início rápido</h2>
+            <ul>
+              <li>Use fones estéreo para binaural (preferido). Sem fones ou em segundo plano, o app usa isocrônico.</li>
+              <li>Clique em <strong>PLAY</strong> → confirme a intenção → entre em tela cheia (opcional para melhor imersão).</li>
+              <li>Volume inicial é suave por design (fade-in global ~2 minutos).</li>
+              <li>Controles: Play, Stop, Avançar/Retroceder Fase, Sair.</li>
+            </ul>
+          </article>
 
-    <h2>Módulos</h2>
-    <div class="box">
-      <h3>Prosperidade Consciente + Serenidade</h3>
-      <ul>
-        <li><strong>Som</strong>: 432 Hz (base); 528/639/852/963 Hz conforme fase; 174 Hz <em>drone</em>; 7.5 Hz Auto (binaural/iso); ruído marrom (~-28 dB); pré‑buffer 2.5 s.</li>
-        <li><strong>Visual</strong>: Flor da Vida; paleta dourado‑esmeralda + rosa‑dourado; brilho máx. ~0.78; rotação 0.08; alpha secundário dinâmico.</li>
-      </ul>
+          <article class="box">
+            <h2>Fases (90 minutos)</h2>
+            <ul>
+              <li><strong>Fase 1 — Ativar (0–5 min)</strong>: 174 Hz constante; 432/528 Hz emergem; fade-in global de 2 min.</li>
+              <li><strong>Fase 2 — Harmonizar (5–60 min)</strong>: batimento 7.5 Hz; ruído marrom; harmônicos 639/852; campo estável.</li>
+              <li><strong>Fase 3 — Expandir (60–80 min)</strong>: 963 Hz suave; brilho/reverb +2–3 dB.</li>
+              <li><strong>Fase 4 — Dissolver (80–90 min)</strong>: retira altas e batimento; mantém 174 Hz até o fade final.</li>
+            </ul>
+            <p>Visual: respiração luminosa ~3 cpm; rotação suave (0.03–0.08 rad/s); micropulsos ≤ 3 por ciclo; pico de brilho na 4ª batida (7.5 Hz).</p>
+          </article>
 
-      <h3>O Silêncio entre os Raios</h3>
-      <ul>
-        <li><strong>Som</strong>: 174 Hz + <strong>fundamental 396 Hz</strong>; 432/639 Hz; 7.5 Hz Auto; janelas de silêncio opcionais; ruído ~-30 dB.</li>
-        <li><strong>Visual</strong>: Flor da Vida 24 pétalas; esfera central; respiração ~3 cpm; rotação 0.05; fundo azul‑violeta.</li>
-      </ul>
+          <article class="box">
+            <h2>Módulos</h2>
+            <h3>Prosperidade Consciente + Serenidade</h3>
+            <ul>
+              <li><strong>Som</strong>: 432 Hz base; 528/639/852/963 Hz por fase; 174 Hz drone; 7.5 Hz Auto (binaural/iso); ruído marrom (~-28 dB).</li>
+              <li><strong>Visual</strong>: Flor da Vida; paleta dourado-esmeralda + rosa-dourado; brilho máx. ~0.78; rotação 0.08.</li>
+            </ul>
+            <h3>O Silêncio entre os Raios</h3>
+            <ul>
+              <li><strong>Som</strong>: 174 Hz + fundamental 396 Hz; 432/639 Hz; 7.5 Hz Auto; janelas de silêncio opcionais; ruído ~-30 dB.</li>
+              <li><strong>Visual</strong>: Flor da Vida 24 pétalas; esfera central; respiração ~3 cpm; rotação 0.05; fundo azul-violeta.</li>
+            </ul>
+            <h3>Presença Divina na Ação</h3>
+            <ul>
+              <li><strong>Som</strong>: 432 Hz + 963 Hz sutil; 174 Hz base; 7.5 Hz Auto; ruído marrom ~-31 dB.</li>
+              <li><strong>Visual</strong>: Ring central estável + Cubo de Metatron (~28%); espessura média; micropulso secundário ~0.14; rotação 0.04.</li>
+            </ul>
+            <h3>PAZ — Pôr do Sol da Integração</h3>
+            <ul>
+              <li><strong>Som</strong>: 432 Hz + 528/963 Hz sutis; 174 Hz base; máscara 600 Hz +2 dB; ruído pink+brown blend ~-30 dB; 7.5 Hz Auto.</li>
+              <li><strong>Visual</strong>: Ring + Flower de apoio; micropulso secundário ~0.16; respiração 3 cpm; rotação ~0.035; aura dourado-branco.</li>
+            </ul>
+            <h3>Plenitude + Luz</h3>
+            <ul>
+              <li><strong>Som</strong>: 528 Hz eixo; 174 Hz base; harmônicos suaves.</li>
+              <li><strong>Visual</strong>: Anéis concêntricos, partículas ascendentes, paleta dourado/branco/verde-claro.</li>
+            </ul>
+            <h3>Amor — Coerência com a Fonte</h3>
+            <ul>
+              <li><strong>Som</strong>: 528/639 Hz; binaural ~6–8 Hz; ruído marrom suave.</li>
+              <li><strong>Visual</strong>: Mandala cardíaca + anel; paleta rosa, dourado, verde-suave.</li>
+            </ul>
+            <h3>Pintura Viva na Prosperidade Serena</h3>
+            <ul>
+              <li><strong>Som</strong>: 528 Hz + texturas suaves.</li>
+              <li><strong>Visual</strong>: Formas orgânicas → mandala harmonizada; pinceladas dourado/verde em fundo suave.</li>
+            </ul>
+          </article>
 
-      <h3>Presença Divina na Ação</h3>
-      <ul>
-        <li><strong>Som</strong>: 432 Hz + 963 Hz sutil; 174 Hz base; 7.5 Hz Auto; ruído marrom ~-31 dB; pré‑buffer 2.5 s.</li>
-        <li><strong>Visual</strong>: <strong>Ring</strong> central estável + Cubo de Metatron (~28%); <code>ringLineWidth</code> médio; <code>secondaryPulseAlpha ≈ 0.14</code>; rotação 0.04.</li>
-      </ul>
+          <article class="box">
+            <h2>Modos de batimento</h2>
+            <ul>
+              <li><strong>Auto (padrão)</strong>: fones + aba ativa → binaural; ambiente/segundo plano → isocrônico.</li>
+              <li><strong>Fones (Binaural)</strong>: panDepth ~0.6 (sensação espacial suave).</li>
+              <li><strong>Ambiente (Isocrônico)</strong>: panDepth ~0.25 (estável).</li>
+              <li>Fallback: ao perder foco/CPU alta, prioriza isocrônico e mantém sincronismo visual.</li>
+            </ul>
+          </article>
 
-      <h3>PAZ – Pôr do Sol da Integração</h3>
-      <ul>
-        <li><strong>Som</strong>: 432 Hz + 528/963 Hz sutis; 174 Hz base; <strong>máscara 600 Hz +2 dB</strong>; ruído <em>pink+brownBlend</em> ~-30 dB; 7.5 Hz Auto.</li>
-        <li><strong>Visual</strong>: <strong>Ring</strong> + Flower apoio; <code>secondaryPulseAlpha ≈ 0.16</code>; respiração 3 cpm; rotação ~0.035; aura dourado‑branco 8–12%.</li>
-      </ul>
-    </div>
+          <article class="box">
+            <h2>Boas práticas</h2>
+            <ul>
+              <li>Volume alvo ~-22 LUFS; começa baixo por ~2 min (fade-in).</li>
+              <li>Ambiente tranquilo; tela cheia melhora imersão.</li>
+              <li>Headphones: preferível over-ear; se não, use modo isocrônico.</li>
+              <li>Tempo: 60–90 min é o ideal; você pode pausar e retomar.</li>
+            </ul>
+          </article>
 
-    <h2>Modos de Batimento</h2>
-    <div class="box">
-      <ul>
-        <li><strong>Auto (padrão)</strong>: fones + aba ativa → binaural; ambiente/segundo plano → isocrônico.</li>
-        <li><strong>Fones (Binaural)</strong>: panDepth ~0.6 (sensação espacial).</li>
-        <li><strong>Ambiente (Isocrônico)</strong>: panDepth ~0.25 (estável, sem “ondas”).</li>
-        <li><em>Fallback</em>: ao perder foco/CPU alta, o app prioriza isocrônico e mantém sincronismo visual.</li>
-      </ul>
-    </div>
+          <article class="box">
+            <h2>FAQ / Solução de problemas</h2>
+            <ul>
+              <li><strong>Sem som?</strong> Verifique volumes do sistema/aba; clique em PLAY (gesto exigido); teste modo isocrônico.</li>
+              <li><strong>Volume baixo no início</strong>: é intencional (fade-in de 2 min).</li>
+              <li><strong>Perdi a tela cheia</strong>: use o botão “Tela Cheia”.</li>
+              <li><strong>Beta/Diagnóstico</strong>: acesse <code>index_debug.html</code>; use “Full E2E” e “Exportar Relatório”.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+    </main>
 
-    <h2>Boas práticas e Observações</h2>
-    <div class="box">
-      <ul>
-        <li>Volume: alvo ~-22 LUFS (conforto em longas sessões). Começa baixo por ~2 min (fade‑in).</li>
-        <li>Ambiente: preferir local tranquilo; iluminar a tela minimamente; tela cheia melhora a imersão.</li>
-        <li>Headphones: para perceber o binaural corretamente (se possível, over‑ear).</li>
-        <li>Tempo: sessões de 60–90 min são ideais; pode pausar e retomar.</li>
-      </ul>
-    </div>
-
-    <h2>FAQ / Solução de Problemas</h2>
-    <div class="box">
-      <ul>
-        <li><strong>Sem som?</strong> Verifique volume do sistema/aba; clique em PLAY (gesto exigido pelo navegador); teste no modo isocrônico.</li>
-        <li><strong>Volume baixo no início</strong>: é intencional (fade‑in global de 2 min).</li>
-        <li><strong>Perdi a tela cheia</strong>: use o botão “Tela Cheia” (reentrada).</li>
-        <li><strong>Beta/Diagnóstico</strong>: acesse <code>index_debug.html</code>; execute “Full E2E” e “Exportar Relatório”.</li>
-      </ul>
-    </div>
-
-    <p style="opacity:.8">
-      Este guia resume a experiência RingLight: som e luz em coerência, com ênfase em presença, paz e harmonia.
-    </p>
+    <footer class="home-footer">
+      <div class="home-footer-inner">
+        <p class="home-footer-text">
+          RingLight Effect — ferramenta experimental de harmonização.
+        </p>
+        <p class="home-footer-disclaimer">
+          Não substitui cuidados médicos, psicológicos ou espirituais profissionais.
+        </p>
+      </div>
+    </footer>
   </div>
 </body>
 </html>

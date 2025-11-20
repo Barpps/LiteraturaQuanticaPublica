@@ -17,7 +17,8 @@ function downloadJson(name, data){
     var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = name || 'ringlight_e2e_report.json';
+    var ts = new Date().toISOString().replace(/[:.]/g,'-');
+    a.download = name || ('ringlight_e2e_report_' + ts + '.json');
     a.click();
     setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
   } catch(e) {}
@@ -61,6 +62,14 @@ async function runModule(modName, cfgUrl){
 
   // Start audio with a user gesture proxy: click PLAY programmatically (still runs under the Full E2E button click)
   try {
+    // Auto-fechar modal de intenção para não travar
+    try {
+      var intentBtn = document.getElementById('intent-ok');
+      if (intentBtn) intentBtn.click();
+      window.intentionShown = true;
+      var modal = document.getElementById('modal-intent');
+      if (modal) modal.classList.add('hidden');
+    } catch(_){}
     if (window.__ringPlay) { await window.__ringPlay(); }
     await sleep(3000); // prebuffer ~2.5s
     audio = window.audio; visuals = window.visuals;
